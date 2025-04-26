@@ -25,8 +25,11 @@ Durga Puja is not just a festival — it's a celebration of love, power, and com
 ## 🛠️ Technologies Used
 
 - **HTML5**  
-- **CSS3**  
-- **JavaScript**  
+- **CSS3/React**  
+- **JavaScript**
+- **Nodejs**
+- **Threejs**
+- **Google pay** 
 - **Google AdSense Integration**
 
 ## 📢 How It Works
@@ -36,17 +39,11 @@ Durga Puja is not just a festival — it's a celebration of love, power, and com
 3. **Funds Collected** will be **transparently donated** to the needy.
 4. **Updates and Reports** will be shared after the event.
 
-_"Alone we can do so little; together we can do so much."_
-
 ## 📬 Suggestions & Contributions
 
 If you have ideas to improve this project,  
 please feel free to open an issue or contact the team directly.  
 **Every idea matters. Every contribution counts.**
-
-## 📅 Launch Target
-
-- **Before Durga Puja 2025** (As per Bengali calendar: 1432)
 
 ## 🌟 Special Thanks
 
