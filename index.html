@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trinoyon - Support Homeless During Durga Puja</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.tailwindcss.com/3.4.16">
+</script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: { primary: "#D32F2F", secondary: "#FFC107" },
+      borderRadius: {
+        none: "0px",
+        sm: "4px",
+        DEFAULT: "8px",
+        md: "12px",
+        lg: "16px",
+        xl: "20px",
+        "2xl": "24px",
+        "3xl": "32px",
+        full: "9999px",
+        button: "8px",
+      },
+    },
+  },
+};
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+<style>
+
+</style>
+</head>
+<body class="bg-white">
+<!-- Header with Bengali Pattern -->
+<div class="bengali-pattern h-4 w-full"></div>
+<!-- Navigation -->
+<nav class="bg-white shadow-md sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between h-16">
+<div class="flex items-center">
+<a href="#" class="flex-shrink-0 flex items-center">
+<span class="font-['Pacifico'] text-primary text-2xl sm:text-3xl">Trinoyon</span>
+</a>
+<div class="hidden lg:ml-10 lg:flex lg:space-x-4 xl:space-x-8">
+<a href="#" class="text-primary border-b-2 border-primary px-1 pt-1 text-sm xl:text-base font-medium transition-colors duration-200">Home</a>
+<a href="#donate" class="text-gray-700 hover:text-primary px-1 pt-1 text-sm xl:text-base font-medium border-b-2 border-transparent hover:border-primary transition-colors duration-200">Donate</a>
+<a href="play.html" class="text-gray-700 hover:text-primary px-1 pt-1 text-sm xl:text-base font-medium border-b-2 border-transparent hover:border-primary transition-colors duration-200">Play to Donate</a>
+<a href="#quiz" class="text-gray-700 hover:text-primary px-1 pt-1 text-sm xl:text-base font-medium border-b-2 border-transparent hover:border-primary transition-colors duration-200">Quiz Challenge</a>
+<a href="#stories" class="text-gray-700 hover:text-primary px-1 pt-1 text-sm xl:text-base font-medium border-b-2 border-transparent hover:border-primary transition-colors duration-200">Stories & Notes</a>
+<a href="#impact" class="text-gray-700 hover:text-primary px-1 pt-1 text-sm xl:text-base font-medium border-b-2 border-transparent hover:border-primary transition-colors duration-200">Impact</a>
+<a href="#contact" class="text-gray-700 hover:text-primary px-1 pt-1 text-sm xl:text-base font-medium border-b-2 border-transparent hover:border-primary transition-colors duration-200">Contact</a>
+</div>
+</div>
+<div class="flex items-center space-x-4">
+<button class="hidden sm:block bg-primary text-white px-3 xl:px-4 py-2 rounded-button text-sm xl:text-base font-medium shadow-md hover:bg-primary/90 whitespace-nowrap transition-colors duration-200">Donate Now</button>
+<button type="button" id="menuButton" class="lg:hidden text-gray-700 hover:text-primary w-10 h-10 flex items-center justify-center transition-colors duration-200">
+<i class="ri-menu-line ri-lg"></i>
+</button>
+</div>
+</div>
+</div>
+<!-- Mobile menu -->
+<div id="mobileMenu" class="hidden lg:hidden">
+<div class="px-2 pt-2 pb-3 space-y-1">
+<a href="#" class="bg-primary bg-opacity-10 text-primary block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Home</a>
+<a href="#donate" class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Donate</a>
+<a href="play.html" class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Play to Donate</a>
+<a href="#quiz" class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Quiz Challenge</a>
+<a href="#stories" class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Stories & Notes</a>
+<a href="#impact" class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Impact</a>
+<a href="#contact" class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Contact</a>
+<div class="mt-4 px-3">
+<button class="w-full bg-primary text-white px-4 py-2 rounded-button text-sm sm:text-base font-medium shadow-md hover:bg-primary/90 whitespace-nowrap transition-colors duration-200">Donate Now</button>
+</div>
+</div>
+<div class="mt-4 px-3">
+<button class="w-full bg-primary text-white px-4 py-2 rounded-button font-medium shadow-md hover:bg-primary/90 whitespace-nowrap transition-colors duration-200">Donate Now</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="hero-section min-h-[600px] flex items-center w-full">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
+<div class="max-w-xl">
+<h1 class="text-4xl font-bold text-gray-900 sm:text-5xl md:text-6xl">
+<span class="block">Celebrating Durga Puja</span>
+<span class="block text-primary">By Helping Others</span>
+</h1>
+<p class="mt-3 text-base text-gray-700 sm:mt-5 sm:text-lg md:mt-5 md:text-xl">
+Join us in making a difference during this festive season. Every donation and ad-click helps provide shelter, food, and dignity to homeless individuals during Durga Puja.
+</p>
+<div class="mt-8 flex flex-col sm:flex-row gap-4">
+<a href="#donate" class="bg-primary text-white px-8 py-3 rounded-button font-medium shadow-lg hover:bg-primary/90 text-center whitespace-nowrap">
+Donate Now
+</a>
+<a href="#play" class="bg-white border-2 border-primary text-primary px-8 py-3 rounded-button font-medium shadow-md hover:bg-primary/5 text-center whitespace-nowrap">
+Play to Help
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Impact Stats -->
+<section class="bg-white py-12">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-white p-6 rounded-lg shadow-md text-center border-t-4 border-primary">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="ri-home-heart-line ri-2x text-primary"></i>
+</div>
+<h3 class="text-3xl font-bold text-gray-900">0</h3>
+<p class="text-gray-600 mt-2">People Sheltered</p>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-md text-center border-t-4 border-primary">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="ri-restaurant-line ri-2x text-primary"></i>
+</div>
+<h3 class="text-3xl font-bold text-gray-900">0</h3>
+<p class="text-gray-600 mt-2">Meals Served</p>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-md text-center border-t-4 border-primary">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+<i class="ri-hand-heart-line ri-2x text-primary"></i>
+</div>
+<h3 class="text-3xl font-bold text-gray-900">₹0</h3>
+<p class="text-gray-600 mt-2">Funds Raised</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Donation Section -->
+<section id="donate" class="py-16 bg-gray-50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Make a Donation</h2>
+<p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+Your contribution helps us provide shelter, food, and essential supplies to homeless individuals during the festive season.
+</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- UPI Payment -->
+<div class="bg-white p-6 rounded-lg shadow-md">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+<i class="ri-smartphone-line ri-lg text-primary"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-4">UPI Payment</h3>
+<div class="flex flex-col space-y-4">
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-google-fill ri-lg text-gray-700"></i>
+</div>
+<span class="text-gray-700">arijit.sarkar7156@okhdfcbank</span>
+</div>
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-phone-fill ri-lg text-gray-700"></i>
+</div>
+<span class="text-gray-700">+916289610827</span>
+</div>
+<button class="mt-4 bg-primary text-white px-4 py-2 rounded-button font-medium shadow-md hover:bg-primary/90 whitespace-nowrap">
+Copy UPI ID
+</button>
+</div>
+</div>
+<!-- QR Code -->
+<div class="bg-white p-6 rounded-lg shadow-md">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+<i class="ri-qr-code-line ri-lg text-primary"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-4">Scan QR Code</h3>
+<div class="bg-white p-3 rounded-lg border-2 border-gray-200 w-48 h-48 mx-auto">
+<img src="QR code.jpg"
+class="w-full h-full object-contain">
+</div>
+<p class="text-sm text-gray-500 text-center mt-4">
+Scan with any UPI app to donate
+</p>
+</div>
+<!-- Online Payment -->
+<div class="bg-white p-6 rounded-lg shadow-md">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+<i class="ri-bank-card-line ri-lg text-primary"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-900 mb-4">Online Payment</h3>
+<form class="space-y-4">
+<div>
+<label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Amount (₹)</label>
+<input type="number" id="amount" name="amount" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter amount">
+</div>
+<div>
+<label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+<input type="text" id="name" name="name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Your name">
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="anonymous" name="anonymous" class="custom-checkbox">
+<label for="anonymous" class="ml-2 block text-sm text-gray-700">Donate anonymously</label>
+</div>
+<button type="submit" class="w-full bg-primary text-white px-4 py-2 rounded-button font-medium shadow-md hover:bg-primary/90 whitespace-nowrap">
+Proceed to Pay
+</button>
+</form>
+</div>
+</div>
+<!-- Payment Methods -->
+<div class="mt-12 bg-white p-6 rounded-lg shadow-md">
+<h3 class="text-xl font-semibold text-gray-900 mb-4">Supported Payment Methods</h3>
+<div class="flex flex-wrap gap-6 justify-center">
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-visa-fill ri-lg text-blue-700"></i>
+</div>
+<span class="text-gray-700">Visa</span>
+</div>
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-mastercard-fill ri-lg text-orange-600"></i>
+</div>
+<span class="text-gray-700">Mastercard</span>
+</div>
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-paypal-fill ri-lg text-blue-600"></i>
+</div>
+<span class="text-gray-700">PayPal</span>
+</div>
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-google-fill ri-lg text-red-500"></i>
+</div>
+<span class="text-gray-700">Google Pay</span>
+</div>
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-amazon-fill ri-lg text-orange-500"></i>
+</div>
+<span class="text-gray-700">Amazon Pay</span>
+</div>
+<div class="flex items-center space-x-2">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-bank-fill ri-lg text-green-600"></i>
+</div>
+<span class="text-gray-700">Net Banking</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Play to Donate Section -->
+<section id="play" class="py-16 bg-white">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Play to Donate</h2>
+<p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+Have fun while making a difference! Play these simple games and help generate ad revenue that goes directly to our cause.
+</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Game 1 -->
+<div class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 game-card">
+<div class="h-48 bg-gray-200 relative">
+<img src="https://readdy.ai/api/search-image?query=colorful%2520puzzle%2520game%2520interface%2520with%2520bright%2520blocks%2520or%2520tiles%252C%2520clean%2520modern%2520design%252C%2520vibrant%2520colors%252C%2520suitable%2520for%2520a%2520casual%2520mobile%2520game%252C%2520professional%2520quality%252C%2520high%2520resolution%252C%2520game%2520screen%2520with%2520score%2520display&width=400&height=200&seq=game1&orientation=landscape"
+alt="Block Puzzle Game"
+class="w-full h-full object-cover">
+<div class="absolute top-2 right-2 bg-primary text-white text-xs font-medium px-2 py-1 rounded-full">
+Popular
+</div>
+</div>
+<div class="p-4">
+<h3 class="text-lg font-semibold text-gray-900">Block Puzzle</h3>
+<p class="text-gray-600 text-sm mt-1">Arrange blocks to clear lines and score points.</p>
+<div class="mt-4 flex justify-between items-center">
+<div class="flex items-center">
+<div class="flex -space-x-1">
+<div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs">RK</div>
+<div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">AP</div>
+<div class="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center text-white text-xs">SG</div>
+</div>
+<span class="text-xs text-gray-500 ml-2">3.2k players</span>
+</div>
+<button class="bg-primary text-white px-3 py-1 rounded-button text-sm font-medium shadow-sm hover:bg-primary/90 whitespace-nowrap">
+Play Now
+</button>
+</div>
+</div>
+</div>
+<!-- Game 2 -->
+<div class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 game-card">
+<div class="h-48 bg-gray-200">
+<img src="https://readdy.ai/api/search-image?query=memory%2520card%2520matching%2520game%2520interface%2520with%2520colorful%2520cards%2520arranged%2520in%2520a%2520grid%252C%2520some%2520cards%2520flipped%2520over%2520showing%2520traditional%2520Bengali%2520festival%2520symbols%2520or%2520motifs%252C%2520clean%2520modern%2520design%252C%2520game%2520screen%2520with%2520timer%2520and%2520moves%2520counter&width=400&height=200&seq=game2&orientation=landscape"
+alt="Memory Match Game"
+class="w-full h-full object-cover">
+</div>
+<div class="p-4">
+<h3 class="text-lg font-semibold text-gray-900">Memory Match</h3>
+<p class="text-gray-600 text-sm mt-1">Find matching pairs of festive symbols.</p>
+<div class="mt-4 flex justify-between items-center">
+<div class="flex items-center">
+<div class="flex -space-x-1">
+<div class="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs">NB</div>
+<div class="w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center text-white text-xs">KD</div>
+<div class="w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs">MS</div>
+</div>
+<span class="text-xs text-gray-500 ml-2">2.7k players</span>
+</div>
+<button class="bg-primary text-white px-3 py-1 rounded-button text-sm font-medium shadow-sm hover:bg-primary/90 whitespace-nowrap">
+Play Now
+</button>
+</div>
+</div>
+</div>
+<!-- Game 3 -->
+<div class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 game-card">
+<div class="h-48 bg-gray-200">
+<img src="https://readdy.ai/api/search-image?query=word%2520search%2520puzzle%2520game%2520interface%2520with%2520grid%2520of%2520letters%252C%2520some%2520words%2520highlighted%252C%2520Bengali%2520festival%2520themed%252C%2520clean%2520modern%2520design%252C%2520colorful%2520but%2520elegant%2520interface%252C%2520game%2520screen%2520with%2520word%2520list%2520and%2520progress%2520indicator&width=400&height=200&seq=game3&orientation=landscape"
+alt="Word Search Game"
+class="w-full h-full object-cover">
+</div>
+<div class="p-4">
+<h3 class="text-lg font-semibold text-gray-900">Festival Word Search</h3>
+<p class="text-gray-600 text-sm mt-1">Find hidden words related to Durga Puja.</p>
+<div class="mt-4 flex justify-between items-center">
+<div class="flex items-center">
+<div class="flex -space-x-1">
+<div class="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white text-xs">PB</div>
+<div class="w-6 h-6 rounded-full bg-teal-500 flex items-center justify-center text-white text-xs">AR</div>
+<div class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs">DM</div>
+</div>
+<span class="text-xs text-gray-500 ml-2">1.9k players</span>
+</div>
+<button class="bg-primary text-white px-3 py-1 rounded-button text-sm font-medium shadow-sm hover:bg-primary/90 whitespace-nowrap">
+Play Now
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Leaderboard -->
+<div class="mt-16 bg-white p-6 rounded-lg shadow-md">
+<h3 class="text-xl font-semibold text-gray-900 mb-6">Top Contributors Leaderboard</h3>
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-gray-200">
+<thead class="bg-gray-50">
+<tr>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Player</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Games Played</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ad Views</th>
+<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contribution</th>
+</tr>
+</thead>
+<tbody class="bg-white divide-y divide-gray-200">
+<tr>
+<td colspan="5" class="px-6 py-12 text-center">
+<div class="flex flex-col items-center">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+<i class="ri-gamepad-line ri-2x text-primary"></i>
+</div>
+<p class="text-gray-600 mb-4">No players on the leaderboard yet</p>
+<p class="text-sm text-gray-500 mb-6">Be the first to play and make a difference!</p>
+<button class="bg-primary text-white px-6 py-2 rounded-button font-medium shadow-md hover:bg-primary/90 whitespace-nowrap">
+Start Playing
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-4 text-center">
+<button class="text-primary font-medium hover:text-primary/80">
+View Full Leaderboard
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Quiz Challenge Section -->
+<section id="quiz" class="py-16 bg-gray-50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Quiz Challenge</h2>
+<p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+Test your knowledge about Bengali culture and Durga Puja while helping our cause. Each quiz generates ad revenue for homeless support.
+</p>
+</div>
+<div class="bg-white p-6 rounded-lg shadow-md">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-xl font-semibold text-gray-900">Durga Puja Trivia</h3>
+<div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+Question 3 of 10
+</div>
+</div>
+<div class="mb-8">
+<h4 class="text-lg font-medium text-gray-800 mb-4">What is the traditional sweet dish prepared during Durga Puja?</h4>
+<div class="space-y-3">
+<div class="border border-gray-300 rounded-md p-3 cursor-pointer quiz-option">
+<div class="flex items-center">
+<div class="w-5 h-5 rounded-full border border-gray-400 mr-3"></div>
+<span>Gulab Jamun</span>
+</div>
+</div>
+<div class="border border-gray-300 rounded-md p-3 cursor-pointer quiz-option selected">
+<div class="flex items-center">
+<div class="w-5 h-5 rounded-full border border-primary bg-primary/20 mr-3 flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<span>Sandesh</span>
+</div>
+</div>
+<div class="border border-gray-300 rounded-md p-3 cursor-pointer quiz-option">
+<div class="flex items-center">
+<div class="w-5 h-5 rounded-full border border-gray-400 mr-3"></div>
+<span>Jalebi</span>
+</div>
+</div>
+<div class="border border-gray-300 rounded-md p-3 cursor-pointer quiz-option">
+<div class="flex items-center">
+<div class="w-5 h-5 rounded-full border border-gray-400 mr-3"></div>
+<span>Barfi</span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-between">
+<button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-button font-medium hover:bg-gray-50 whitespace-nowrap">
+Previous
+</button>
+<button class="bg-primary text-white px-4 py-2 rounded-button font-medium shadow-md hover:bg-primary/90 whitespace-nowrap">
+Next Question
+</button>
+</div>
+</div>
+<!-- Quiz Categories -->
+<div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white p-5 rounded-lg shadow-md border-l-4 border-primary">
+<h3 class="text-lg font-semibold text-gray-900 mb-2">Bengali Culture</h3>
+<p class="text-gray-600 text-sm mb-4">Test your knowledge about Bengali traditions, art, and literature.</p>
+<div class="flex justify-between items-center">
+<span class="text-xs text-gray-500">15 questions</span>
+<button class="bg-primary/10 text-primary px-3 py-1 rounded-button text-sm font-medium hover:bg-primary/20 whitespace-nowrap">
+Start Quiz
+</button>
+</div>
+</div>
+<div class="bg-white p-5 rounded-lg shadow-md border-l-4 border-secondary">
+<h3 class="text-lg font-semibold text-gray-900 mb-2">Durga Puja Rituals</h3>
+<p class="text-gray-600 text-sm mb-4">Learn about the various rituals and ceremonies of Durga Puja.</p>
+<div class="flex justify-between items-center">
+<span class="text-xs text-gray-500">12 questions</span>
+<button class="bg-secondary/10 text-secondary px-3 py-1 rounded-button text-sm font-medium hover:bg-secondary/20 whitespace-nowrap">
+Start Quiz
+</button>
+</div>
+</div>
+<div class="bg-white p-5 rounded-lg shadow-md border-l-4 border-green-500">
+<h3 class="text-lg font-semibold text-gray-900 mb-2">Bengali Cuisine</h3>
+<p class="text-gray-600 text-sm mb-4">Explore the delicious world of Bengali food and festive dishes.</p>
+<div class="flex justify-between items-center">
+<span class="text-xs text-gray-500">10 questions</span>
+<button class="bg-green-100 text-green-700 px-3 py-1 rounded-button text-sm font-medium hover:bg-green-200 whitespace-nowrap">
+Start Quiz
+</button>
+</div>
+</div>
+</div>
+<!-- Leaderboard -->
+<div class="mt-12 bg-white p-6 rounded-lg shadow-md">
+<h3 class="text-xl font-semibold text-gray-900 mb-6">Quiz Leaderboard</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+<h4 class="text-lg font-medium text-gray-800 mb-4 flex items-center">
+<div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-2">
+<i class="ri-trophy-line text-primary"></i>
+</div>
+Top Scorers
+</h4>
+<div class="flex flex-col items-center justify-center py-8 bg-gray-50 rounded-md">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+<i class="ri-trophy-line ri-2x text-primary"></i>
+</div>
+<p class="text-gray-600 mb-2">No top scorers yet</p>
+<p class="text-sm text-gray-500">Be the first to complete a quiz!</p>
+</div>
+</div>
+<div>
+<h4 class="text-lg font-medium text-gray-800 mb-4 flex items-center">
+<div class="w-8 h-8 bg-secondary/10 rounded-full flex items-center justify-center mr-2">
+<i class="ri-medal-line text-secondary"></i>
+</div>
+Recent Participants
+</h4>
+<div class="flex flex-col items-center justify-center py-8 bg-gray-50 rounded-md">
+<div class="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mb-4">
+<i class="ri-user-line ri-2x text-secondary"></i>
+</div>
+<p class="text-gray-600 mb-2">No participants yet</p>
+<p class="text-sm text-gray-500">Start a quiz to appear here!</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Stories & Notes Section -->
+<section id="stories" class="py-16 bg-white">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Stories & Notes</h2>
+<p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+Explore heartwarming stories and educational notes. Each purchase contributes to our fundraising efforts.
+</p>
+</div>
+<!-- Tabs -->
+<div class="flex justify-center mb-8">
+<div class="inline-flex p-1 bg-gray-100 rounded-full">
+<button class="px-6 py-2 rounded-full bg-primary text-white font-medium whitespace-nowrap">
+Stories
+</button>
+<button class="px-6 py-2 rounded-full text-gray-700 font-medium hover:bg-gray-200 whitespace-nowrap">
+Study Notes
+</button>
+</div>
+</div>
+<!-- Stories Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Story 1 -->
+<div class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 story-card">
+<div class="h-48 bg-gray-200">
+<img src="https://readdy.ai/api/search-image?query=emotional%2520scene%2520of%2520a%2520homeless%2520elderly%2520man%2520being%2520offered%2520food%2520by%2520a%2520young%2520volunteer%2520during%2520Durga%2520Puja%2520festival%252C%2520warm%2520lighting%252C%2520festival%2520decorations%2520in%2520background%252C%2520emotional%2520moment%2520captured%2520with%2520dignity%2520and%2520respect%252C%2520high-quality%2520photojournalistic%2520style&width=400&height=200&seq=story1&orientation=landscape"
+alt="The Gift of Kindness"
+class="w-full h-full object-cover">
+</div>
+<div class="p-4">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs text-gray-500">April 20, 2025</span>
+<span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">Fiction</span>
+</div>
+<h3 class="text-lg font-semibold text-gray-900">The Gift of Kindness</h3>
+<p class="text-gray-600 text-sm mt-2 line-clamp-3">
+A touching story about Rohan, who discovers the true meaning of Durga Puja when he encounters a homeless family outside the pandal...
+</p>
+<div class="mt-4 flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-sm">NK</div>
+<span class="text-xs text-gray-700 ml-2">by Nilima Kar</span>
+</div>
+<div class="text-primary font-medium text-sm">₹49</div>
+</div>
+<button class="mt-4 w-full bg-white border border-primary text-primary px-4 py-2 rounded-button font-medium hover:bg-primary/5 whitespace-nowrap">
+Read Preview
+</button>
+</div>
+</div>
+<!-- Story 2 -->
+<div class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 story-card">
+<div class="h-48 bg-gray-200">
+<img src="https://readdy.ai/api/search-image?query=beautiful%2520Durga%2520idol%2520illuminated%2520at%2520night%2520in%2520a%2520traditional%2520pandal%252C%2520with%2520a%2520young%2520girl%2520looking%2520up%2520in%2520awe%252C%2520festival%2520lights%2520creating%2520a%2520magical%2520atmosphere%252C%2520artistic%2520composition%2520with%2520emotional%2520impact%252C%2520high-quality%2520photography%2520with%2520rich%2520colors%2520and%2520details&width=400&height=200&seq=story2&orientation=landscape"
+alt="Goddess of Hope"
+class="w-full h-full object-cover">
+</div>
+<div class="p-4">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs text-gray-500">April 15, 2025</span>
+<span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">Free</span>
+</div>
+<h3 class="text-lg font-semibold text-gray-900">Goddess of Hope</h3>
+<p class="text-gray-600 text-sm mt-2 line-clamp-3">
+When little Mira sees the Durga idol for the first time, she finds an unexpected connection that helps her overcome her fears...
+</p>
+<div class="mt-4 flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm">AD</div>
+<span class="text-xs text-gray-700 ml-2">by Arnab Das</span>
+</div>
+<div class="text-green-600 font-medium text-sm">Free</div>
+</div>
+<button class="mt-4 w-full bg-primary text-white px-4 py-2 rounded-button font-medium shadow-md hover:bg-primary/90 whitespace-nowrap">
+Read Now
+</button>
+</div>
+</div>
+<!-- Story 3 -->
+<div class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 story-card">
+<div class="h-48 bg-gray-200">
+<img src="https://readdy.ai/api/search-image?query=two%2520elderly%2520people%2520from%2520different%2520backgrounds%2520sharing%2520a%2520meal%2520during%2520Durga%2520Puja%252C%2520sitting%2520on%2520a%2520bench%2520near%2520festival%2520decorations%252C%2520warm%2520evening%2520light%252C%2520emotional%2520connection%2520between%2520them%252C%2520festival%2520atmosphere%2520in%2520background%252C%2520high-quality%2520cinematic%2520composition&width=400&height=200&seq=story3&orientation=landscape"
+alt="Strangers to Family"
+class="w-full h-full object-cover">
+</div>
+<div class="p-4">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs text-gray-500">April 22, 2025</span>
+<span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">Fiction</span>
+</div>
+<h3 class="text-lg font-semibold text-gray-900">Strangers to Family</h3>
+<p class="text-gray-600 text-sm mt-2 line-clamp-3">
+Two strangers from different walks of life find themselves sharing a meal during Durga Puja, leading to an unexpected friendship...
+</p>
+<div class="mt-4 flex justify-between items-center">
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-sm">SM</div>
+<span class="text-xs text-gray-700 ml-2">by Suchitra Mitra</span>
+</div>
+<div class="text-primary font-medium text-sm">₹59</div>
+</div>
+<button class="mt-4 w-full bg-white border border-primary text-primary px-4 py-2 rounded-button font-medium hover:bg-primary/5 whitespace-nowrap">
+Read Preview
+</button>
+</div>
+</div>
+</div>
+<!-- Upload Button -->
+<div class="mt-12 text-center">
+<button class="bg-white border-2 border-dashed border-primary text-primary px-8 py-3 rounded-button font-medium hover:bg-primary/5 inline-flex items-center whitespace-nowrap">
+<i class="ri-upload-2-line mr-2"></i>
+Upload Your Story or Notes
+</button>
+<p class="mt-2 text-sm text-gray-600">
+Share your work and help us raise funds for the homeless.
+</p>
+</div>
+</div>
+</section>
+<!-- Impact Section -->
+<section id="impact" class="py-16 bg-gray-50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Our Impact</h2>
+<p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+See how your contributions are making a real difference in the lives of homeless individuals during Durga Puja.
+</p>
+</div>
+<!-- Impact Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+<div class="impact-card p-6 rounded-lg">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+<i class="ri-home-heart-line ri-lg text-primary"></i>
+</div>
+<h3 class="text-2xl font-bold text-gray-900">0</h3>
+<p class="text-gray-600">People provided temporary shelter</p>
+</div>
+<div class="impact-card p-6 rounded-lg">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+<i class="ri-restaurant-line ri-lg text-primary"></i>
+</div>
+<h3 class="text-2xl font-bold text-gray-900">0</h3>
+<p class="text-gray-600">Nutritious meals served</p>
+</div>
+<div class="impact-card p-6 rounded-lg">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+<i class="ri-shirt-line ri-lg text-primary"></i>
+</div>
+<h3 class="text-2xl font-bold text-gray-900">0</h3>
+<p class="text-gray-600">Clothing items distributed</p>
+</div>
+<div class="impact-card p-6 rounded-lg">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+<i class="ri-medicine-bottle-line ri-lg text-primary"></i>
+</div>
+<h3 class="text-2xl font-bold text-gray-900">0</h3>
+<p class="text-gray-600">Medical checkups provided</p>
+</div>
+</div>
+<!-- Impact Chart -->
+<div class="bg-white p-6 rounded-lg shadow-md mb-12">
+<h3 class="text-xl font-semibold text-gray-900 mb-6">Donation Impact Over Time</h3>
+<div id="impactChart" class="w-full h-80"></div>
+</div>
+<!-- Testimonials -->
+<div class="bg-white p-6 rounded-lg shadow-md">
+<h3 class="text-xl font-semibold text-gray-900 mb-6">Testimonials</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="bg-gray-50 rounded-lg p-6">
+<div class="flex items-start">
+<div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white text-lg font-medium">
+RD
+</div>
+<div class="ml-4">
+<p class="text-gray-600 italic">"I am deeply moved by the impact this initiative has made. The way they care for the homeless during Durga Puja shows the true spirit of the festival."</p>
+<div class="mt-4">
+<p class="font-medium text-gray-900">Rajesh Dutta</p>
+<p class="text-sm text-gray-500">Regular Donor</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-6">
+<div class="flex items-start">
+<div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center text-white text-lg font-medium">
+PM
+</div>
+<div class="ml-4">
+<p class="text-gray-600 italic">"As a volunteer, seeing the smiles on people's faces when they receive warm meals and shelter during the festivities is truly heartwarming."</p>
+<div class="mt-4">
+<p class="font-medium text-gray-900">Priya Mukherjee</p>
+<p class="text-sm text-gray-500">Volunteer</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-6">
+<div class="flex items-start">
+<div class="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center text-white text-lg font-medium">
+SK
+</div>
+<div class="ml-4">
+<p class="text-gray-600 italic">"Being a local business owner, partnering with Trinayan has been incredibly fulfilling. Together, we've been able to provide hot meals and essential supplies to those in need during the festival season."</p>
+<div class="mt-4">
+<p class="font-medium text-gray-900">Sanjay Kumar</p>
+<p class="text-sm text-gray-500">Business Partner</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-6">
+<div class="flex items-start">
+<div class="w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center text-white text-lg font-medium">
+AB
+</div>
+<div class="ml-4">
+<p class="text-gray-600 italic">"The quiz challenges and games not only helped raise funds but also educated me about the deeper meaning of Durga Puja. It's a beautiful way to combine learning with social impact."</p>
+<div class="mt-4">
+<p class="font-medium text-gray-900">Anushka Banerjee</p>
+<p class="text-sm text-gray-500">Student Participant</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact Section -->
+<section id="contact" class="py-16 bg-white">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-12">
+<h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Contact Us</h2>
+<p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+Have questions or want to get involved? Reach out to our team for volunteering, partnerships, or general support.
+</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+<!-- Contact Form -->
+<div class="bg-white p-6 rounded-lg shadow-md">
+<h3 class="text-xl font-semibold text-gray-900 mb-6">Send Us a Message</h3>
+<form class="space-y-4">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label for="name" class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+<input type="text" id="name" name="name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter your name">
+</div>
+<div>
+<label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+<input type="email" id="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter your email">
+</div>
+</div>
+<div>
+<label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+<input type="text" id="subject" name="subject" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter subject">
+</div>
+<div>
+<label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+<textarea id="message" name="message" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Enter your message"></textarea>
+</div>
+<div class="flex items-center">
+<input type="checkbox" id="volunteer" name="volunteer" class="custom-checkbox">
+<label for="volunteer" class="ml-2 block text-sm text-gray-700">I'm interested in volunteering</label>
+</div>
+<button type="submit" class="w-full bg-primary text-white px-4 py-2 rounded-button font-medium shadow-md hover:bg-primary/90 whitespace-nowrap">
+Send Message
+</button>
+</form>
+</div>
+<!-- Contact Info -->
+<div>
+<div class="bg-white p-6 rounded-lg shadow-md mb-6">
+<h3 class="text-xl font-semibold text-gray-900 mb-6">Contact Information</h3>
+<div class="space-y-4">
+<div class="flex items-start">
+<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3 mt-1">
+<i class="ri-map-pin-line text-primary"></i>
+</div>
+<div>
+<h4 class="text-base font-medium text-gray-900">Address</h4>
+<p class="text-gray-600">
+5/10, Sahid Nagar, Dhakuria, Kolkata-31
+</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3 mt-1">
+<i class="ri-phone-line text-primary"></i>
+</div>
+<div>
+<h4 class="text-base font-medium text-gray-900">Phone</h4>
+<p class="text-gray-600">
++916289610827<br>
++917439589152
+</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3 mt-1">
+<i class="ri-mail-line text-primary"></i>
+</div>
+<div>
+<h4 class="text-base font-medium text-gray-900">Email</h4>
+<p class="text-gray-600">
+arijit.sarkar7156@gmail.com<br>
+
+</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Social Media -->
+<div class="bg-white p-6 rounded-lg shadow-md">
+<h3 class="text-xl font-semibold text-gray-900 mb-6">Connect With Us</h3>
+<div class="flex space-x-4">
+<a href="#" class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700">
+<i class="ri-facebook-fill"></i>
+</a>
+<a href="#" class="w-10 h-10 bg-blue-400 text-white rounded-full flex items-center justify-center hover:bg-blue-500">
+<i class="ri-twitter-fill"></i>
+</a>
+<a href="#" class="w-10 h-10 bg-pink-600 text-white rounded-full flex items-center justify-center hover:bg-pink-700">
+<i class="ri-instagram-fill"></i>
+</a>
+<a href="#" class="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700">
+<i class="ri-youtube-fill"></i>
+</a>
+<a href="#" class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center hover:bg-green-600">
+<i class="ri-whatsapp-fill"></i>
+</a>
+</div>
+<div class="mt-6">
+<h4 class="text-base font-medium text-gray-900 mb-3">Subscribe to our newsletter</h4>
+<div class="flex">
+<input type="email" placeholder="Enter your email" class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+<button class="bg-primary text-white px-4 py-2 rounded-r-md font-medium hover:bg-primary/90 whitespace-nowrap">
+Subscribe
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-gray-900 text-white">
+<div class="diya-pattern h-4 w-full"></div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div>
+<a href="#" class="font-['Pacifico'] text-white text-3xl">Trinoyon</a>
+<p class="mt-2 text-gray-400">
+Supporting homeless individuals during Durga Puja through donations and community engagement.
+</p>
+<div class="mt-4 flex space-x-3">
+<a href="#" class="text-gray-400 hover:text-white">
+<i class="ri-facebook-fill"></i>
+</a>
+<a href="#" class="text-gray-400 hover:text-white">
+<i class="ri-twitter-fill"></i>
+</a>
+<a href="#" class="text-gray-400 hover:text-white">
+<i class="ri-instagram-fill"></i>
+</a>
+<a href="#" class="text-gray-400 hover:text-white">
+<i class="ri-youtube-fill"></i>
+</a>
+</div>
+</div>
+<div>
+<h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+<ul class="space-y-2">
+<li><a href="#" class="text-gray-400 hover:text-white">Home</a></li>
+<li><a href="#donate" class="text-gray-400 hover:text-white">Donate</a></li>
+<li><a href="#play" class="text-gray-400 hover:text-white">Play to Donate</a></li>
+<li><a href="#quiz" class="text-gray-400 hover:text-white">Quiz Challenge</a></li>
+<li><a href="#stories" class="text-gray-400 hover:text-white">Stories & Notes</a></li>
+<li><a href="#impact" class="text-gray-400 hover:text-white">Impact</a></li>
+<li><a href="#contact" class="text-gray-400 hover:text-white">Contact</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-lg font-semibold mb-4">Resources</h3>
+<ul class="space-y-2">
+<li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white">Volunteer</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white">Partner With Us</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white">Transparency Report</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-lg font-semibold mb-4">Contact</h3>
+<ul class="space-y-2">
+<li class="flex items-start">
+<i class="ri-map-pin-line mr-2 mt-1"></i>
+<span class="text-gray-400">5/10, Sahid Nagar, Dhakuria, Kolkata-31</span>
+</li>
+<li class="flex items-start">
+<i class="ri-phone-line mr-2 mt-1"></i>
+<span class="text-gray-400">+916289610827</span>
+</li>
+<li class="flex items-start">
+<i class="ri-mail-line mr-2 mt-1"></i>
+<span class="text-gray-400">arijit.sarkar7156@gmail.com</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+<p class="text-gray-400">© 2025 Trinoyon. All rights reserved.</p>
+<div class="mt-4 md:mt-0 flex space-x-6">
+<a href="#" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
+<a href="#" class="text-gray-400 hover:text-white text-sm">Terms of Service</a>
+<a href="#" class="text-gray-400 hover:text-white text-sm">Cookie Policy</a>
+</div>
+</div>
+</div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js">
+</script>
+<script src="script.js"></script>
+</body>
+</html>
