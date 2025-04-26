@@ -71,4 +71,4 @@ Let's work together to make this Durga Puja truly a celebration for all! ✨
 
 ## 📜 License
 
-This project is licensed under the `MIT License`.
+This project is licensed under the `Apache-2.0 license`.
