@@ -65,7 +65,7 @@ please feel free to open an issue or contact the team directly.
 
 ## 🌟 Special Thanks
 
-To every visitor, donor, player, and well-wisher who makes this mission a reality.  
+To every team members, visitor, donor, player, and well-wisher who makes this mission a reality.  
 Let's celebrate **Durga Puja** with **hope, happiness, and humanity**.
 Let's work together to make this Durga Puja truly a celebration for all! ✨ 
 
