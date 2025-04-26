@@ -4,7 +4,7 @@ Welcome to **Project-Trinoyon** — a small collaborative initiative to make thi
 
 In this project, we combine **donations**, **gaming**, and **community support** to raise funds that will be directly used to help street-dwelling individuals (roadside poor) during the festive season.
 
-## 📜 Problem Statement 
+## ❓Problem Statement 
 
 Durga Puja is not just a festival — it's a celebration of love, power, and community.
 While many enjoy the lights, music, food, and new clothes, countless individuals struggle on the streets, often ignored or forgotten.
@@ -22,7 +22,7 @@ Project-Trinoyon is a heartwarming initiative aimed at bringing joy and support 
 
 The funds raised will be directly used to support street-dwelling individuals during this festive season, helping them celebrate with dignity and happiness. ✨
 
-## ✨ Features
+## 🌟 Features
 
 - **Donate with Love** 💖  
   Visitors can directly contribute money through a secure donation section.
@@ -50,7 +50,7 @@ The funds raised will be directly used to support street-dwelling individuals du
 - **Google pay** 
 - **Google AdSense Integration**
 
-## 📢 How It Works
+## 🚀 How It Works
 
 1. **Visit the Website**  
 2. **Choose to Donate** directly or **play Games** to support.
@@ -68,3 +68,7 @@ please feel free to open an issue or contact the team directly.
 To every visitor, donor, player, and well-wisher who makes this mission a reality.  
 Let's celebrate **Durga Puja** with **hope, happiness, and humanity**.
 Let's work together to make this Durga Puja truly a celebration for all! ✨ 
+
+## 📜 License
+
+This project is licensed under the `MIT License`.
