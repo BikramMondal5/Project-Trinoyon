@@ -2,7 +2,7 @@
 
 Welcome to **Project-Trinoyon** — a small collaborative initiative to make this Durga Puja truly a celebration for all! This project dedicated to bringing smiles to the lives of underprivileged people during Durga Puja.
 
-In this project, we combine **donations**, **gaming**, and **community support** to raise funds that will be directly used to help street-dwelling individuals (roadside poor) during the festive season.
+In this project, we combine **donations**, **gaming**, and **community support** to raise funds that will be directly used to help street-dwelling individuals during the festive season.
 
 ## ❓Problem Statement 
 
