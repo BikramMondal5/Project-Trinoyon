@@ -1,8 +1,8 @@
 # 🕉️🔱 Project-Trinoyon
 
-Welcome to **Project-Trinoyon** — a heartfelt web project dedicated to bringing smiles to the lives of underprivileged people during Durga Puja.
+Welcome to **Project-Trinoyon** — a small initiative to make this Durga Puja truly a celebration for all! This project dedicated to bringing smiles to the lives of underprivileged people during Durga Puja.
 
-In this project, we combine **donations**, **gaming**, and **community support** to raise funds that will be directly used to help street-dwelling individuals (roadside poor) during the festive season.
+Durga Puja is not just a festival — it's a celebration of love, power, and community. While many enjoy lights, music, food, and new clothes, countless individuals struggle on the streets, often ignored or forgotten. Our projectis a heartwarming initiative aimed at bringing joy and support to those underprivileged individuals—especially those living on the streets—during the festive season of Durga Puja. In this project, we combine **donations**, **gaming**, and **community support** to raise funds that will be directly used to help street-dwelling individuals during the festive season.
 
 ## ✨ Features
 
@@ -52,4 +52,4 @@ please feel free to open an issue or contact the team directly.
 
 To every visitor, donor, player, and well-wisher who makes this mission a reality.  
 Let's celebrate **Durga Puja** with **hope, happiness, and humanity**.
-
+Let's work together to make this Durga Puja truly a celebration for all! ✨ 
