@@ -37,7 +37,7 @@ The funds raised will be directly used to support street-dwelling individuals du
 ## 🎯 Purpose
 
 - **Raise funds** through donations and ad revenue.
-- **Support roadside poor individuals** during Durga Puja by providing food, clothing, and other essentials.
+- **Support underprivileged individuals** during Durga Puja by providing food, clothing, and other essentials.
 - **Celebrate Durga Puja** with the spirit of **compassion and inclusiveness**.
 
 ## 🛠️ Technologies Used
