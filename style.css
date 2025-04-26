@@ -1,0 +1,130 @@
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Poppins', sans-serif;
+}
+.bengali-pattern {
+background-image: url("https://readdy.ai/api/search-image?query=traditional%2520Bengali%2520pattern%2520with%2520intricate%2520designs%2520in%2520gold%2520and%2520red%2520colors%2520on%2520a%2520cream%2520background%252C%2520featuring%2520lotus%2520motifs%2520and%2520swirls%252C%2520seamless%2520pattern%2520that%2520represents%2520the%2520rich%2520cultural%2520heritage%2520of%2520Bengal%2520during%2520Durga%2520Puja%2520celebrations&width=1200&height=200&seq=pattern1&orientation=landscape");
+background-repeat: repeat-x;
+background-size: contain;
+}
+.hero-section {
+background-image: linear-gradient(to right, rgba(255, 255, 255, 0.9) 40%, rgba(255, 255, 255, 0.7) 70%, rgba(255, 255, 255, 0.4) 100%), url("https://readdy.ai/api/search-image?query=vibrant%2520Durga%2520Puja%2520celebration%2520scene%2520in%2520Kolkata%2520with%2520beautiful%2520pandals%252C%2520colorful%2520decorations%252C%2520traditional%2520Bengali%2520elements%252C%2520warm%2520lighting%252C%2520festive%2520atmosphere%252C%2520people%2520celebrating%2520with%2520joy%252C%2520high-quality%2520professional%2520photography%2520with%2520rich%2520details%2520and%2520cultural%2520authenticity&width=1200&height=600&seq=hero1&orientation=landscape");
+background-size: cover;
+background-position: center right;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+.custom-checkbox {
+appearance: none;
+-webkit-appearance: none;
+width: 20px;
+height: 20px;
+border: 2px solid #D32F2F;
+border-radius: 4px;
+outline: none;
+cursor: pointer;
+position: relative;
+}
+.custom-checkbox:checked {
+background-color: #D32F2F;
+}
+.custom-checkbox:checked::after {
+content: "";
+position: absolute;
+top: 2px;
+left: 6px;
+width: 6px;
+height: 10px;
+border: solid white;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+.custom-switch {
+position: relative;
+display: inline-block;
+width: 50px;
+height: 24px;
+}
+.custom-switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #ccc;
+transition: .4s;
+border-radius: 24px;
+}
+.slider:before {
+position: absolute;
+content: "";
+height: 18px;
+width: 18px;
+left: 3px;
+bottom: 3px;
+background-color: white;
+transition: .4s;
+border-radius: 50%;
+}
+input:checked + .slider {
+background-color: #D32F2F;
+}
+input:checked + .slider:before {
+transform: translateX(26px);
+}
+.custom-range {
+-webkit-appearance: none;
+width: 100%;
+height: 6px;
+background: #e0e0e0;
+border-radius: 5px;
+outline: none;
+}
+.custom-range::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 18px;
+height: 18px;
+background: #D32F2F;
+border-radius: 50%;
+cursor: pointer;
+}
+.custom-range::-moz-range-thumb {
+width: 18px;
+height: 18px;
+background: #D32F2F;
+border-radius: 50%;
+cursor: pointer;
+border: none;
+}
+.game-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+.quiz-option:hover {
+background-color: rgba(211, 47, 47, 0.1);
+}
+.quiz-option.selected {
+background-color: rgba(211, 47, 47, 0.2);
+border-color: #D32F2F;
+}
+.impact-card {
+background-image: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(211, 47, 47, 0.1) 100%);
+}
+.story-card:hover {
+transform: translateY(-5px);
+}
+.diya-pattern {
+background-image: url("https://readdy.ai/api/search-image?query=beautiful%2520pattern%2520of%2520traditional%2520Indian%2520oil%2520lamps%2520%28diyas%29%2520arranged%2520in%2520a%2520decorative%2520manner%2520with%2520soft%2520glowing%2520flames%252C%2520subtle%2520floral%2520elements%2520around%2520them%252C%2520on%2520a%2520light%2520cream%2520background%252C%2520creating%2520a%2520warm%2520and%2520festive%2520atmosphere&width=1200&height=200&seq=pattern2&orientation=landscape");
+background-size: contain;
+background-repeat: repeat-x;
+}
