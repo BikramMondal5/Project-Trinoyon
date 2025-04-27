@@ -128,3 +128,10 @@ background-image: url("https://readdy.ai/api/search-image?query=beautiful%2520pa
 background-size: contain;
 background-repeat: repeat-x;
 }
+.logo{
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    background-image: url("images/Logo.png");
+    background-size: cover;
+}
