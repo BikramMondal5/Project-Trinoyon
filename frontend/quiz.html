@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Challenge - Play & Donate</title>
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Quiz Challenge</h1>
+            <p class="tagline">Test your knowledge while making a difference</p>
+            <div class="impact-statement">Each completed quiz generates ad revenue to help people in need</div>
+        </header>
+        
+        <div class="tabs">
+            <div class="tab active">All Categories</div>
+            <div class="tab">Festival Traditions</div>
+            <div class="tab">Indian Culture</div>
+            <div class="tab">Social Impact</div>
+            <div class="tab">General Knowledge</div>
+        </div>
+        
+        <div class="category-container" id="category-container">
+            <h2>Choose a Quiz Theme</h2>
+            <div class="categories">
+                <div class="category" onclick="startQuiz('durga')">
+                    <div class="category-icon">🪔</div>
+                    <div class="category-title">Durga Puja Traditions <span class="badge free">Free</span></div>
+                    <p class="category-desc">Test your knowledge about Durga Puja customs and celebrations</p>
+                </div>
+                <div class="category" onclick="startQuiz('food')">
+                    <div class="category-icon">🍲</div>
+                    <div class="category-title">Festival Foods <span class="badge fiction">Popular</span></div>
+                    <p class="category-desc">How much do you know about traditional festival foods?</p>
+                </div>
+                <div class="category" onclick="startQuiz('india')">
+                    <div class="category-icon">🇮🇳</div>
+                    <div class="category-title">Indian Heritage <span class="badge premium">Premium</span></div>
+                    <p class="category-desc">Explore the rich cultural heritage of India</p>
+                </div>
+                <div class="category" onclick="startQuiz('charity')">
+                    <div class="category-icon">🤲</div>
+                    <div class="category-title">Charity & Giving <span class="badge free">Free</span></div>
+                    <p class="category-desc">Learn about charity traditions around the world</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quiz-container" id="quiz-container" style="display: none;">
+            <div class="quiz-header">
+                <h2 class="quiz-title" id="quiz-title">Durga Puja Quiz</h2>
+                <div class="score-container">
+                    <span class="score-label">Score:</span>
+                    <span class="score" id="score">0</span>
+                </div>
+            </div>
+            
+            <div id="question-container">
+                <div class="question" id="question">Question text will appear here</div>
+                <div class="options" id="options">
+                    <!-- Options will be inserted here -->
+                </div>
+                <div class="clearfix">
+                    <button class="button next" id="next-button" disabled>Next Question</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ad-container">
+            <p>Advertisement - Your view supports our charity initiative</p>
+            <div class="ad-placeholder">
+                <p>Ad Space</p>
+            </div>
+        </div>
+        
+        <div class="result-container" id="result-container">
+            <h2 class="result-title">Quiz Complete!</h2>
+            <div class="final-score" id="final-score">8/10</div>
+            <p class="result-message" id="result-message">Great job! You've helped us generate support for people in need.</p>
+            <div class="footer-buttons">
+                <button class="button restart-button" onclick="restartQuiz()">Play Another Quiz</button>
+                <button class="button donate-button" onclick="window.location.href='donate.html'">Donate Now</button>
+            </div>
+        </div>
+        
+        <div class="charity-impact">
+            <h2 class="impact-heading">Your Impact Today</h2>
+            <div class="impact-stats">
+                <div class="stat">
+                    <div class="stat-number">18,642</div>
+                    <div class="stat-label">Quizzes Completed</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">₹9,45,320</div>
+                    <div class="stat-label">Funds Raised</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">743</div>
+                    <div class="stat-label">Lives Impacted</div>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-label">
+                    <div>Monthly Progress</div>
+                    <div class="progress-goal">₹12,00,000 Goal</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" id="progress-bar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="quiz.js"></script>
+</body>
+</html>
