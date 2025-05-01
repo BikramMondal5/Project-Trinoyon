@@ -25,3 +25,12 @@ document.querySelector('#play-btn8').addEventListener('click',function(){
 document.querySelector('#play-btn9').addEventListener('click',function(){
     window.location.href="Ninth-game.html";
 });
+document.querySelector('#play-btn10').addEventListener('click',function(){
+    window.location.href="Tenth-game.html";
+});
+document.querySelector('#play-btn11').addEventListener('click',function(){
+    window.location.href="Eleventh-game.html";
+});
+document.querySelector('#play-btn12').addEventListener('click',function(){
+    window.location.href="Twelveth-game.html";
+});

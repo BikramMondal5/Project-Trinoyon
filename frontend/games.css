@@ -57,9 +57,23 @@
     background-size: cover;
 }
 
-
 #game2-img {
     background-image: url("images/Game 2 logo.png");
+    background-size: cover;
+}
+
+#game10-img {
+    background-image: url("images/Game 10 logo.png");
+    background-size: cover;
+}
+
+#game11-img {
+    background-image: url("images/Game 11 logo.png");
+    background-size: cover;
+}
+
+#game12-img {
+    background-image: url("images/Game 12 logo.png");
     background-size: cover;
 }
 
