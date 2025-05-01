@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Catch the Dot</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .dot {
+      transition: all 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-600 to-purple-700 min-h-screen flex items-center justify-center text-white">
+  <div class="text-center space-y-4">
+    <h1 class="text-4xl font-bold">🎯 Catch the Dot</h1>
+    <div class="text-lg">Score: <span id="score" class="font-semibold">0</span> | Time Left: <span id="timer" class="font-semibold">30</span>s</div>
+    
+    <div id="gameArea" class="relative w-[300px] h-[300px] bg-white rounded-2xl overflow-hidden mx-auto mt-4">
+      <div id="dot" class="dot absolute w-9 h-9 bg-red-500 rounded-full cursor-pointer hidden"></div>
+    </div>
+
+    <button id="startBtn" onclick="startGame()" class="mt-4 px-6 py-2 bg-green-500 hover:bg-green-600 rounded-xl text-white font-medium shadow-lg transition">
+      Start Game
+    </button>
+
+    <div id="gameOverScreen" class="hidden mt-4 space-y-2">
+      <p class="text-xl font-semibold">⏰ Time's up! Your score: <span id="finalScore">0</span></p>
+      <button onclick="startGame()" class="px-6 py-2 bg-blue-500 hover:bg-blue-600 rounded-xl text-white font-medium shadow">
+        🔁 Play Again
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const dot = document.getElementById("dot");
+    const gameArea = document.getElementById("gameArea");
+    const scoreDisplay = document.getElementById("score");
+    const timerDisplay = document.getElementById("timer");
+    const finalScoreDisplay = document.getElementById("finalScore");
+    const gameOverScreen = document.getElementById("gameOverScreen");
+    const startBtn = document.getElementById("startBtn");
+
+    let score = 0;
+    let timeLeft = 30;
+    let gameInterval;
+    let moveInterval;
+    let gameRunning = false;
+
+    function getRandomPosition() {
+      const areaRect = gameArea.getBoundingClientRect();
+      const size = 24; // Dot size
+      const x = Math.floor(Math.random() * (areaRect.width - size));
+      const y = Math.floor(Math.random() * (areaRect.height - size));
+      return { x, y };
+    }
+
+    function moveDot() {
+      const pos = getRandomPosition();
+      dot.style.left = pos.x + "px";
+      dot.style.top = pos.y + "px";
+    }
+
+    function startGame() {
+      if (gameRunning) return;
+
+      // Reset UI
+      score = 0;
+      timeLeft = 30;
+      scoreDisplay.textContent = score;
+      timerDisplay.textContent = timeLeft;
+      finalScoreDisplay.textContent = "0";
+      gameOverScreen.classList.add("hidden");
+      dot.classList.remove("hidden");
+      startBtn.classList.add("hidden");
+      gameRunning = true;
+
+      moveDot();
+
+      dot.onclick = () => {
+        if (!gameRunning) return;
+        score++;
+        scoreDisplay.textContent = score;
+        moveDot();
+      };
+
+      moveInterval = setInterval(moveDot, 700);
+
+      gameInterval = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(gameInterval);
+          clearInterval(moveInterval);
+          dot.classList.add("hidden");
+          finalScoreDisplay.textContent = score;
+          gameOverScreen.classList.remove("hidden");
+          startBtn.classList.remove("hidden");
+          gameRunning = false;
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
+

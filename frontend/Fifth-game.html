@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris Game</title>
+    <link rel="stylesheet" href="Fifth-game.css">
+</head>
+<body>
+    <h1>Tetris</h1>
+    
+    <div class="game-container">
+        <div id="game-board">
+            <div class="game-over">
+                <h2>Game Over!</h2>
+                <p>Your score: <span id="final-score">0</span></p>
+                <button id="restart-button">Play Again</button>
+            </div>
+        </div>
+        
+        <div class="game-info">
+            <div class="next-piece" id="next-piece-display">
+                <!-- Next piece will be shown here -->
+            </div>
+            
+            <div class="score-board">
+                <p>Score: <span id="score">0</span></p>
+                <p>Lines: <span id="lines">0</span></p>
+                <p>Level: <span id="level">1</span></p>
+            </div>
+            
+            <div class="controls">
+                <p>← → : Move</p>
+                <p>↑ : Rotate</p>
+                <p>↓ : Soft Drop</p>
+                <p>Space : Hard Drop</p>
+                <p>P : Pause/Resume</p>
+                <button id="start-button">Start Game</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="Fifth-game.js"></script>
+</body>
+</html>

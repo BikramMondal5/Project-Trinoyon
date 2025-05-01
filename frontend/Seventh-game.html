@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Scramble Game</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f8ff;
+        }
+        
+        .container {
+            background-color:plum;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #4b6cb7;
+            margin-bottom: 10px;
+        }
+        
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            background-color:antiquewhite;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .info-box {
+            flex: 1;
+            padding: 5px;
+        }
+        
+        .info-title {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        #timer-value {
+            color: #e74c3c;
+        }
+        
+        #score-value {
+            color: #2ecc71;
+        }
+        
+        #hints-value {
+            color: #3498db;
+        }
+        
+        .game-section {
+            margin: 30px 0;
+        }
+        
+        .scramble-word {
+            font-size: 32px;
+            font-weight: bold;
+            color: #34495e;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+        
+        .input-section {
+            margin: 20px 0;
+        }
+        
+        #user-input {
+            padding: 12px 15px;
+            width: 70%;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        #user-input:focus {
+            border-color: #4b6cb7;
+        }
+        
+        .btn {
+            background-color: #4b6cb7;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #3a5a9b;
+        }
+        
+        #hint-btn {
+            background-color: #3498db;
+        }
+        
+        #hint-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        #hint-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .message {
+            font-size: 16px;
+            margin: 15px 0;
+            min-height: 24px;
+        }
+        
+        .correct {
+            color: #2ecc71;
+        }
+        
+        .incorrect {
+            color: #e74c3c;
+        }
+        
+        .game-over {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        .game-over-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            max-width: 400px;
+        }
+        
+        .game-over h2 {
+            color: #4b6cb7;
+            margin-bottom: 20px;
+        }
+        
+        .final-score {
+            font-size: 24px;
+            color: #2ecc71;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .info-section {
+                flex-direction: column;
+            }
+            
+            .info-box {
+                margin-bottom: 10px;
+            }
+            
+            #user-input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Word Scramble</h1>
+        
+        <div class="info-section">
+            <div class="info-box">
+                <div class="info-title">Time Remaining</div>
+                <div class="info-value" id="timer-value">60s</div>
+            </div>
+            <div class="info-box">
+                <div class="info-title">Score</div>
+                <div class="info-value" id="score-value">0</div>
+            </div>
+            <div class="info-box">
+                <div class="info-title">Hints Left</div>
+                <div class="info-value" id="hints-value">3</div>
+            </div>
+        </div>
+        
+        <div class="game-section">
+            <p>Unscramble the word:</p>
+            <div class="scramble-word" id="scrambled-word">YALP</div>
+            
+            <div class="input-section">
+                <input type="text" id="user-input" placeholder="Type your answer..." autocomplete="off">
+            </div>
+            
+            <div class="button-section">
+                <button class="btn" id="check-btn">Check Answer</button>
+                <button class="btn" id="hint-btn">Use Hint</button>
+            </div>
+            
+            <div class="message" id="message"></div>
+        </div>
+    </div>
+    
+    <div class="game-over" id="game-over">
+        <div class="game-over-content">
+            <h2>Game Over!</h2>
+            <div class="final-score" id="final-score">Your Score: 0</div>
+            <button class="btn" id="play-again-btn">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        // List of common words
+        const wordsList = [
+            "apple", "beach", "chair", "dance", "earth", 
+            "flame", "grass", "house", "image", "juice", 
+            "kite", "lemon", "money", "night", "ocean", 
+            "paper", "queen", "river", "sunny", "table", 
+            "uncle", "voice", "water", "youth", "zebra",
+            "bread", "cloud", "dream", "flower", "guitar",
+            "happy", "island", "jungle", "knight", "light",
+            "mountain", "number", "orange", "pencil", "quiet",
+            "rabbit", "summer", "tiger", "umbrella", "winter",
+            "yellow", "basket", "camera", "doctor", "forest"
+        ];
+        
+        // Game variables
+        let currentWord = "";
+        let scrambledWord = "";
+        let score = 0;
+        let timeLeft = 60;
+        let hintsLeft = 3;
+        let timer;
+        let usedWords = [];
+        
+        // DOM elements
+        const scrambledWordElement = document.getElementById("scrambled-word");
+        const userInputElement = document.getElementById("user-input");
+        const messageElement = document.getElementById("message");
+        const timerElement = document.getElementById("timer-value");
+        const scoreElement = document.getElementById("score-value");
+        const hintsElement = document.getElementById("hints-value");
+        const checkButton = document.getElementById("check-btn");
+        const hintButton = document.getElementById("hint-btn");
+        const gameOverElement = document.getElementById("game-over");
+        const finalScoreElement = document.getElementById("final-score");
+        const playAgainButton = document.getElementById("play-again-btn");
+        
+        // Function to scramble a word
+        function scrambleWord(word) {
+            let characters = word.split("");
+            let currentIndex = characters.length;
+            
+            // Scramble until the word is different from the original
+            let scrambled;
+            do {
+                // Fisher-Yates shuffle algorithm
+                for (let i = currentIndex - 1; i > 0; i--) {
+                    const randomIndex = Math.floor(Math.random() * (i + 1));
+                    [characters[i], characters[randomIndex]] = [characters[randomIndex], characters[i]];
+                }
+                
+                scrambled = characters.join("");
+            } while (scrambled === word);
+            
+            return scrambled.toUpperCase();
+        }
+        
+        // Function to get a new word
+        function getNewWord() {
+            // Filter out used words
+            const availableWords = wordsList.filter(word => !usedWords.includes(word));
+            
+            // If all words have been used, reset the used words array
+            if (availableWords.length === 0) {
+                usedWords = [];
+                currentWord = wordsList[Math.floor(Math.random() * wordsList.length)];
+            } else {
+                // Get a random word from available words
+                currentWord = availableWords[Math.floor(Math.random() * availableWords.length)];
+            }
+            
+            // Add to used words
+            usedWords.push(currentWord);
+            
+            // Scramble the word
+            scrambledWord = scrambleWord(currentWord);
+            
+            // Update UI
+            scrambledWordElement.textContent = scrambledWord;
+            userInputElement.value = "";
+            messageElement.textContent = "";
+            userInputElement.focus();
+        }
+        
+        // Function to check the answer
+        function checkAnswer() {
+            const userAnswer = userInputElement.value.trim().toLowerCase();
+            
+            if (userAnswer === "") {
+                messageElement.textContent = "Please enter a word!";
+                messageElement.className = "message incorrect";
+                return;
+            }
+            
+            if (userAnswer === currentWord) {
+                // Correct answer
+                score += 5;
+                scoreElement.textContent = score;
+                messageElement.textContent = "Correct! +5 points";
+                messageElement.className = "message correct";
+                
+                // Get a new word
+                setTimeout(getNewWord, 1000);
+            } else {
+                // Incorrect answer
+                messageElement.textContent = "Try again!";
+                messageElement.className = "message incorrect";
+            }
+        }
+        
+        // Function to use a hint
+        function useHint() {
+            if (hintsLeft > 0) {
+                hintsLeft--;
+                hintsElement.textContent = hintsLeft;
+                
+                // Show first letter as a hint
+                messageElement.textContent = `Hint: The word starts with "${currentWord[0].toUpperCase()}"`;
+                messageElement.className = "message";
+                
+                // Disable hint button if no hints left
+                if (hintsLeft === 0) {
+                    hintButton.disabled = true;
+                }
+            }
+        }
+        
+        // Function to update timer
+        function updateTimer() {
+            timeLeft--;
+            timerElement.textContent = timeLeft + "s";
+            
+            if (timeLeft <= 10) {
+                timerElement.style.color = "#ff0000";
+            }
+            
+            if (timeLeft <= 0) {
+                endGame();
+            }
+        }
+        
+        // Function to end the game
+        function endGame() {
+            clearInterval(timer);
+            finalScoreElement.textContent = `Your Score: ${score}`;
+            gameOverElement.style.display = "flex";
+        }
+        
+        // Function to start the game
+        function startGame() {
+            // Reset game variables
+            score = 0;
+            timeLeft = 60;
+            hintsLeft = 3;
+            usedWords = [];
+            
+            // Reset UI
+            scoreElement.textContent = score;
+            timerElement.textContent = timeLeft + "s";
+            timerElement.style.color = "#e74c3c";
+            hintsElement.textContent = hintsLeft;
+            hintButton.disabled = false;
+            gameOverElement.style.display = "none";
+            
+            // Get first word
+            getNewWord();
+            
+            // Start timer
+            clearInterval(timer);
+            timer = setInterval(updateTimer, 1000);
+        }
+        
+        // Event listeners
+        checkButton.addEventListener("click", checkAnswer);
+        hintButton.addEventListener("click", useHint);
+        playAgainButton.addEventListener("click", startGame);
+        
+        userInputElement.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkAnswer();
+            }
+        });
+        
+        // Initialize the game
+        startGame();
+    </script>
+</body>
+</html>

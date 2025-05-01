@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Flood Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color:gainsboro;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transform: scale(0.85); /* reduced scale */
+        }
+
+        h1 {
+            color: red;
+            margin-bottom: 10px;
+        }
+
+        .info {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(14, 24px);
+            grid-template-rows: repeat(14, 24px);
+            gap: 2px;
+            margin-bottom: 20px;
+        }
+
+        .cell {
+            width: 24px;
+            height: 24px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .color-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .color-button {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .color-button:hover {
+            transform: scale(1.1);
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .moves, .completed {
+            color: brown;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .play-again-button {
+            background-color: #2196F3;
+        }
+
+        .play-again-button:hover {
+            background-color: #0b7dda;
+        }
+
+        .win-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #f0f8ff;
+            border: 2px solid #4CAF50;
+        }
+
+        .win-message {
+            display: none; /* hide the congratulations message */
+        }
+
+        .score-info {
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .star-rating {
+            font-size: 32px;
+            color: gold;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1><b>Colour Flood</b></h1>
+        <div class="info">
+            <p><b>Fill the entire board with one color in as few moves as possible!</p>
+            <p>Start from the top-left corner and choose colors to flood the connected area.</b></p>
+        </div>
+        <div class="game-info">
+            <div class="moves">Moves: 0</div>
+            <div class="completed">Completed: 0%</div>
+        </div>
+        <div class="board" id="game-board"></div>
+        <div class="color-buttons" id="color-buttons"></div>
+        <button class="button" id="restart-button">Restart Game</button>
+        
+        <div class="win-container" id="win-container">
+            <div class="win-message" id="win-message">Congratulations!</div>
+            <div class="score-info" id="score-info"></div>
+            <div class="star-rating" id="star-rating"></div>
+            <button class="button play-again-button" id="play-again-button">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        const BOARD_SIZE = 14;
+        const COLORS = ['#FF5252', '#4CAF50', '#2196F3', '#FFEB3B', '#9C27B0', '#FF9800'];
+        const MIN_MOVES = BOARD_SIZE;
+        const MAX_MOVES = BOARD_SIZE * 2;
+
+        let board = [];
+        let moves = 0;
+        let currentColor = '';
+        let floodedCells = new Set();
+
+        const gameBoard = document.getElementById('game-board');
+        const colorButtons = document.getElementById('color-buttons');
+        const restartButton = document.getElementById('restart-button');
+        const playAgainButton = document.getElementById('play-again-button');
+        const movesDisplay = document.querySelector('.moves');
+        const completedDisplay = document.querySelector('.completed');
+        const winContainer = document.getElementById('win-container');
+        const winMessage = document.getElementById('win-message');
+        const scoreInfo = document.getElementById('score-info');
+        const starRating = document.getElementById('star-rating');
+
+        function initGame() {
+            board = [];
+            moves = 0;
+            floodedCells = new Set();
+            movesDisplay.textContent = `Moves: ${moves}`;
+            completedDisplay.textContent = `Completed: 0%`;
+            winContainer.style.display = 'none';
+            gameBoard.innerHTML = '';
+
+            for (let row = 0; row < BOARD_SIZE; row++) {
+                board[row] = [];
+                for (let col = 0; col < BOARD_SIZE; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    const colorIndex = Math.floor(Math.random() * COLORS.length);
+                    cell.style.backgroundColor = COLORS[colorIndex];
+                    board[row][col] = COLORS[colorIndex];
+                    gameBoard.appendChild(cell);
+                }
+            }
+
+            currentColor = board[0][0];
+            floodedCells.add('0,0');
+
+            colorButtons.innerHTML = '';
+            COLORS.forEach(color => {
+                const button = document.createElement('button');
+                button.className = 'color-button';
+                button.style.backgroundColor = color;
+                button.addEventListener('click', () => {
+                    if (color !== currentColor) {
+                        floodFill(color);
+                    }
+                });
+                colorButtons.appendChild(button);
+            });
+
+            updateBoardDisplay();
+        }
+
+        function floodFill(newColor) {
+            if (newColor === currentColor) return;
+
+            moves++;
+            movesDisplay.textContent = `Moves: ${moves}`;
+
+            for (let coords of floodedCells) {
+                const [row, col] = coords.split(',').map(Number);
+                board[row][col] = newColor;
+            }
+
+            currentColor = newColor;
+
+            let newCellsFound = true;
+            while (newCellsFound) {
+                newCellsFound = false;
+                const currentFloodedCells = new Set(floodedCells);
+
+                for (let coords of currentFloodedCells) {
+                    const [row, col] = coords.split(',').map(Number);
+                    const neighbors = [
+                        [row - 1, col], [row + 1, col],
+                        [row, col - 1], [row, col + 1]
+                    ];
+
+                    for (let [r, c] of neighbors) {
+                        if (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE) {
+                            const neighborCoords = `${r},${c}`;
+                            if (!floodedCells.has(neighborCoords) && board[r][c] === newColor) {
+                                floodedCells.add(neighborCoords);
+                                newCellsFound = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            updateBoardDisplay();
+            checkWin();
+        }
+
+        function updateBoardDisplay() {
+            const cells = document.querySelectorAll('.cell');
+            for (let row = 0; row < BOARD_SIZE; row++) {
+                for (let col = 0; col < BOARD_SIZE; col++) {
+                    const index = row * BOARD_SIZE + col;
+                    cells[index].style.backgroundColor = board[row][col];
+                    const isFlooded = floodedCells.has(`${row},${col}`);
+                    cells[index].style.opacity = isFlooded ? '1' : '0.8';
+                    cells[index].style.boxShadow = isFlooded ? 'inset 0 0 0 2px white' : 'none';
+                }
+            }
+
+            const completionPercentage = Math.floor((floodedCells.size / (BOARD_SIZE * BOARD_SIZE)) * 100);
+            completedDisplay.textContent = `Completed: ${completionPercentage}%`;
+        }
+
+        function calculateScore(moveCount) {
+            if (moveCount <= MIN_MOVES + 2) return 5;
+            else if (moveCount <= MIN_MOVES + 5) return 4;
+            else if (moveCount <= MIN_MOVES + 8) return 3;
+            else if (moveCount <= MAX_MOVES) return 2;
+            else return 1;
+        }
+
+        function getScoreMessage(stars) {
+            switch (stars) {
+                case 5: return "Brilliant strategy! Perfect play!";
+                case 4: return "Impressive! Great job!";
+                case 3: return "Good effort! Well done!";
+                case 2: return "Nice try! Keep practicing!";
+                default: return "You completed it! Try for fewer moves next time!";
+            }
+        }
+
+        function checkWin() {
+            if (floodedCells.size === BOARD_SIZE * BOARD_SIZE) {
+                const stars = calculateScore(moves);
+                const starsDisplay = '★'.repeat(stars) + '☆'.repeat(5 - stars);
+                scoreInfo.textContent = `You completed the board in ${moves} moves. ${getScoreMessage(stars)}`;
+                starRating.textContent = starsDisplay;
+                winContainer.style.display = 'flex';
+            }
+        }
+
+        restartButton.addEventListener('click', initGame);
+        playAgainButton.addEventListener('click', initGame);
+
+        initGame();
+    </script>
+</body>
+</html>
