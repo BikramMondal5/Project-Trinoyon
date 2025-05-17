@@ -1,0 +1,238 @@
+le>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #111;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .game-container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            border: 2px solid #30cfd0;
+            box-shadow: 0 0 20px rgba(48, 207, 208, 0.5);
+            background: linear-gradient(to bottom, #000000, #0c0c2b);
+            overflow: hidden;
+        }
+        
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: #fff;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+        }
+        
+        #player {
+            position: absolute;
+            width: 50px;
+            height: 40px;
+            bottom: 20px;
+            left: 275px;
+            z-index: 3;
+        }
+        
+        .player-ship {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .player-ship:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 40px solid #30cfd0;
+        }
+        
+        .player-ship:after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 10px;
+            background-color: #fff;
+            border-radius: 50% 50% 0 0;
+        }
+        
+        .laser {
+            position: absolute;
+            width: 4px;
+            height: 15px;
+            background-color: #ff3c7d;
+            border-radius: 2px;
+            z-index: 2;
+        }
+        
+        .enemy {
+            position: absolute;
+            width: 40px;
+            height: 30px;
+            background-color: #64ffda;
+            border-radius: 50% 50% 0 0;
+            z-index: 2;
+        }
+        
+        .enemy:before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 10px;
+            background-color: #333;
+            border-radius: 10px;
+            top: 8px;
+            left: 10px;
+        }
+        
+        .enemy:after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: #ff3c7d;
+            border-radius: 50%;
+            top: 10px;
+            left: 17px;
+        }
+        
+        .enemy-laser {
+            position: absolute;
+            width: 3px;
+            height: 10px;
+            background-color: #64ffda;
+            border-radius: 2px;
+            z-index: 2;
+        }
+        
+        .explosion {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ff3c7d, #ffcc00, transparent);
+            animation: explode 0.5s forwards;
+            z-index: 4;
+        }
+        
+        @keyframes explode {
+            0% {
+                transform: scale(0.2);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+        
+        .game-ui {
+            width: 600px;
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: #0c0c2b;
+            border: 2px solid #30cfd0;
+            border-bottom: none;
+        }
+        
+        .score, .level, .lives {
+            font-size: 18px;
+            color: #fff;
+            text-shadow: 0 0 5px #30cfd0;
+        }
+        
+        .menu-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 10;
+        }
+        
+        .menu-screen h2 {
+            font-size: 40px;
+            color: #ff3c7d;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ff3c7d;
+        }
+        
+        .menu-screen p {
+            font-size: 20px;
+            color: #fff;
+            margin-bottom: 30px;
+            text-align: center;
+            line-height: 1.5;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            font-size: 20px;
+            background: linear-gradient(to right, #30cfd0, #330867);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px;
+            position: relative;
+            z-index: 15;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(48, 207, 208, 0.7);
+        }
+        
+        .controls {
+            width: 600px;
+            padding: 15px;
+            background-color: #0c0c2b;
+            border: 2px solid #30cfd0;
+            border-top: none;
+            text-align: center;
+            font-size: 16px;
+        }
+        
+        @media (max-width: 640px) {
+            .game-container, .game-ui, .controls {
+                width: 100%;
+            }
+            
+            .game-container {
+                height: 500px;
+            }
+        }

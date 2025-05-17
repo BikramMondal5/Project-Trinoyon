@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balloon Pop Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #87CEEB;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .balloon {
+            position: absolute;
+            width: 60px;
+            height: 80px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.1s ease-in-out;
+        }
+        
+        .balloon:hover {
+            transform: scale(1.05);
+        }
+        
+        .balloon:before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            background-color: #555;
+            bottom: -15px;
+            left: 25px;
+            border-radius: 40%;
+        }
+        
+        #score-display {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        #lives-display {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        #time-display {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            font-size: 24px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        #game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            display: none;
+            text-align: center;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        #start-menu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        h1 {
+            margin-top: 0;
+            color: #FFD700;
+        }
+        
+        .pop-animation {
+            transform: scale(1.5);
+            opacity: 0;
+            transition: all 0.2s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="score-display">Score: 0</div>
+        <div id="lives-display">Lives: 3</div>
+        <div id="time-display">Time: 60</div>
+        
+        <div id="start-menu">
+            <h1>Balloon Pop</h1>
+            <p>Pop the balloons before they reach the top of the screen!</p>
+            <p>Each missed balloon costs you a life.</p>
+            <button id="start-button">Start Game</button>
+        </div>
+        
+        <div id="game-over">
+            <h2>Game Over!</h2>
+            <p id="final-score">Your score: 0</p>
+            <button id="restart-button">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        const gameContainer = document.getElementById('game-container');
+        const scoreDisplay = document.getElementById('score-display');
+        const livesDisplay = document.getElementById('lives-display');
+        const timeDisplay = document.getElementById('time-display');
+        const startMenu = document.getElementById('start-menu');
+        const startButton = document.getElementById('start-button');
+        const gameOverScreen = document.getElementById('game-over');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const restartButton = document.getElementById('restart-button');
+        
+        let score = 0;
+        let lives = 3;
+        let timeLeft = 60;
+        let gameRunning = false;
+        let balloonInterval;
+        let timeInterval;
+        let gameSpeed = 1000; // Milliseconds between balloon spawns
+        let activeBalloons = [];
+        
+        const colors = [
+            '#FF5733', // Red-Orange
+            '#33FF57', // Green
+            '#3357FF', // Blue
+            '#F033FF', // Purple
+            '#FF33F0', // Pink
+            '#FFFF33', // Yellow
+            '#33FFF0', // Cyan
+        ];
+        
+        function startGame() {
+            startMenu.style.display = 'none';
+            gameOverScreen.style.display = 'none';
+            gameRunning = true;
+            score = 0;
+            lives = 3;
+            timeLeft = 60;
+            scoreDisplay.textContent = `Score: ${score}`;
+            livesDisplay.textContent = `Lives: ${lives}`;
+            timeDisplay.textContent = `Time: ${timeLeft}`;
+            
+            clearInterval(balloonInterval);
+            clearInterval(timeInterval);
+            
+            // Remove any existing balloons
+            document.querySelectorAll('.balloon').forEach(balloon => balloon.remove());
+            activeBalloons = [];
+            
+            // Start balloon spawning
+            balloonInterval = setInterval(createBalloon, gameSpeed);
+            
+            // Start timer
+            timeInterval = setInterval(() => {
+                timeLeft--;
+                timeDisplay.textContent = `Time: ${timeLeft}`;
+                
+                // Speed up game every 10 seconds
+                if (timeLeft % 10 === 0 && timeLeft > 0) {
+                    gameSpeed = Math.max(400, gameSpeed - 100);
+                    clearInterval(balloonInterval);
+                    balloonInterval = setInterval(createBalloon, gameSpeed);
+                }
+                
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+        
+        function createBalloon() {
+            if (!gameRunning) return;
+            
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            
+            // Random position from left
+            const leftPosition = Math.random() * (gameContainer.offsetWidth - 60);
+            
+            // Random color
+            const colorIndex = Math.floor(Math.random() * colors.length);
+            balloon.style.backgroundColor = colors[colorIndex];
+            
+            // Set initial position
+            balloon.style.left = `${leftPosition}px`;
+            balloon.style.bottom = '-80px';
+            
+            gameContainer.appendChild(balloon);
+            
+            // Random speed between 3 and 6 seconds
+            const speed = Math.random() * 3000 + 3000;
+            
+            const balloonObj = {
+                element: balloon,
+                id: Date.now() + Math.random(),
+                animation: null
+            };
+            
+            activeBalloons.push(balloonObj);
+            
+            // Add click event
+            balloon.addEventListener('click', () => {
+                if (!gameRunning) return;
+                popBalloon(balloonObj);
+                score++;
+                scoreDisplay.textContent = `Score: ${score}`;
+            });
+            
+            // Animate balloon rising
+            balloonObj.animation = balloon.animate(
+                [
+                    { bottom: '-80px' },
+                    { bottom: `${gameContainer.offsetHeight + 80}px` }
+                ],
+                {
+                    duration: speed,
+                    easing: 'linear',
+                    fill: 'forwards'
+                }
+            );
+            
+            // Check if balloon is missed
+            balloonObj.animation.onfinish = () => {
+                if (activeBalloons.includes(balloonObj)) {
+                    // Balloon reached the top - remove it and lose a life
+                    missedBalloon(balloonObj);
+                }
+            };
+        }
+        
+        function popBalloon(balloonObj) {
+            balloonObj.animation.cancel();
+            balloonObj.element.classList.add('pop-animation');
+            
+            // Play pop sound effect (commented out for now)
+            // const popSound = new Audio('pop.mp3');
+            // popSound.play();
+            
+            setTimeout(() => {
+                if (balloonObj.element.parentNode) {
+                    balloonObj.element.parentNode.removeChild(balloonObj.element);
+                }
+                // Remove from active balloons array
+                const index = activeBalloons.indexOf(balloonObj);
+                if (index > -1) {
+                    activeBalloons.splice(index, 1);
+                }
+            }, 200);
+        }
+        
+        function missedBalloon(balloonObj) {
+            if (balloonObj.element.parentNode) {
+                balloonObj.element.parentNode.removeChild(balloonObj.element);
+            }
+            
+            // Remove from active balloons array
+            const index = activeBalloons.indexOf(balloonObj);
+            if (index > -1) {
+                activeBalloons.splice(index, 1);
+            }
+            
+            lives--;
+            livesDisplay.textContent = `Lives: ${lives}`;
+            
+            if (lives <= 0) {
+                endGame();
+            }
+        }
+        
+        function endGame() {
+            gameRunning = false;
+            clearInterval(balloonInterval);
+            clearInterval(timeInterval);
+            
+            // Stop all active balloons
+            activeBalloons.forEach(balloonObj => {
+                balloonObj.animation.cancel();
+                if (balloonObj.element.parentNode) {
+                    balloonObj.element.parentNode.removeChild(balloonObj.element);
+                }
+            });
+            activeBalloons = [];
+            
+            // Show game over screen
+            finalScoreDisplay.textContent = `Your score: ${score}`;
+            gameOverScreen.style.display = 'block';
+        }
+        
+        startButton.addEventListener('click', startGame);
+        restartButton.addEventListener('click', startGame);
+    </script>
+</body>
+</html>

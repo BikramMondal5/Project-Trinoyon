@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Defenders</title>
+    <link rel="stylesheet" href="Third-game.css">
+</head>
+<body>
+    <h1 style="margin-bottom: 20px; font-size: 32px; color: #30cfd0; text-shadow: 0 0 10px rgba(48, 207, 208, 0.7);">SPACE DEFENDERS</h1>
+    
+    <div class="game-ui">
+        <div class="score">Score: <span id="score">0</span></div>
+        <div class="level">Level: <span id="level">1</span></div>
+        <div class="lives">Lives: <span id="lives">3</span></div>
+    </div>
+    
+    <div class="game-container" id="game-container">
+        <div class="stars" id="stars"></div>
+        <div id="player">
+            <div class="player-ship"></div>
+        </div>
+        
+        <div class="menu-screen" id="start-screen">
+            <h2>SPACE DEFENDERS</h2>
+            <p>Defend Earth from alien invaders!<br>Use arrow keys or A/D to move.<br>Spacebar to shoot.</p>
+            <button class="btn" id="start-btn">START GAME</button>
+        </div>
+        
+        <div class="menu-screen" id="game-over" style="display: none;">
+            <h2>GAME OVER</h2>
+            <p>Your final score: <span id="final-score">0</span></p>
+            <button class="btn" id="restart-btn">PLAY AGAIN</button>
+        </div>
+        
+        <div class="menu-screen" id="level-complete" style="display: none;">
+            <h2>LEVEL COMPLETE!</h2>
+            <p>Get ready for the next wave!</p>
+            <button class="btn" id="next-level-btn">NEXT LEVEL</button>
+        </div>
+    </div>
+    
+    <div class="controls">
+        Controls: Arrow Keys or A/D to move | SPACEBAR to shoot
+    </div>
+    
+    <script src="Third-game.js"></script>
+</body>
+</html>
