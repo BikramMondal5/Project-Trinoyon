@@ -4,6 +4,21 @@
     padding: 20px;
 }
 
+/* Logo style for navbar */
+.logo {
+    width: 45px;
+    height: 45px;
+    background-image: url('images/Logo.png');
+    background-size: cover;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
 .heading {
     text-align: center;
     margin-bottom: 20px;
