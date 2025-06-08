@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pujo Gallery - Trinoyon</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .loading-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #D32F2F;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .message {
+            font-size: 1.2rem;
+            color: #333;
+            text-align: center;
+        }
+        .redirect-button {
+            margin-top: 20px;
+            background-color: #D32F2F;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        .redirect-button:hover {
+            background-color: #b71c1c;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <div class="spinner"></div>
+        <div class="message">
+            <p>Loading Pujo Gallery...</p>
+            <p>Please wait while we set up the gallery experience</p>
+        </div>
+        <button class="redirect-button" onclick="startApp()">Enter Gallery</button>
+    </div>
+
+    <script>
+        // Function to redirect to the Next.js application
+        function startApp() {
+            // In development, Next.js typically runs on port 3000
+            // In production, you would adjust this URL to your deployed app's URL
+            window.location.href = "http://localhost:3000";
+        }
+
+        // You could also add auto-redirect after a delay
+        /*
+        setTimeout(() => {
+            startApp();
+        }, 3000);
+        */
+    </script>
+</body>
+</html>

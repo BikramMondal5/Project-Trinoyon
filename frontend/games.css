@@ -162,7 +162,7 @@
 }
 
 .play-button {
-    background-color: #e63946;
+    background-color: #1e88e5;
     color: white;
     border: none;
     margin-left: 1rem;
@@ -175,7 +175,7 @@
 }
 
 .play-button:hover {
-    background-color: #d62f3d;
+    background-color: #1565c0;
 }
 
 /* Colors for user avatars */

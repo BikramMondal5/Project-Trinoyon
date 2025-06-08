@@ -1,4 +1,4 @@
-# 🕉️🔱 Project-Trinoyon
+# 🕉️🔱 Project-Trinoyon - Contribute code to the society
 
 Welcome to **Project-Trinoyon** — a small initiative to make this Durga Puja truly a celebration for all! This project dedicated to bringing smiles to the lives of underprivileged people during Durga Puja.
 

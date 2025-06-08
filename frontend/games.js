@@ -1,36 +1,36 @@
 document.querySelector('#play-btn1').addEventListener('click',function(){
-    window.location.href="First-game.html";
+    window.location.href="games/First-game.html";
 });
 document.querySelector('#play-btn2').addEventListener('click',function(){
-    window.location.href="Second-game.html";
+    window.location.href="games/Second-game.html";
 });
 document.querySelector('#play-btn3').addEventListener('click',function(){
-    window.location.href="Third-game.html";
+    window.location.href="games/Third-game.html";
 });
 document.querySelector('#play-btn4').addEventListener('click',function(){
-    window.location.href="Fourth-game.html";
+    window.location.href="games/Fourth-game.html";
 });
 document.querySelector('#play-btn5').addEventListener('click',function(){
-    window.location.href="Fifth-game.html";
+    window.location.href="games/Fifth-game.html";
 });
 document.querySelector('#play-btn6').addEventListener('click',function(){
-    window.location.href="Sixth-game.html";
+    window.location.href="games/Sixth-game.html";
 });
 document.querySelector('#play-btn7').addEventListener('click',function(){
-    window.location.href="Seventh-game.html";
+    window.location.href="games/Seventh-game.html";
 });
 document.querySelector('#play-btn8').addEventListener('click',function(){
-    window.location.href="Eighth-game.html";
+    window.location.href="games/Eighth-game.html";
 });
 document.querySelector('#play-btn9').addEventListener('click',function(){
-    window.location.href="Ninth-game.html";
+    window.location.href="games/Ninth-game.html";
 });
 document.querySelector('#play-btn10').addEventListener('click',function(){
-    window.location.href="Tenth-game.html";
+    window.location.href="games/Tenth-game.html";
 });
 document.querySelector('#play-btn11').addEventListener('click',function(){
-    window.location.href="Eleventh-game.html";
+    window.location.href="games/Eleventh-game.html";
 });
 document.querySelector('#play-btn12').addEventListener('click',function(){
-    window.location.href="Twelveth-game.html";
+    window.location.href="games/Twelveth-game.html";
 });
