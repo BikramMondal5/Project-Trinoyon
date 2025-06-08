@@ -215,3 +215,10 @@
         max-width: 100%;
     }
 }
+
+/* Adding Bengali pattern styling from style.css */
+.bengali-pattern {
+    background-image: url("https://readdy.ai/api/search-image?query=traditional%2520Bengali%2520pattern%2520with%2520intricate%2520designs%2520in%2520gold%2520and%2520red%2520colors%2520on%2520a%2520cream%2520background%252C%2520featuring%2520lotus%2520motifs%2520and%2520swirls%252C%2520seamless%2520pattern%2520that%2520represents%2520the%2520rich%2520cultural%2520heritage%2520of%2520Bengal%2520during%2520Durga%2520Puja%2520celebrations&width=1200&height=200&seq=pattern1&orientation=landscape");
+    background-repeat: repeat-x;
+    background-size: contain;
+}
