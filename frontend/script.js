@@ -2,6 +2,27 @@ document.getElementById('quiz-btn').addEventListener('click', function () {
   initializeQuizOptions();
 });
 document.addEventListener("DOMContentLoaded", function () {
+  // Process payment function for donation form
+  window.processPayment = function(event) {
+    event.preventDefault();
+    
+    // Get the amount from the form
+    const amount = document.getElementById('amount').value;
+    const name = document.getElementById('name').value || "Donor";
+    
+    if (!amount || amount <= 0) {
+      alert("Please enter a valid donation amount");
+      return;
+    }
+    
+    // Create UPI payment link with the specified UPI ID
+    const upiId = "arijit.sarkar7156@okhdfcbank";
+    const upiLink = `upi://pay?pa=${upiId}&pn=Arijit%20Sarkar&am=${amount}&cu=INR&tn=Donation%20from%20${encodeURIComponent(name)}`;
+    
+    // Open the UPI payment link
+    window.location.href = upiLink;
+  };
+
   // Mobile menu toggle
   const menuButton = document.getElementById("menuButton");
   const mobileMenu = document.getElementById("mobileMenu");
