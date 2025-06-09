@@ -42,8 +42,8 @@ function copyBankDetails() {
 function openGooglePay(amount = '') {
   const upiId = "arijit.sarkar7156@okhdfcbank";
   
-  // Create deep link for Google Pay - without amount or donation text
-  let gpayLink = `gpay://upi/pay?pa=${upiId}&pn=Arijit%20Sarkar&cu=INR`;
+  // Create deep link for Google Pay with the specified format
+  let gpayLink = `upi://pay?pa=${upiId}&pn=Arijit%20Sarkar&cu=INR&am=&tn=Donation`;
   
   // Try to open the app
   window.location.href = gpayLink;
