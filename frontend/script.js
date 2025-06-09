@@ -41,18 +41,9 @@ function copyBankDetails() {
 // Function to open Google Pay app for UPI payment
 function openGooglePay(amount = '') {
   const upiId = "arijit.sarkar7156@okhdfcbank";
-  const name = userProfile ? encodeURIComponent(userProfile.name) : "Donor";
   
-  // Create deep link for Google Pay
-  let gpayLink;
-  
-  if (amount && !isNaN(amount) && amount > 0) {
-    // If amount is specified, include it in the link
-    gpayLink = `gpay://upi/pay?pa=${upiId}&pn=Arijit%20Sarkar&am=${amount}&cu=INR&tn=Donation%20from%20${name}`;
-  } else {
-    // If no amount, let user enter in Google Pay app
-    gpayLink = `gpay://upi/pay?pa=${upiId}&pn=Arijit%20Sarkar&cu=INR&tn=Donation%20from%20${name}`;
-  }
+  // Create deep link for Google Pay - without amount or donation text
+  let gpayLink = `gpay://upi/pay?pa=${upiId}&pn=Arijit%20Sarkar&cu=INR`;
   
   // Try to open the app
   window.location.href = gpayLink;
@@ -474,7 +465,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       
       // Use the openGooglePay function to redirect to Google Pay app
-      openGooglePay(amount);
+      // without passing the amount parameter
+      openGooglePay();
     });
   }
 
