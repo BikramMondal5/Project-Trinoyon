@@ -1,6 +1,70 @@
 // User authentication state
 let userProfile = null;
 
+// Function to copy text to clipboard
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      showToast('Copied to clipboard!', 'success');
+      
+      // Add visual feedback by briefly changing background color
+      const clickedElement = event.currentTarget;
+      clickedElement.classList.add('bg-green-200');
+      setTimeout(() => {
+        clickedElement.classList.remove('bg-green-200');
+      }, 500);
+    })
+    .catch(err => {
+      console.error('Failed to copy: ', err);
+      // No error toast shown to user
+    });
+}
+
+// Function to copy all bank details
+function copyBankDetails() {
+  const details = 
+    'Account Number: 50100356889425\n' +
+    'IFSC Code: HDFC0004830\n' +
+    'Bank: HDFC Bank\n' +
+    'Branch: Anandapur, Kolkata';
+  
+  navigator.clipboard.writeText(details)
+    .then(() => {
+      showToast('Bank details copied to clipboard!', 'success');
+    })
+    .catch(err => {
+      console.error('Failed to copy: ', err);
+      // No error toast shown to user
+    });
+}
+
+// Function to open Google Pay app for UPI payment
+function openGooglePay(amount = '') {
+  const upiId = "arijit.sarkar7156@okhdfcbank";
+  const name = userProfile ? encodeURIComponent(userProfile.name) : "Donor";
+  
+  // Create deep link for Google Pay
+  let gpayLink;
+  
+  if (amount && !isNaN(amount) && amount > 0) {
+    // If amount is specified, include it in the link
+    gpayLink = `gpay://upi/pay?pa=${upiId}&pn=Arijit%20Sarkar&am=${amount}&cu=INR&tn=Donation%20from%20${name}`;
+  } else {
+    // If no amount, let user enter in Google Pay app
+    gpayLink = `gpay://upi/pay?pa=${upiId}&pn=Arijit%20Sarkar&cu=INR&tn=Donation%20from%20${name}`;
+  }
+  
+  // Try to open the app
+  window.location.href = gpayLink;
+  
+  // Set a timeout to check if app opened
+  setTimeout(() => {
+    // If still on same page, likely app didn't open, redirect to web version
+    const webLink = `https://pay.google.com/gp/v/u/0/home/activity?upi=${upiId}`;
+    window.location.href = webLink;
+  }, 2000);
+}
+
 // Google auth callback function - must be in global scope for Google Sign-In
 window.handleCredentialResponse = function(response) {
   try {
@@ -341,12 +405,8 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
     
-    // Create UPI payment link with the specified UPI ID
-    const upiId = "arijit.sarkar7156@okhdfcbank";
-    const upiLink = `upi://pay?pa=${upiId}&pn=Arijit%20Sarkar&am=${amount}&cu=INR&tn=Donation%20from%20${encodeURIComponent(name)}`;
-    
-    // Open the UPI payment link
-    window.location.href = upiLink;
+    // Use the openGooglePay function to redirect to Google Pay app
+    openGooglePay(amount);
   };
 
   // Contact form submission handler
@@ -413,16 +473,8 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
       
-      // If user is logged in, use their profile info
-      let name = document.getElementById('name').value;
-      if (!name && userProfile) {
-        name = userProfile.name;
-      }
-      
-      const upiId = "arijit.sarkar7156@okhdfcbank";
-      const upiLink = `upi://pay?pa=${upiId}&pn=Arijit%20Sarkar&cu=INR&am=${amount}&tn=Donation${name ? '%20from%20' + encodeURIComponent(name) : ''}`;
-      
-      window.open(upiLink, '_blank');
+      // Use the openGooglePay function to redirect to Google Pay app
+      openGooglePay(amount);
     });
   }
 
