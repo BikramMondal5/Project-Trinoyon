@@ -34,6 +34,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
 
   </style>
@@ -67,6 +68,8 @@
               class="text-gray-700 hover:text-primary px-1 pt-1 text-sm xl:text-base font-medium border-b-2 border-transparent hover:border-primary transition-colors duration-200">Pujo Gallery</a>
             <a href="#contact"
               class="text-gray-700 hover:text-primary px-1 pt-1 text-sm xl:text-base font-medium border-b-2 border-transparent hover:border-primary transition-colors duration-200">Contact</a>
+            <button id="signInBtn"
+              class="text-gray-700 hover:text-primary px-1 pt-1 text-sm xl:text-base font-medium border-b-2 border-transparent hover:border-primary transition-colors duration-200">Sign Up</button>
           </div>
         </div>
         <div class="flex items-center space-x-4">
@@ -100,15 +103,12 @@
           class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Pujo Gallery</a>
         <a href="#contact"
           class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Contact</a>
-        <div class="mt-4 px-3">
-          <button
-            class="w-full bg-primary text-white px-4 py-2 rounded-button text-sm sm:text-base font-medium shadow-md hover:bg-primary/90 whitespace-nowrap transition-colors duration-200">Donate
-            Now</button>
-        </div>
+        <button id="mobileSignInBtn"
+          class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200 w-full text-left">Sign Up</button>
       </div>
       <div class="mt-4 px-3">
         <button
-          class="w-full bg-primary text-white px-4 py-2 rounded-button font-medium shadow-md hover:bg-primary/90 whitespace-nowrap transition-colors duration-200">Donate
+          class="w-full bg-primary text-white px-4 py-2 rounded-button text-sm sm:text-base font-medium shadow-md hover:bg-primary/90 whitespace-nowrap transition-colors duration-200">Donate
           Now</button>
       </div>
     </div>
@@ -380,126 +380,7 @@
       </div>
     </div>
   </section>
-  <!-- Impact Section -->
-  <section id="impact" class="py-16 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-gray-900 sm:text-4xl">Our Impact</h2>
-        <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
-          See how your contributions are making a real difference in the lives of homeless individuals during Durga
-          Puja.
-        </p>
-      </div>
-      <!-- Impact Stats Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        <div class="impact-card p-6 rounded-lg">
-          <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-            <i class="ri-home-heart-line ri-lg text-primary"></i>
-          </div>
-          <h3 class="text-2xl font-bold text-gray-900">0</h3>
-          <p class="text-gray-600">People provided temporary shelter</p>
-        </div>
-        <div class="impact-card p-6 rounded-lg">
-          <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-            <i class="ri-restaurant-line ri-lg text-primary"></i>
-          </div>
-          <h3 class="text-2xl font-bold text-gray-900">0</h3>
-          <p class="text-gray-600">Nutritious meals served</p>
-        </div>
-        <div class="impact-card p-6 rounded-lg">
-          <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-            <i class="ri-shirt-line ri-lg text-primary"></i>
-          </div>
-          <h3 class="text-2xl font-bold text-gray-900">0</h3>
-          <p class="text-gray-600">Clothing items distributed</p>
-        </div>
-        <div class="impact-card p-6 rounded-lg">
-          <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-            <i class="ri-medicine-bottle-line ri-lg text-primary"></i>
-          </div>
-          <h3 class="text-2xl font-bold text-gray-900">0</h3>
-          <p class="text-gray-600">Medical checkups provided</p>
-        </div>
-      </div>
-      <!-- Impact Chart -->
-      <div class="bg-white p-6 rounded-lg shadow-md mb-12">
-        <h3 class="text-xl font-semibold text-gray-900 mb-6">Donation Impact Over Time</h3>
-        <div id="impactChart" class="w-full h-80"></div>
-      </div>
-      <!-- Testimonials -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-xl font-semibold text-gray-900 mb-6">Testimonials</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div class="bg-gray-50 rounded-lg p-6">
-            <div class="flex items-start">
-              <div
-                class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white text-lg font-medium">
-                RD
-              </div>
-              <div class="ml-4">
-                <p class="text-gray-600 italic">"I am deeply moved by the impact this initiative has made. The way they
-                  care for the homeless during Durga Puja shows the true spirit of the festival."</p>
-                <div class="mt-4">
-                  <p class="font-medium text-gray-900">Rajesh Dutta</p>
-                  <p class="text-sm text-gray-500">Regular Donor</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="bg-gray-50 rounded-lg p-6">
-            <div class="flex items-start">
-              <div
-                class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center text-white text-lg font-medium">
-                PM
-              </div>
-              <div class="ml-4">
-                <p class="text-gray-600 italic">"As a volunteer, seeing the smiles on people's faces when they receive
-                  warm meals and shelter during the festivities is truly heartwarming."</p>
-                <div class="mt-4">
-                  <p class="font-medium text-gray-900">Priya Mukherjee</p>
-                  <p class="text-sm text-gray-500">Volunteer</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="bg-gray-50 rounded-lg p-6">
-            <div class="flex items-start">
-              <div
-                class="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center text-white text-lg font-medium">
-                SK
-              </div>
-              <div class="ml-4">
-                <p class="text-gray-600 italic">"Being a local business owner, partnering with Trinayan has been
-                  incredibly fulfilling. Together, we've been able to provide hot meals and essential supplies to those
-                  in need during the festival season."</p>
-                <div class="mt-4">
-                  <p class="font-medium text-gray-900">Sanjay Kumar</p>
-                  <p class="text-sm text-gray-500">Business Partner</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="bg-gray-50 rounded-lg p-6">
-            <div class="flex items-start">
-              <div
-                class="w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center text-white text-lg font-medium">
-                AB
-              </div>
-              <div class="ml-4">
-                <p class="text-gray-600 italic">"The quiz challenges and games not only helped raise funds but also
-                  educated me about the deeper meaning of Durga Puja. It's a beautiful way to combine learning with
-                  social impact."</p>
-                <div class="mt-4">
-                  <p class="font-medium text-gray-900">Anushka Banerjee</p>
-                  <p class="text-sm text-gray-500">Student Participant</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  
   <!-- Contact Section -->
   <section id="contact" class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -514,41 +395,45 @@
         <!-- Contact Form -->
         <div class="bg-white p-6 rounded-lg shadow-md">
           <h3 class="text-xl font-semibold text-gray-900 mb-6">Send Us a Message</h3>
-          <form class="space-y-4">
+          <form class="space-y-4" id="contactForm">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
-                <input type="text" id="name" name="name"
+                <label for="contact-name" class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                <input type="text" id="contact-name" name="name"
                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                  placeholder="Enter your name">
+                  placeholder="Enter your name" required>
               </div>
               <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                <input type="email" id="email" name="email"
+                <label for="contact-email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                <input type="email" id="contact-email" name="email"
                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                  placeholder="Enter your email">
+                  placeholder="Enter your email" required>
               </div>
             </div>
             <div>
-              <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
-              <input type="text" id="subject" name="subject"
+              <label for="contact-subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+              <input type="text" id="contact-subject" name="subject"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                placeholder="Enter subject">
+                placeholder="Enter subject" required>
             </div>
             <div>
-              <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
-              <textarea id="message" name="message" rows="4"
+              <label for="contact-message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+              <textarea id="contact-message" name="message" rows="4"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                placeholder="Enter your message"></textarea>
+                placeholder="Enter your message" required></textarea>
             </div>
             <div class="flex items-center">
               <input type="checkbox" id="volunteer" name="volunteer" class="custom-checkbox">
               <label for="volunteer" class="ml-2 block text-sm text-gray-700">I'm interested in volunteering</label>
             </div>
-            <button type="submit"
+            <button type="submit" id="contact-submit-btn"
               class="w-full bg-primary text-white px-4 py-2 rounded-button font-medium shadow-md hover:bg-primary/90 whitespace-nowrap">
               Send Message
             </button>
+            <div id="form-status" class="text-center hidden">
+              <p id="form-success" class="text-green-600 font-medium hidden">Message sent successfully!</p>
+              <p id="form-error" class="text-red-600 font-medium hidden">An error occurred. Please try again.</p>
+            </div>
           </form>
         </div>
         <!-- Contact Info -->
@@ -708,6 +593,38 @@
       </div>
     </div>
   </footer>
+  <!-- Auth Modal -->
+  <div id="authModal" class="fixed inset-0 bg-black bg-opacity-30 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-semibold text-gray-900">Sign In</h3>
+        <button id="closeAuthModal" class="text-gray-400 hover:text-gray-500">
+          <i class="ri-close-line ri-lg"></i>
+        </button>
+      </div>
+      <p class="text-gray-600 mb-6">Sign in with your Google account to use our contact form and other features.</p>
+      <div class="flex justify-center">
+        <div id="g_id_onload"
+          data-client_id="619748445752-f28ptmsirprqul9c0ne1j7kl01fg6meu.apps.googleusercontent.com"
+          data-context="signin"
+          data-ux_mode="popup"
+          data-callback="handleCredentialResponse"
+          data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin"
+          data-type="standard"
+          data-shape="rectangular"
+          data-theme="outline"
+          data-text="signin_with"
+          data-size="large"
+          data-logo_alignment="left">
+        </div>
+      </div>
+      <p class="text-xs text-gray-500 mt-6 text-center">
+        By signing in, you agree to our Terms of Service and Privacy Policy.
+      </p>
+    </div>
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js">
   </script>
   <script src="script.js"></script>
