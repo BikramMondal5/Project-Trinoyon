@@ -66,7 +66,7 @@ Project-Trinoyon strives to bring inclusivity to the celebration by using a tech
 - Payments: Google Pay / UPI Integration  
 - Ad Monetization: Google AdSense  
 - Storage: Firebase or MongoDB  
-- Deployment: GitHub Pages / Vercel / Netlify  
+- Deployment: TBD
 
 ## 🚀 How It Works
 
@@ -90,7 +90,7 @@ Every voice, every contribution matters.
 We value your creativity and feedback!  
 Got an idea or want to collaborate with us?  
 Let’s co-create this movement together.  
-Feel free to open an issue, submit a PR, or reach out to our team.
+Feel free to open an issue, submit a PR, or reach out to our team at `codesnippets45@gmail.com`.
 
 ## 🌟 Special Thanks
 
