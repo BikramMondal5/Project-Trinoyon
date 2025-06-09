@@ -18,7 +18,9 @@ window.handleCredentialResponse = function(response) {
       email: responsePayload.email,
       name: responsePayload.name,
       given_name: responsePayload.given_name,
-      picture: responsePayload.picture
+      picture: responsePayload.picture,
+      sub: responsePayload.sub, // Unique Google ID
+      auth_time: new Date().getTime()
     };
     
     // Save to localStorage
@@ -33,10 +35,13 @@ window.handleCredentialResponse = function(response) {
       authModal.classList.add('hidden');
     }
     
+    // Show welcome toast
+    showToast(`Welcome, ${userProfile.given_name}!`, 'success');
+    
     console.log("User authenticated:", userProfile);
   } catch (error) {
     console.error("Authentication error:", error);
-    alert("Authentication failed. Please try again.");
+    showToast("Authentication failed. Please try again.", 'error');
     
     // Close the modal even on error
     const authModal = document.getElementById('authModal');
@@ -49,8 +54,82 @@ window.handleCredentialResponse = function(response) {
 // Handle authentication errors
 window.handleAuthError = function(error) {
   console.error("Google Sign-In Error:", error);
-  alert("Sign-in failed. Please try again later.");
+  showToast("Sign-in failed. Please try again later.", 'error');
 };
+
+// Check if authentication is valid (not expired)
+function isAuthValid() {
+  if (!userProfile) return false;
+  
+  // Check if auth is older than 24 hours (86400000 ms)
+  const authAge = new Date().getTime() - userProfile.auth_time;
+  if (authAge > 86400000) {
+    // Auth expired, clear it
+    userProfile = null;
+    localStorage.removeItem('userProfile');
+    return false;
+  }
+  
+  return true;
+}
+
+// Sign out function
+function signOut() {
+  userProfile = null;
+  localStorage.removeItem('userProfile');
+  
+  // Reset button styles immediately
+  const signInBtn = document.getElementById('signInBtn');
+  const mobileSignInBtn = document.getElementById('mobileSignInBtn');
+  
+  if (signInBtn) {
+    signInBtn.classList.remove('bg-transparent', 'border', 'border-primary', 'hover:bg-transparent');
+    signInBtn.classList.add('bg-primary', 'hover:bg-primary/90');
+  }
+  
+  if (mobileSignInBtn) {
+    mobileSignInBtn.classList.remove('bg-transparent', 'border', 'border-primary', 'hover:bg-transparent');
+    mobileSignInBtn.classList.add('bg-primary', 'hover:bg-primary/90');
+  }
+  
+  updateAuthUI();
+  showToast('You have been signed out', 'info');
+}
+
+// Show toast notification
+function showToast(message, type = 'info') {
+  // Create toast container if it doesn't exist
+  let toastContainer = document.getElementById('toast-container');
+  if (!toastContainer) {
+    toastContainer = document.createElement('div');
+    toastContainer.id = 'toast-container';
+    toastContainer.className = 'fixed bottom-4 right-4 z-50 flex flex-col gap-2';
+    document.body.appendChild(toastContainer);
+  }
+  
+  // Create toast element
+  const toast = document.createElement('div');
+  
+  // Set toast style based on type
+  let bgColor = 'bg-blue-500';
+  if (type === 'success') bgColor = 'bg-green-500';
+  if (type === 'error') bgColor = 'bg-red-500';
+  if (type === 'warning') bgColor = 'bg-yellow-500';
+  
+  toast.className = `${bgColor} text-white px-4 py-2 rounded-md shadow-lg transform transition-all duration-300 flex items-center`;
+  toast.innerHTML = `<span>${message}</span>`;
+  
+  // Add to container
+  toastContainer.appendChild(toast);
+  
+  // Remove after 3 seconds
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    setTimeout(() => {
+      toast.remove();
+    }, 300);
+  }, 3000);
+}
 
 // Update UI based on auth state
 function updateAuthUI() {
@@ -59,28 +138,129 @@ function updateAuthUI() {
   
   if (!signInBtn) return;
   
-  if (userProfile) {
-    signInBtn.textContent = `Hi, ${userProfile.given_name}`;
+  if (userProfile && isAuthValid()) {
+    // Change button style to transparent with border
+    signInBtn.classList.remove('bg-primary', 'hover:bg-primary/90');
+    signInBtn.classList.add('bg-transparent', 'border', 'border-primary', 'hover:bg-transparent');
+    
+    // Create user menu for desktop
+    signInBtn.innerHTML = `
+      <div class="flex items-center gap-2">
+        <img src="${userProfile.picture}" alt="${userProfile.given_name}" class="w-6 h-6 rounded-full">
+        <span class="text-primary">${userProfile.given_name}</span>
+      </div>
+    `;
+    
+    // Update mobile button
     if (mobileSignInBtn) {
-      mobileSignInBtn.textContent = `Hi, ${userProfile.given_name}`;
+      mobileSignInBtn.classList.remove('bg-primary', 'hover:bg-primary/90');
+      mobileSignInBtn.classList.add('bg-transparent', 'border', 'border-primary', 'hover:bg-transparent');
+      
+      mobileSignInBtn.innerHTML = `
+        <div class="flex items-center gap-2">
+          <img src="${userProfile.picture}" alt="${userProfile.given_name}" class="w-6 h-6 rounded-full">
+          <span class="text-primary">${userProfile.given_name}</span>
+        </div>
+      `;
+    }
+    
+    // Update sign in button to show dropdown on click
+    signInBtn.onclick = function(e) {
+      e.preventDefault();
+      
+      // Create dropdown if it doesn't exist
+      let dropdown = document.getElementById('user-dropdown');
+      if (!dropdown) {
+        dropdown = document.createElement('div');
+        dropdown.id = 'user-dropdown';
+        dropdown.className = 'absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50';
+        dropdown.innerHTML = `
+          <div class="px-4 py-2 border-b border-gray-100">
+            <p class="text-sm font-medium text-gray-900">${userProfile.name}</p>
+            <p class="text-xs text-gray-500">${userProfile.email}</p>
+          </div>
+          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Donation History</a>
+          <button id="sign-out-btn" class="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Sign out</button>
+        `;
+        
+        // Position the dropdown
+        const rect = signInBtn.getBoundingClientRect();
+        dropdown.style.top = `${rect.bottom}px`;
+        dropdown.style.right = `${window.innerWidth - rect.right}px`;
+        
+        document.body.appendChild(dropdown);
+        
+        // Add sign out event listener
+        document.getElementById('sign-out-btn').addEventListener('click', function() {
+          signOut();
+          dropdown.remove();
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function closeDropdown(e) {
+          if (!dropdown.contains(e.target) && e.target !== signInBtn) {
+            dropdown.remove();
+            document.removeEventListener('click', closeDropdown);
+          }
+        });
+      } else {
+        dropdown.remove();
+      }
+    };
+    
+    // Update mobile sign in button to show sign out option
+    if (mobileSignInBtn) {
+      mobileSignInBtn.onclick = function() {
+        if (confirm('Do you want to sign out?')) {
+          signOut();
+        }
+      };
     }
     
     // Update email field if on contact page
     const emailInput = document.getElementById('contact-email');
+    const nameInput = document.getElementById('contact-name');
     if (emailInput) {
       emailInput.value = userProfile.email;
       emailInput.setAttribute('readonly', true);
+      
+      // Also prefill name if available
+      if (nameInput && !nameInput.value) {
+        nameInput.value = userProfile.name;
+      }
     }
   } else {
-    signInBtn.textContent = 'Sign Up';
+    // Reset to default state
+    signInBtn.textContent = 'Sign In';
+    
+    // Reset button style to original
+    signInBtn.classList.remove('bg-transparent', 'border', 'border-primary');
+    signInBtn.classList.add('bg-primary');
+    
+    signInBtn.onclick = function() {
+      document.getElementById('authModal').classList.remove('hidden');
+    };
+    
     if (mobileSignInBtn) {
-      mobileSignInBtn.textContent = 'Sign Up';
+      mobileSignInBtn.textContent = 'Sign In';
+      
+      // Reset mobile button style to original
+      mobileSignInBtn.classList.remove('bg-transparent', 'border', 'border-primary');
+      mobileSignInBtn.classList.add('bg-primary');
+      
+      mobileSignInBtn.onclick = function() {
+        document.getElementById('authModal').classList.remove('hidden');
+      };
     }
     
     // Clear readonly on email field if on contact page
     const emailInput = document.getElementById('contact-email');
     if (emailInput) {
       emailInput.removeAttribute('readonly');
+      if (emailInput.value.includes('@gmail.com')) {
+        emailInput.value = '';
+      }
     }
   }
 }
@@ -92,7 +272,14 @@ document.addEventListener("DOMContentLoaded", function () {
   if (savedProfile) {
     try {
       userProfile = JSON.parse(savedProfile);
+      // Check if auth is still valid
+      if (isAuthValid()) {
       updateAuthUI();
+      } else {
+        // Auth expired, clear it
+        userProfile = null;
+        localStorage.removeItem('userProfile');
+      }
     } catch (e) {
       localStorage.removeItem('userProfile');
     }
@@ -106,35 +293,13 @@ document.addEventListener("DOMContentLoaded", function () {
   
   // Auth modal functionality
   if (signInBtn) {
-    signInBtn.addEventListener('click', function() {
-      if (userProfile) {
-        // If already logged in, show sign out option
-        if (confirm('Do you want to sign out?')) {
-          userProfile = null;
-          localStorage.removeItem('userProfile');
-          updateAuthUI();
-        }
-      } else {
-        // Show auth modal
-        authModal.classList.remove('hidden');
-      }
-    });
+    // Sign in button click handler is now managed in updateAuthUI
+    // This ensures proper behavior based on current auth state
   }
   
   if (mobileSignInBtn) {
-    mobileSignInBtn.addEventListener('click', function() {
-      if (userProfile) {
-        // If already logged in, show sign out option
-        if (confirm('Do you want to sign out?')) {
-          userProfile = null;
-          localStorage.removeItem('userProfile');
-          updateAuthUI();
-        }
-      } else {
-        // Show auth modal
-        authModal.classList.remove('hidden');
-      }
-    });
+    // Mobile sign in button click handler is now managed in updateAuthUI
+    // This ensures proper behavior based on current auth state
   }
   
   if (closeAuthModal) {
@@ -151,6 +316,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  // Initialize auth UI
+  updateAuthUI();
 
   // Quiz button initialization if it exists
   const quizBtn = document.getElementById('quiz-btn');
@@ -169,7 +337,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const name = document.getElementById('name').value || "Donor";
     
     if (!amount || amount <= 0) {
-      alert("Please enter a valid donation amount");
+      showToast("Please enter a valid donation amount", "warning");
       return;
     }
     
@@ -188,8 +356,9 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
       
       // Check if user is authenticated
-      if (!userProfile) {
-        // Show authentication modal if not signed in
+      if (!userProfile || !isAuthValid()) {
+        // Show authentication modal if not signed in or auth expired
+        showToast("Please sign in to submit the form", "info");
         authModal.classList.remove('hidden');
         return;
       }
@@ -200,13 +369,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const subject = document.getElementById('contact-subject').value;
       const message = document.getElementById('contact-message').value;
       const isVolunteer = document.getElementById('volunteer').checked;
-      
-      // Email validation - redundant for Google authenticated emails, but kept for safety
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        alert('Please sign in with a valid email address');
-        return;
-      }
       
       // Show loading state
       const submitButton = document.getElementById('contact-submit-btn');
@@ -224,27 +386,43 @@ document.addEventListener("DOMContentLoaded", function () {
       window.location.href = mailtoUrl;
       
       // Show success message after a short delay
-      const formStatus = document.getElementById('form-status');
-      const formSuccess = document.getElementById('form-success');
-      
       setTimeout(() => {
         submitButton.textContent = originalButtonText;
         submitButton.disabled = false;
-        formStatus.classList.remove('hidden');
-        formSuccess.classList.remove('hidden');
+        showToast("Message sent successfully!", "success");
         
         // Reset the form
         contactForm.reset();
         
         // Restore the authenticated user's email in the form
         document.getElementById('contact-email').value = userProfile.email;
-        
-        // Hide success message after 5 seconds
-        setTimeout(() => {
-          formStatus.classList.add('hidden');
-          formSuccess.classList.add('hidden');
-        }, 5000);
       }, 1000);
+    });
+  }
+
+  // Add event listener for donation form
+  const donationForm = document.getElementById('donationForm');
+  const proceedToPayBtn = document.getElementById('proceedToPayBtn');
+  
+  if (donationForm && proceedToPayBtn) {
+    proceedToPayBtn.addEventListener('click', function() {
+      const amount = document.getElementById('amount').value;
+      
+      if (!amount || isNaN(amount) || amount <= 0) {
+        showToast("Please enter a valid donation amount", "warning");
+        return;
+      }
+      
+      // If user is logged in, use their profile info
+      let name = document.getElementById('name').value;
+      if (!name && userProfile) {
+        name = userProfile.name;
+      }
+      
+      const upiId = "arijit.sarkar7156@okhdfcbank";
+      const upiLink = `upi://pay?pa=${upiId}&pn=Arijit%20Sarkar&cu=INR&am=${amount}&tn=Donation${name ? '%20from%20' + encodeURIComponent(name) : ''}`;
+      
+      window.open(upiLink, '_blank');
     });
   }
 
