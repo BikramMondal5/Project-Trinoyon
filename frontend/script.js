@@ -42,18 +42,8 @@ function copyBankDetails() {
 function openGooglePay(amount = '') {
   const upiId = "arijit.sarkar7156@okhdfcbank";
   
-  // Create deep link for Google Pay with the specified format
-  let gpayLink = `upi://pay?pa=${upiId}&pn=Arijit%20Sarkar&cu=INR&am=&tn=Donation`;
-  
-  // Try to open the app
-  window.location.href = gpayLink;
-  
-  // Set a timeout to check if app opened
-  setTimeout(() => {
-    // If still on same page, likely app didn't open, redirect to web version
-    const webLink = `https://pay.google.com/gp/v/u/0/home/activity?upi=${upiId}`;
-    window.location.href = webLink;
-  }, 2000);
+  // Simple direct UPI redirect
+  window.location.href = `upi://pay?pa=${upiId}&pn=Arijit%20Sarkar&cu=INR&am=&tn=Donation`;
 }
 
 // Google auth callback function - must be in global scope for Google Sign-In
