@@ -5,13 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Challenge - Play & Donate</title>
     <link rel="stylesheet" href="quiz.css">
+  <script src="https://cdn.tailwindcss.com/3.4.16">
+  </script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { primary: "#1e88e5", secondary: "#FFC107" },
+          borderRadius: {
+            none: "0px",
+            sm: "4px",
+            DEFAULT: "8px",
+            md: "12px",
+            lg: "16px",
+            xl: "20px",
+            "2xl": "24px",
+            "3xl": "32px",
+            full: "9999px",
+            button: "8px",
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+
+  </style>
 </head>
-<body>
+
+<body class="bg-white">
+  <!-- Header with Bengali Pattern -->
+  <div class="bengali-pattern h-4 w-full"></div>
+
+  <!-- Navigation -->
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <a href="index.html" class="flex-shrink-0 flex items-center">
+            <div class="logo"></div>
+          </a>
+          <div class="hidden lg:ml-10 lg:flex lg:space-x-4 xl:space-x-8">
+            <a href="index.html"
+              class="nav-link px-1 pt-1 text-sm xl:text-base font-medium transition-colors duration-200">Home</a>
+            <a href="games.html"
+              class="nav-link px-1 pt-1 text-sm xl:text-base font-medium transition-colors duration-200">Play to Donate</a>
+            <a href="quiz.html"
+              class="nav-link px-1 pt-1 text-sm xl:text-base font-medium transition-colors duration-200">Quiz Challenge</a>
+            <a href="stories.html"
+              class="nav-link px-1 pt-1 text-sm xl:text-base font-medium transition-colors duration-200">Stories</a>
+            <a href="https://pujo-gallery-roan.vercel.app/"
+              class="nav-link px-1 pt-1 text-sm xl:text-base font-medium transition-colors duration-200">Pujo Gallery</a>
+            <a href="impacts.html"
+              class="nav-link px-1 pt-1 text-sm xl:text-base font-medium transition-colors duration-200">Impacts</a>
+            <a href="index.html#contact"
+              class="nav-link px-1 pt-1 text-sm xl:text-base font-medium transition-colors duration-200">Contact Us</a>
+          </div>
+        </div>
+        <div class="flex items-center space-x-4">
+          <a href="index.html#donate"
+            class="hidden sm:block bg-primary text-white px-3 xl:px-4 py-2 rounded-button text-sm xl:text-base font-medium shadow-md hover:bg-primary/90 whitespace-nowrap transition-colors duration-200">Donate
+            Now</a>
+          <button id="signInBtn"
+            class="bg-primary text-white px-3 xl:px-4 py-2 rounded-button text-sm xl:text-base font-medium shadow-md hover:bg-primary/90 whitespace-nowrap transition-colors duration-200">Sign
+            In</button>
+          <button type="button" id="menuButton"
+            class="lg:hidden text-gray-700 hover:text-primary w-10 h-10 flex items-center justify-center transition-colors duration-200">
+            <i class="ri-menu-line ri-lg"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="hidden lg:hidden">
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        <a href="#"
+          class="bg-primary bg-opacity-10 text-primary block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Home</a>
+        
+        <a href="games.html"
+          class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Play
+          to Donate</a>
+        <a href="quiz.html"
+          class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Quiz
+          Challenge</a>
+        <a href="stories.html"
+          class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Stories</a>
+        <a href="https://pujo-gallery-roan.vercel.app/"
+          class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Pujo Gallery</a>
+        <a href="impacts.html"
+          class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Impacts</a>
+        <a href="#contact"
+          class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Contact Us</a>
+        <button id="mobileSignInBtn"
+          class="bg-primary text-white px-3 py-2 rounded-md text-sm sm:text-base font-medium shadow-md hover:bg-primary/90 whitespace-nowrap transition-colors duration-200 w-full text-left">Sign In</button>
+      </div>
+      <div class="mt-4 px-3">
+        <button
+          class="w-full bg-primary text-white px-4 py-2 rounded-button text-sm sm:text-base font-medium shadow-md hover:bg-primary/90 whitespace-nowrap transition-colors duration-200">Donate
+          Now</button>
+      </div>
+    </div>
+    </div>
+  </nav>
     <div class="container">
         <header>
-            <h1>Quiz Challenge</h1>
+        <div class="heading">   
+            <h1><b>Quiz Challenge</b></h1>
             <p class="tagline">Test your knowledge while making a difference</p>
-            <div class="impact-statement">Each completed quiz generates ad revenue to help people in need</div>
+            <div class="impact-statement">Each completed quiz generates ad revenue to help needy people</div>
+        </div>    
         </header>
         
         <div class="tabs">
@@ -23,7 +132,7 @@
         </div>
         
         <div class="category-container" id="category-container">
-            <h2>Choose a Quiz Theme</h2>
+            <h2 id="choose">Choose a Quiz Theme</h2>
             <div class="categories">
                 <div class="category" onclick="startQuiz('durga')">
                     <div class="category-icon">🪔</div>
@@ -86,7 +195,7 @@
         </div>
         
         <div class="charity-impact">
-            <h2 class="impact-heading">Your Impact Today</h2>
+            <h2 class="impact-statement"><b>Your Impact Today</b></h2>
             <div class="impact-stats">
                 <div class="stat">
                     <div class="stat-number">18,642</div>
@@ -113,6 +222,21 @@
             </div>
         </div>
     </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const links = document.querySelectorAll(".nav-link");
+      const currentPath = window.location.pathname.split("/").pop();
+
+      links.forEach(link => {
+        const linkPath = link.getAttribute("href").split("/").pop().split("#")[0];
+        if (linkPath === currentPath) {
+          link.classList.add("text-primary", "border-b-2", "border-primary");
+        } else {
+          link.classList.add("text-gray-700", "hover:text-primary", "border-b-2", "border-transparent", "hover:border-primary");
+        }
+      });
+    });
+  </script>
     <script src="quiz.js"></script>
 </body>
 </html>

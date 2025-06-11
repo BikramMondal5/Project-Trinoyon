@@ -34,3 +34,26 @@ document.querySelector('#play-btn11').addEventListener('click',function(){
 document.querySelector('#play-btn12').addEventListener('click',function(){
     window.location.href="games/Twelveth-game.html";
 });
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const username = localStorage.getItem("loggedInUser");
+    const signInBtn = document.getElementById("signInBtn");
+    const userInfo = document.getElementById("user-info");
+    const usernameDisplay = document.getElementById("usernameDisplay");
+
+    if (username) {
+      signInBtn.style.display = "none";
+      userInfo.classList.remove("hidden");
+      usernameDisplay.textContent = username;
+    } else {
+      signInBtn.style.display = "inline-block";
+      userInfo.classList.add("hidden");
+    }
+  });
+
+  function logout() {
+    localStorage.removeItem("loggedInUser");
+    location.reload(); // Or redirect to login
+  }
+
