@@ -45,6 +45,13 @@ Project-Trinoyon strives to bring inclusivity to the celebration by using a tech
 - Share stories of giving back, volunteering, and joy
 - Live Puja chatroom / event ticker
 
+### 📊 Impact Dashboard
+- Live tracking of donation statistics and community impact
+- Real-time updates on meals distributed, clothes donated, and families helped
+- Showcase of present contributors and recent donations
+- Transparent progress bars showing goals and achievements
+- Community testimonials highlighting the impact of contributions
+
 ### 🔐 Trust & Safety
 - Report & moderation tools
 - Verification badges for organizers
@@ -74,7 +81,9 @@ Project-Trinoyon strives to bring inclusivity to the celebration by using a tech
 2. Choose to Donate 💰, Play 🎮, or Explore 📸  
 3. Share and invite others to participate  
 4. Collected funds are transparently routed to verified organizations  
-5. Impact reports and photo stories will be shared post-festival  
+5. Track real-time impact through our Impact Dashboard 📊
+6. See how your contributions are making a difference with live statistics
+7. Impact reports and photo stories will be shared post-festival  
 
 ## 🤝 How to Contribute
 
