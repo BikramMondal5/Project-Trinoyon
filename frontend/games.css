@@ -92,6 +92,15 @@
     background-size: cover;
 }
 
+/* Pac-Man game image */
+#pacman-img {
+    background-image: url('../pacman/icon/favicon.png');
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #000;
+}
+
 #game3-img{
     background-image: url("images/Game 3 logo.png");
     background-size: cover;
