@@ -88,13 +88,12 @@
 }
 
 #game12-img {
-    background-image: url("images/Game 12 logo.png");
-    background-size: cover;
+    background-image: url('images/Game\ 12\ logo.png');
 }
 
 /* Pac-Man game image */
 #pacman-img {
-    background-image: url('../pacman/icon/favicon.png');
+    background-image: url('https://cdn.pixabay.com/photo/2013/07/12/16/57/pacman-151558_960_720.png');
     background-size: 80%;
     background-position: center;
     background-repeat: no-repeat;
@@ -104,6 +103,15 @@
 #game3-img{
     background-image: url("images/Game 3 logo.png");
     background-size: cover;
+}
+
+/* Three-FPS game image */
+#threefps-img {
+    background-image: url('../three-fps/src/ui/crosshair.png');
+    background-size: 30%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #1a1a1a;
 }
 
 #game4-img{

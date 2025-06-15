@@ -37,6 +37,9 @@ document.querySelector('#play-btn12').addEventListener('click',function(){
 document.querySelector('#play-pacman').addEventListener('click',function(){
     window.location.href="../pacman/index.html";
 });
+document.querySelector('#play-threefps').addEventListener('click',function(){
+    window.location.href="../three-fps/build/index.html";
+});
 
 
   document.addEventListener("DOMContentLoaded", function () {
