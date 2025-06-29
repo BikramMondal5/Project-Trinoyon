@@ -1,0 +1,13 @@
+{
+  "name": "trinoyon-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Project Trinoyon",
+  "scripts": {
+    "build:css": "tailwindcss -i ./styles/input.css -o ./style.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.16",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.27"
+  }
+}

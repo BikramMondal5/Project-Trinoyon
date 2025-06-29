@@ -1,0 +1,20 @@
+{
+  "name": "project-trinoyon",
+  "version": "1.0.0",
+  "description": "Welcome to **Project-Trinoyon** — a heartfelt initiative to make Durga Puja a celebration for everyone! This project is dedicated to bringing smiles to the faces of underprivileged individuals, especially those living on the streets, during this vibrant festival.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BikramMondal5/Project-Trinoyon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BikramMondal5/Project-Trinoyon/issues"
+  },
+  "homepage": "https://github.com/BikramMondal5/Project-Trinoyon#readme"
+}

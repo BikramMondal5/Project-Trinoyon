@@ -1,125 +1,150 @@
 // User authentication state
 let userProfile = null;
+const API_URL = 'http://localhost:5000/api';
 
-// Function to copy text to clipboard
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text)
-    .then(() => {
-      showToast('Copied to clipboard!', 'success');
-      
-      // Add visual feedback by briefly changing background color
-      const clickedElement = event.currentTarget;
-      clickedElement.classList.add('bg-green-200');
-      setTimeout(() => {
-        clickedElement.classList.remove('bg-green-200');
-      }, 500);
-    })
-    .catch(err => {
-      console.error('Failed to copy: ', err);
-      // No error toast shown to user
-    });
-}
+// Handle user login
+async function handleLogin(event) {
+  event.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
 
-// Function to copy all bank details
-function copyBankDetails() {
-  const details = 
-    'Account Number: 50100356889425\n' +
-    'IFSC Code: HDFC0004830\n' +
-    'Bank: HDFC Bank\n' +
-    'Branch: Anandapur, Kolkata';
-  
-  navigator.clipboard.writeText(details)
-    .then(() => {
-      showToast('Bank details copied to clipboard!', 'success');
-    })
-    .catch(err => {
-      console.error('Failed to copy: ', err);
-      // No error toast shown to user
-    });
-}
-
-// Function to open Google Pay app for UPI payment
-function openGooglePay(amount = '') {
-  const upiId = "arijit.sarkar7156@okhdfcbank";
-  
-  // Simple direct UPI redirect
-  window.location.href = `upi://pay?pa=${upiId}&pn=Arijit%20Sarkar&cu=INR&am=&tn=Donation`;
-}
-
-// Google auth callback function - must be in global scope for Google Sign-In
-window.handleCredentialResponse = function(response) {
   try {
-    // Decode the JWT token
-    const base64Url = response.credential.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-    
-    const responsePayload = JSON.parse(jsonPayload);
-    
-    // Store user profile
-    userProfile = {
-      email: responsePayload.email,
-      name: responsePayload.name,
-      given_name: responsePayload.given_name,
-      picture: responsePayload.picture,
-      sub: responsePayload.sub, // Unique Google ID
-      auth_time: new Date().getTime()
-    };
-    
-    // Save to localStorage
-    localStorage.setItem('userProfile', JSON.stringify(userProfile));
-    
-    // Update UI
-    updateAuthUI();
-    
-    // Close the modal
-    const authModal = document.getElementById('authModal');
-    if (authModal) {
-      authModal.classList.add('hidden');
+    const response = await fetch(`${API_URL}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // Store user profile and token
+      userProfile = {
+        id: data.user.id,
+        email: data.user.email,
+        name: data.user.name,
+        given_name: data.user.name.split(' ')[0],
+        token: data.token,
+        auth_time: new Date().getTime()
+      };
+      
+      // Save to localStorage
+      localStorage.setItem('userProfile', JSON.stringify(userProfile));
+      
+      // Update UI
+      updateAuthUI();
+      
+      // Close the modal
+      const authModal = document.getElementById('authModal');
+      if (authModal) {
+        authModal.classList.add('hidden');
+      }
+      
+      // Show welcome toast
+      showToast(`Welcome back, ${userProfile.given_name}!`, 'success');
+    } else {
+      showToast(data.message || 'Login failed', 'error');
     }
-    
-    // Show welcome toast
-    showToast(`Welcome, ${userProfile.given_name}!`, 'success');
-    
-    console.log("User authenticated:", userProfile);
-  } catch (error) {
-    console.error("Authentication error:", error);
-    showToast("Authentication failed. Please try again.", 'error');
-    
-    // Close the modal even on error
-    const authModal = document.getElementById('authModal');
-    if (authModal) {
-      authModal.classList.add('hidden');
-    }
+  } catch (err) {
+    console.error('Login error:', err);
+    showToast('Server error, please try again', 'error');
   }
-};
+}
 
-// Handle authentication errors
-window.handleAuthError = function(error) {
-  console.error("Google Sign-In Error:", error);
-  showToast("Sign-in failed. Please try again later.", 'error');
-};
+// Handle user signup
+async function handleSignup(event) {
+  event.preventDefault();
+  const name = document.getElementById('signupName').value;
+  const email = document.getElementById('signupEmail').value;
+  const password = document.getElementById('signupPassword').value;
 
-// Check if authentication is valid (not expired)
-function isAuthValid() {
-  if (!userProfile) return false;
+  try {
+    const response = await fetch(`${API_URL}/auth/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // Store user profile and token
+      userProfile = {
+        id: data.user.id,
+        email: data.user.email,
+        name: data.user.name,
+        given_name: data.user.name.split(' ')[0],
+        token: data.token,
+        auth_time: new Date().getTime()
+      };
+      
+      // Save to localStorage
+      localStorage.setItem('userProfile', JSON.stringify(userProfile));
+      
+      // Update UI
+      updateAuthUI();
+      
+      // Close the modal
+      const authModal = document.getElementById('authModal');
+      if (authModal) {
+        authModal.classList.add('hidden');
+      }
+      
+      // Show welcome toast
+      showToast(`Welcome, ${userProfile.given_name}!`, 'success');
+    } else {
+      showToast(data.message || 'Registration failed', 'error');
+    }
+  } catch (err) {
+    console.error('Signup error:', err);
+    showToast('Server error, please try again', 'error');
+  }
+}
+
+// Check if authentication is valid
+async function isAuthValid() {
+  if (!userProfile || !userProfile.token) return false;
   
-  // Check if auth is older than 24 hours (86400000 ms)
-  const authAge = new Date().getTime() - userProfile.auth_time;
-  if (authAge > 86400000) {
-    // Auth expired, clear it
-    userProfile = null;
-    localStorage.removeItem('userProfile');
+  try {
+    const response = await fetch(`${API_URL}/auth/profile`, {
+      headers: {
+        'Authorization': `Bearer ${userProfile.token}`
+      }
+    });
+
+    return response.ok;
+  } catch (err) {
+    console.error('Auth validation error:', err);
     return false;
   }
-  
-  return true;
+}
+
+// Function to toggle between login and signup forms
+function toggleAuthForm(form) {
+  const loginForm = document.getElementById('loginForm');
+  const signupForm = document.getElementById('signupForm');
+  const authTitle = document.getElementById('authTitle');
+  const authSubtitle = document.getElementById('authSubtitle');
+
+  if (form === 'signup') {
+    loginForm.classList.add('hidden');
+    signupForm.classList.remove('hidden');
+    authTitle.textContent = 'Create Account';
+    authSubtitle.textContent = 'Sign up to join our community';
+  } else {
+    loginForm.classList.remove('hidden');
+    signupForm.classList.add('hidden');
+    authTitle.textContent = 'Welcome Back';
+    authSubtitle.textContent = 'Sign in to continue';
+  }
 }
 
 // Sign out function
-function signOut() {
+async function signOut() {
   userProfile = null;
   localStorage.removeItem('userProfile');
   
@@ -183,7 +208,7 @@ function updateAuthUI() {
   
   if (!signInBtn) return;
   
-  if (userProfile && isAuthValid()) {
+  if (userProfile) {
     // Change button style to transparent with border
     signInBtn.classList.remove('bg-primary', 'hover:bg-primary/90');
     signInBtn.classList.add('bg-transparent', 'border', 'border-primary', 'hover:bg-transparent');
@@ -191,7 +216,9 @@ function updateAuthUI() {
     // Create user menu for desktop
     signInBtn.innerHTML = `
       <div class="flex items-center gap-2">
-        <img src="${userProfile.picture}" alt="${userProfile.given_name}" class="w-6 h-6 rounded-full">
+        <div class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+          <span class="text-primary text-sm">${userProfile.given_name[0]}</span>
+        </div>
         <span class="text-primary">${userProfile.given_name}</span>
       </div>
     `;
@@ -203,7 +230,9 @@ function updateAuthUI() {
       
       mobileSignInBtn.innerHTML = `
         <div class="flex items-center gap-2">
-          <img src="${userProfile.picture}" alt="${userProfile.given_name}" class="w-6 h-6 rounded-full">
+          <div class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+            <span class="text-primary text-sm">${userProfile.given_name[0]}</span>
+          </div>
           <span class="text-primary">${userProfile.given_name}</span>
         </div>
       `;
@@ -303,68 +332,15 @@ function updateAuthUI() {
     const emailInput = document.getElementById('contact-email');
     if (emailInput) {
       emailInput.removeAttribute('readonly');
-      if (emailInput.value.includes('@gmail.com')) {
+      if (emailInput.value === userProfile?.email) {
         emailInput.value = '';
       }
     }
   }
 }
 
-// Main document ready function
-document.addEventListener("DOMContentLoaded", function () {
-  // Check if user is already signed in (from localStorage)
-  const savedProfile = localStorage.getItem('userProfile');
-  if (savedProfile) {
-    try {
-      userProfile = JSON.parse(savedProfile);
-      // Check if auth is still valid
-      if (isAuthValid()) {
-      updateAuthUI();
-      } else {
-        // Auth expired, clear it
-        userProfile = null;
-        localStorage.removeItem('userProfile');
-      }
-    } catch (e) {
-      localStorage.removeItem('userProfile');
-    }
-  }
-
-  // Auth modal controls
-  const authModal = document.getElementById('authModal');
-  const signInBtn = document.getElementById('signInBtn');
-  const mobileSignInBtn = document.getElementById('mobileSignInBtn');
-  const closeAuthModal = document.getElementById('closeAuthModal');
-  
-  // Auth modal functionality
-  if (signInBtn) {
-    // Sign in button click handler is now managed in updateAuthUI
-    // This ensures proper behavior based on current auth state
-  }
-  
-  if (mobileSignInBtn) {
-    // Mobile sign in button click handler is now managed in updateAuthUI
-    // This ensures proper behavior based on current auth state
-  }
-  
-  if (closeAuthModal) {
-    closeAuthModal.addEventListener('click', function() {
-      authModal.classList.add('hidden');
-    });
-  }
-  
-  // Close modal when clicking outside
-  if (authModal) {
-    authModal.addEventListener('click', function(e) {
-      if (e.target === authModal) {
-        authModal.classList.add('hidden');
-      }
-    });
-  }
-
-  // Initialize auth UI
-  updateAuthUI();
-
+// Function to initialize the application
+function initApp() {
   // Quiz button initialization if it exists
   const quizBtn = document.getElementById('quiz-btn');
   if (quizBtn) {
@@ -717,4 +693,28 @@ document.addEventListener("DOMContentLoaded", function () {
       myChart.resize();
     });
   }
+}
+
+// Main document ready function
+document.addEventListener("DOMContentLoaded", async function () {
+  // Check if user is already signed in (from localStorage)
+  const savedProfile = localStorage.getItem('userProfile');
+  if (savedProfile) {
+    try {
+      userProfile = JSON.parse(savedProfile);
+      // Check if auth is still valid
+      if (await isAuthValid()) {
+        updateAuthUI();
+      } else {
+        // Auth expired, clear it
+        userProfile = null;
+        localStorage.removeItem('userProfile');
+      }
+    } catch (e) {
+      localStorage.removeItem('userProfile');
+    }
+  }
+
+  // Initialize rest of the application
+  initApp();
 });
