@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "Frontend for Project Trinoyon",
   "scripts": {
-    "build:css": "tailwindcss -i ./styles/input.css -o ./style.css --watch"
+    "build:css": "tailwindcss -i ./styles/input.css -o ./style.css --watch",
+    "start": "live-server"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.16",
     "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.27"
+    "live-server": "^1.2.2",
+    "postcss": "^8.4.27",
+    "tailwindcss": "^3.4.16"
   }
 }
