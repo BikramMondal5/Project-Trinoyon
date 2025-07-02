@@ -2263,7 +2263,7 @@ video {
 
 .border-primary {
   --tw-border-opacity: 1;
-  border-color: rgb(255 60 125 / var(--tw-border-opacity, 1));
+  border-color: #1E88E5;
 }
 
 .border-purple-100 {
@@ -2397,7 +2397,7 @@ video {
 
 .bg-primary {
   --tw-bg-opacity: 1;
-  background-color: rgb(255 60 125 / var(--tw-bg-opacity, 1));
+  background-color: #1E88E5;
 }
 
 .bg-primary\/10 {
@@ -2995,7 +2995,7 @@ video {
 
 .text-primary {
   --tw-text-opacity: 1;
-  color: rgb(255 60 125 / var(--tw-text-opacity, 1));
+  color: #1E88E5;
 }
 
 .text-purple-600 {
@@ -3524,7 +3524,7 @@ video {
 
 .hover\:border-primary:hover {
   --tw-border-opacity: 1;
-  border-color: rgb(255 60 125 / var(--tw-border-opacity, 1));
+  border-color: #1E88E5;
 }
 
 .hover\:border-purple-300:hover {
@@ -3620,7 +3620,7 @@ video {
 
 .hover\:text-primary:hover {
   --tw-text-opacity: 1;
-  color: rgb(255 60 125 / var(--tw-text-opacity, 1));
+  color: #1E88E5;
 }
 
 .hover\:text-primary\/90:hover {
@@ -3660,7 +3660,7 @@ video {
 
 .focus\:border-primary:focus {
   --tw-border-opacity: 1;
-  border-color: rgb(255 60 125 / var(--tw-border-opacity, 1));
+  border-color: #1E88E5;
 }
 
 .focus\:outline-none:focus {
@@ -3670,7 +3670,7 @@ video {
 
 .focus\:ring-primary:focus {
   --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(255 60 125 / var(--tw-ring-opacity, 1));
+  --tw-ring-color: #1E88E5;
 }
 
 .focus\:hover\:text-center:hover:focus {

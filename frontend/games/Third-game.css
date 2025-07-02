@@ -86,7 +86,7 @@ le>
             position: absolute;
             width: 4px;
             height: 15px;
-            background-color: #ff3c7d;
+            background-color: #1E88E5;
             border-radius: 2px;
             z-index: 2;
         }
@@ -116,7 +116,7 @@ le>
             position: absolute;
             width: 6px;
             height: 6px;
-            background-color: #ff3c7d;
+            background-color: #1E88E5;
             border-radius: 50%;
             top: 10px;
             left: 17px;
@@ -136,7 +136,7 @@ le>
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: radial-gradient(circle, #ff3c7d, #ffcc00, transparent);
+            background: radial-gradient(circle, #1E88E5, #ffcc00, transparent);
             animation: explode 0.5s forwards;
             z-index: 4;
         }
@@ -184,9 +184,9 @@ le>
         
         .menu-screen h2 {
             font-size: 40px;
-            color: #ff3c7d;
+            color: #1E88E5;
             margin-bottom: 20px;
-            text-shadow: 0 0 10px #ff3c7d;
+            text-shadow: 0 0 10px #1E88E5;
         }
         
         .menu-screen p {
