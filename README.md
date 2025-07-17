@@ -1,5 +1,6 @@
 # 🕉️🔱 Project-Trinoyon — Contribute Code to the Society
 
+![preview image](Trinoyon.png)
 Welcome to **Project-Trinoyon** — a heartfelt initiative to make Durga Puja a celebration for everyone! This project is dedicated to bringing smiles to the faces of underprivileged individuals, especially those living on the streets, during this vibrant festival.
 
 We combine the power of 💸 donations, 🎮 gamified ad revenue, 🤖 machine learning engagement, and 🫂 community interaction to make a real social impact — all through one immersive and meaningful digital experience.
