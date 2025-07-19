@@ -95,6 +95,7 @@ Project-Trinoyon strives to bring inclusivity to the celebration by using a tech
 
 Every voice, every contribution matters.
 
+Present Contributors(In alphabetical order): Arijit Sarkar, Koushik Ghosh, Rakesh Adak, Upolobdhi Karmakar, Yuvraj Singh
 ## 📬 Suggestions & Collaboration
 
 We value your creativity and feedback!  
