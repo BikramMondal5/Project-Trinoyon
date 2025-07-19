@@ -4,6 +4,7 @@
   "description": "Welcome to **Project-Trinoyon** — a heartfelt initiative to make Durga Puja a celebration for everyone! This project is dedicated to bringing smiles to the faces of underprivileged individuals, especially those living on the streets, during this vibrant festival.",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +17,21 @@
   "bugs": {
     "url": "https://github.com/BikramMondal5/Project-Trinoyon/issues"
   },
-  "homepage": "https://github.com/BikramMondal5/Project-Trinoyon#readme"
+  "homepage": "https://github.com/BikramMondal5/Project-Trinoyon#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "mongodb": "^6.17.0",
+    "mongoose": "^8.16.4",
+    "razorpay": "^2.9.6"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17"
+  }
 }

@@ -4,7 +4,7 @@
   "description": "Frontend for Project Trinoyon",
   "scripts": {
     "build:css": "tailwindcss -i ./styles/input.css -o ./style.css --watch",
-    "start": "live-server"
+    "start": "node app.js"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",

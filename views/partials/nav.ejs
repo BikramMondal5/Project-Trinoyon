@@ -1,0 +1,65 @@
+<!-- Header with Bengali Pattern -->
+  <div class="bengali-pattern h-4 w-full"></div>
+  <!-- Navigation -->
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <a href="#" class="flex-shrink-0 flex items-center">
+            <div class="logo"></div>
+          </a>
+          <div class="hidden lg:ml-10 lg:flex lg:space-x-4 xl:space-x-8">
+             <a href="/" id="home-link"
+              class="px-1 pt-1 text-sm xl:text-base font-medium border-b-2 transition-colors duration-200 
+                      <%= currentRoute === 'index' 
+                          ? 'text-primary border-primary' 
+                          : 'text-gray-700 border-transparent hover:text-primary hover:border-primary' 
+                      %>">
+              Home
+            </a>
+
+            <a href="/games"
+                class="px-1 pt-1 text-sm xl:text-base font-medium border-b-2 transition-colors duration-200 
+                        <%= currentRoute === 'games' 
+                            ? 'text-primary border-primary' 
+                            : 'text-gray-700 border-transparent hover:text-primary hover:border-primary' 
+                        %>">
+                Play to Donate
+            </a>
+            <a href="https://quiz-challenge-pink.vercel.app/"
+              class="text-gray-700 hover:text-primary px-1 pt-1 text-sm xl:text-base font-medium border-b-2 border-transparent hover:border-primary transition-colors duration-200">Quizzes</a>
+            <a href="/stories"
+              class="text-gray-700 hover:text-primary px-1 pt-1 text-sm xl:text-base font-medium border-b-2 border-transparent hover:border-primary transition-colors duration-200">Stories</a>
+            <a href="https://pujo-gallery-roan.vercel.app/"
+              class="text-gray-700 hover:text-primary px-1 pt-1 text-sm xl:text-base font-medium border-b-2 border-transparent hover:border-primary transition-colors duration-200">Pujo Gallery</a>
+            <a href="/vp"
+              class="text-gray-700 hover:text-primary px-1 pt-1 text-sm xl:text-base font-medium border-b-2 border-transparent hover:border-primary transition-colors duration-200">Virtual Pujo</a>
+            <a href="/impact"
+                class="px-1 pt-1 text-sm xl:text-base font-medium border-b-2 transition-colors duration-200 
+                        <%= currentRoute === 'impact' 
+                            ? 'text-primary border-primary' 
+                            : 'text-gray-700 border-transparent hover:text-primary hover:border-primary' 
+                        %>">
+                Impacts
+            </a>
+            <a href="<%= currentRoute === 'index' ? '#contact' : '/#contact' %>"
+              id="contact-link"
+              class="text-gray-700 hover:text-primary px-1 pt-1 text-sm xl:text-base font-medium border-b-2 border-transparent hover:border-primary transition-colors duration-200">
+              Contact Us
+            </a>
+          </div>
+        </div>
+        <div class="flex items-center space-x-4">
+          <a href="<%= currentRoute === 'index' ? '#donate' : '/#donate' %>"
+            class="hidden sm:block bg-primary text-white px-3 xl:px-4 py-2 rounded-button text-sm xl:text-base font-medium shadow-md hover:bg-primary/90 whitespace-nowrap transition-colors duration-200">Donate
+            Now</a>
+          <button id="signInBtn"
+            class="bg-primary text-white px-3 xl:px-4 py-2 rounded-button text-sm xl:text-base font-medium shadow-md hover:bg-primary/90 whitespace-nowrap transition-colors duration-200">Sign In</button>
+          <button type="button" id="menuButton"
+            class="lg:hidden text-gray-700 hover:text-primary w-10 h-10 flex items-center justify-center transition-colors duration-200">
+            <i class="ri-menu-line ri-lg"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
