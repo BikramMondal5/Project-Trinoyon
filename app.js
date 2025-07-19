@@ -84,5 +84,5 @@ app.get('/impact', (req, res) => {
 
 
 // Start Server
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => console.log(`✅ Server running at http://localhost:${PORT}`));

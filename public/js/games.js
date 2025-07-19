@@ -1,5 +1,5 @@
 // API URL
-const API_URL = 'http://localhost:3001/api';
+const API_URL = 'http://localhost:3002/api';
 
 // Game navigation handlers
 document.querySelector('#play-btn2').addEventListener('click', function() {
