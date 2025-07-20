@@ -101,16 +101,17 @@ router.post('/api/create-order', async (req, res) => {
   }
 });
 
-// Verify payment endpoint - ONLY save to database on successful verification
+// Verify payment endpoint - Use Order ID to prevent duplicates
+// Enhanced verify payment endpoint with better debugging and error handling
 router.post('/api/verify-payment', async (req, res) => {
   try {
-    console.log('🔍 Payment verification request:', req.body);
-
+    console.log('🔍 === NEW PAYMENT VERIFICATION REQUEST ===');
+    console.log('📥 Raw request body:', JSON.stringify(req.body, null, 2));
+    
     const { 
       razorpay_payment_id, 
       razorpay_order_id, 
       razorpay_signature,
-      // Additional data from frontend
       donor_name,
       donor_email, 
       donor_phone,
@@ -119,144 +120,159 @@ router.post('/api/verify-payment', async (req, res) => {
       notes
     } = req.body;
 
+    // Enhanced validation with detailed logging
+    console.log('🔍 Validation check:');
+    console.log('  - Payment ID:', razorpay_payment_id ? '✅' : '❌ MISSING');
+    console.log('  - Order ID:', razorpay_order_id ? '✅' : '❌ MISSING');
+    console.log('  - Signature:', razorpay_signature ? '✅' : '❌ MISSING');
+    console.log('  - Amount:', amount ? `✅ ${amount}` : '❌ MISSING');
+    console.log('  - Donor Name:', donor_name ? `✅ ${donor_name}` : '❌ MISSING');
+
     if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
-      console.log('❌ Missing payment verification data');
+      console.log('❌ Missing required payment verification data');
       return res.status(400).json({
         success: false,
-        message: 'Missing required payment verification data'
+        message: 'Missing required payment verification data',
+        missing: {
+          payment_id: !razorpay_payment_id,
+          order_id: !razorpay_order_id,
+          signature: !razorpay_signature
+        }
       });
     }
 
-    // Verify signature
+    // Enhanced signature verification with debugging
+    console.log('🔐 Signature verification process:');
+    console.log('  - Order ID:', razorpay_order_id);
+    console.log('  - Payment ID:', razorpay_payment_id);
+    
     const body = razorpay_order_id + '|' + razorpay_payment_id;
+    console.log('  - Body string:', body);
+    console.log('  - Key secret exists:', process.env.RAZORPAY_KEY_SECRET ? '✅' : '❌ MISSING');
+    
+    if (!process.env.RAZORPAY_KEY_SECRET) {
+      console.error('❌ RAZORPAY_KEY_SECRET is missing from environment variables');
+      return res.status(500).json({
+        success: false,
+        message: 'Payment service configuration error'
+      });
+    }
+
     const expectedSignature = crypto
       .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
       .update(body.toString())
       .digest('hex');
 
+    console.log('  - Expected signature:', expectedSignature);
+    console.log('  - Received signature:', razorpay_signature);
+    
     const isAuthentic = expectedSignature === razorpay_signature;
-    console.log('🔐 Signature verification:', isAuthentic ? '✅ Valid' : '❌ Invalid');
+    console.log('  - Signature match:', isAuthentic ? '✅ VALID' : '❌ INVALID');
 
-    if (isAuthentic) {
-      // Check if donation already exists (prevent duplicates)
-      const existingDonation = await Donation.findOne({ 
-        razorpayOrderId: razorpay_order_id 
+    if (!isAuthentic) {
+      console.log('❌ Invalid signature - Payment verification failed');
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Invalid payment signature',
+        debug: process.env.NODE_ENV === 'development' ? {
+          expected: expectedSignature,
+          received: razorpay_signature,
+          body: body
+        } : undefined
       });
+    }
 
-      if (existingDonation) {
-        console.log('⚠️ Donation already exists for order:', razorpay_order_id);
-        return res.json({
-          success: true,
-          message: 'Payment already verified',
-          donation: existingDonation
+    // Signature is valid, proceed with database operations
+    console.log('✅ Signature verified successfully, proceeding to save donation');
+
+    // Prepare donation data with validation
+    const donationData = {
+      razorpayOrderId: razorpay_order_id,
+      razorpayPaymentId: razorpay_payment_id,
+      razorpaySignature: razorpay_signature,
+      amount: Number(amount), // Ensure amount is a number
+      currency: currency || 'INR',
+      status: 'completed',
+      paidAt: new Date(),
+      notes: notes || {},
+      donorName: donor_name || 'Anonymous',
+      donorEmail: donor_email || null,
+      donorPhone: donor_phone || null
+    };
+
+    console.log('💾 Prepared donation data:', JSON.stringify(donationData, null, 2));
+
+
+      // Create new donation
+      console.log('💾 Creating new donation entry...');
+      const donation = new Donation(donationData);
+      
+      // Validate before saving
+      const validationError = donation.validateSync();
+      if (validationError) {
+        console.error('❌ Validation error before save:', validationError.errors);
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid donation data',
+          errors: Object.keys(validationError.errors).map(key => ({
+            field: key,
+            message: validationError.errors[key].message
+          }))
         });
       }
 
-      // Create donation record ONLY on successful payment verification
-      const donationData = {
-        razorpayOrderId: razorpay_order_id,
-        razorpayPaymentId: razorpay_payment_id,
-        razorpaySignature: razorpay_signature,
-        amount: amount,
-        currency: currency || 'INR',
-        status: 'completed',
-        paidAt: new Date(),
-        notes: notes,
-        donorName: donor_name,
-        donorEmail: donor_email,
-        donorPhone: donor_phone
-      };
-
-      console.log('💾 Saving successful donation to database:', donationData);
-
-      const donation = new Donation(donationData);
-      await donation.save();
-
-      console.log('✅ Payment verified and donation saved:', donation._id);
+      // Save to database
+      const savedDonation = await donation.save();
+      console.log('✅ NEW donation saved successfully with ID:', savedDonation._id);
 
       res.json({ 
         success: true, 
         message: 'Payment verified and donation recorded successfully',
-        donation: donation
+        donation: savedDonation,
+        isNewDonation: true
       });
 
-    } else {
-      console.log('❌ Invalid signature for order:', razorpay_order_id);
+    } catch (saveError) {
+      console.error('❌ Database save error:', saveError);
       
-      // Do NOT save to database for invalid signatures
-      res.status(400).json({ 
-        success: false, 
-        message: 'Invalid payment signature' 
-      });
-    }
-
-  } catch (error) {
-    console.error('❌ Error verifying payment:', error);
-    
-    if (error.name === 'ValidationError') {
-      console.error('MongoDB Validation Error:', error.errors);
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid donation data',
-        errors: Object.keys(error.errors).map(key => ({
-          field: key,
-          message: error.errors[key].message
-        }))
-      });
-    }
-
-    if (error.code === 11000) {
-      console.error('Duplicate key error:', error.keyPattern);
-      return res.status(400).json({
-        success: false,
-        message: 'Donation already exists for this payment'
-      });
-    }
-    
-    res.status(500).json({ 
-      success: false,
-      message: 'Failed to verify payment',
-      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
-    });
-  }
-});
-
-// Get all donations
-router.get('/api/donations', async (req, res) => {
-  try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 50;
-    const skip = (page - 1) * limit;
-
-    const donations = await Donation.find({})
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .lean();
-
-    const totalDonations = await Donation.countDocuments();
-
-    res.json({
-      success: true,
-      donations,
-      pagination: {
-        currentPage: page,
-        totalPages: Math.ceil(totalDonations / limit),
-        totalDonations,
-        hasNext: skip + limit < totalDonations,
-        hasPrev: page > 1
+      if (saveError.name === 'ValidationError') {
+        console.error('Validation errors:', saveError.errors);
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid donation data',
+          errors: Object.keys(saveError.errors).map(key => ({
+            field: key,
+            message: saveError.errors[key].message,
+            value: saveError.errors[key].value
+          }))
+        });
       }
-    });
-  } catch (error) {
-    console.error('Error fetching donations:', error);
-    res.status(500).json({ 
-      success: false,
-      message: 'Failed to fetch donations',
-      error: error.message
-    });
-  }
+  }})
+      
+     
+// Test endpoint to verify Razorpay configuration
+router.get('/api/test-razorpay-config', (req, res) => {
+  console.log('🔧 Testing Razorpay configuration...');
+  
+  const config = {
+    hasKeyId: !!process.env.RAZORPAY_KEY_ID,
+    hasKeySecret: !!process.env.RAZORPAY_KEY_SECRET,
+    razorpayInitialized: !!razorpay,
+    keyIdLength: process.env.RAZORPAY_KEY_ID ? process.env.RAZORPAY_KEY_ID.length : 0,
+    keySecretLength: process.env.RAZORPAY_KEY_SECRET ? process.env.RAZORPAY_KEY_SECRET.length : 0
+  };
+  
+  console.log('Configuration status:', config);
+  
+  res.json({
+    success: true,
+    config: {
+      ...config,
+      // Don't expose actual keys in response
+      keyId: process.env.RAZORPAY_KEY_ID ? `${process.env.RAZORPAY_KEY_ID.substring(0, 8)}...` : null
+    }
+  });
 });
-
 // Get donation statistics
 router.get('/api/donation-stats', async (req, res) => {
   try {

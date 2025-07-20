@@ -3,170 +3,135 @@ const mongoose = require('mongoose');
 const donationSchema = new mongoose.Schema({
   razorpayOrderId: {
     type: String,
-    required: true,
-    unique: true,
+    required: [true, 'Razorpay Order ID is required'],
     index: true
   },
   razorpayPaymentId: {
     type: String,
-    default: null
+    required: [true, 'Razorpay Payment ID is required'],
+    index: true // NO unique constraint
   },
   razorpaySignature: {
     type: String,
-    default: null
+    required: [true, 'Razorpay Signature is required']
   },
   amount: {
     type: Number,
-    required: true,
+    required: [true, 'Amount is required'],
     min: [1, 'Amount must be at least 1']
   },
   currency: {
     type: String,
+    required: true,
     default: 'INR',
-    enum: ['INR', 'USD', 'EUR'] // Add supported currencies
+    enum: ['INR', 'USD', 'EUR']
+  },
+  status: {
+    type: String,
+    required: true,
+    enum: ['pending', 'completed', 'failed'],
+    default: 'completed'
+  },
+  paidAt: {
+    type: Date,
+    required: true,
+    default: Date.now
+  },
+  donorName: {
+    type: String,
+    required: [true, 'Donor name is required'],
+    trim: true,
+    maxlength: [100, 'Donor name cannot exceed 100 characters']
+  },
+  donorEmail: {
+    type: String,
+    required: false,
+    trim: true,
+    lowercase: true,
+    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email'],
+    maxlength: [100, 'Email cannot exceed 100 characters']
+  },
+  donorPhone: {
+    type: String,
+    required: false,
+    trim: true,
+    maxlength: [20, 'Phone number cannot exceed 20 characters']
   },
   notes: {
     type: mongoose.Schema.Types.Mixed,
     default: {}
   },
-  donorName: {
-    type: String,
-    default: null,
-    trim: true
-  },
-  donorEmail: {
-    type: String,
-    default: null,
-    lowercase: true,
-    trim: true,
-    validate: {
-      validator: function(v) {
-        return !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-      },
-      message: 'Invalid email format'
-    }
-  },
-  donorPhone: {
-    type: String,
-    default: null,
-    trim: true
-  },
-  status: {
-    type: String,
-    enum: {
-      values: ['pending', 'completed', 'failed'],
-      message: 'Status must be pending, completed, or failed'
-    },
-    default: 'pending'
-  },
-    cancelledAt: {
-    type: Date,
-    default: null
-    },
-  errorDescription: {
-    type: String,
-    default: null
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  paidAt: {
-    type: Date,
-    default: null
+  donationSequence: {
+    type: Number,
+    default: 1
   }
-  // Remove updatedAt since timestamps: true already adds it
 }, {
-  timestamps: true // This adds createdAt and updatedAt automatically
+  timestamps: true,
+  versionKey: false
 });
 
-// Indexes for better performance
-donationSchema.index({ status: 1 });
+// Indexes for performance
 donationSchema.index({ createdAt: -1 });
-donationSchema.index({ paidAt: -1 });
-donationSchema.index({ donorEmail: 1 }); // Added for donor lookup
+donationSchema.index({ donorEmail: 1 });
+donationSchema.index({ status: 1 });
+donationSchema.index({ donorName: 1 });
+donationSchema.index({ donorEmail: 1, createdAt: -1 });
+donationSchema.index({ donorName: 1, createdAt: -1 });
 
-// Pre-save middleware to ensure data consistency
-donationSchema.pre('save', function(next) {
-  if (this.status === 'completed' && !this.paidAt) {
-    this.paidAt = new Date();
-  }
-  if (this.status === 'completed' && (!this.razorpayPaymentId || !this.razorpaySignature)) {
-    return next(new Error('Payment ID and signature are required for completed donations'));
-  }
-  next();
-});
-
-// Static methods for analytics
-donationSchema.statics.getTotalDonations = function() {
+// Donation statistics
+donationSchema.statics.getDonationStats = function () {
   return this.aggregate([
     { $match: { status: 'completed' } },
     {
       $group: {
         _id: null,
         totalAmount: { $sum: '$amount' },
-        totalCount: { $sum: 1 }
+        totalDonations: { $sum: 1 },
+        averageDonation: { $avg: '$amount' },
+        minDonation: { $min: '$amount' },
+        maxDonation: { $max: '$amount' }
       }
     }
   ]);
 };
 
-donationSchema.statics.getMonthlyDonations = function() {
-  const currentDate = new Date();
-  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-  
+// Donor statistics
+donationSchema.statics.getDonorStats = function (donorIdentifier) {
+  const matchQuery = donorIdentifier.includes('@')
+    ? { donorEmail: donorIdentifier, status: 'completed' }
+    : { donorName: donorIdentifier, status: 'completed' };
+
   return this.aggregate([
-    {
-      $match: {
-        status: 'completed',
-        paidAt: { $gte: firstDayOfMonth }
-      }
-    },
+    { $match: matchQuery },
     {
       $group: {
         _id: null,
-        monthlyAmount: { $sum: '$amount' },
-        monthlyCount: { $sum: 1 }
+        totalAmount: { $sum: '$amount' },
+        totalDonations: { $sum: 1 },
+        firstDonation: { $min: '$createdAt' },
+        lastDonation: { $max: '$createdAt' }
       }
     }
   ]);
 };
 
-donationSchema.statics.getDonationStats = async function() {
-  try {
-    const [totalStats] = await this.getTotalDonations();
-    const [monthlyStats] = await this.getMonthlyDonations();
-    
-    return {
-      totalAmount: totalStats?.totalAmount || 0,
-      totalDonations: totalStats?.totalCount || 0,
-      monthlyAmount: monthlyStats?.monthlyAmount || 0,
-      monthlyDonations: monthlyStats?.monthlyCount || 0
-    };
-  } catch (error) {
-    console.error('Error getting donation stats:', error);
-    return {
-      totalAmount: 0,
-      totalDonations: 0,
-      monthlyAmount: 0,
-      monthlyDonations: 0
-    };
+// Pre-save logic
+donationSchema.pre('save', async function (next) {
+  if (this.amount <= 0) return next(new Error('Amount must be greater than 0'));
+  if (!this.donorName || this.donorName.trim() === '') return next(new Error('Donor name is required'));
+
+  if (this.isNew && this.donorEmail) {
+    try {
+      const count = await this.constructor.countDocuments({
+        donorEmail: this.donorEmail,
+        status: 'completed'
+      });
+      this.donationSequence = count + 1;
+    } catch (error) {
+      console.log('Could not set donation sequence:', error.message);
+    }
   }
-};
-
-// Instance method to update payment status
-donationSchema.methods.markAsCompleted = function(paymentId, signature) {
-  this.razorpayPaymentId = paymentId;
-  this.razorpaySignature = signature;
-  this.status = 'completed';
-  this.paidAt = new Date();
-  return this.save();
-};
-
-donationSchema.methods.markAsFailed = function(errorDescription) {
-  this.status = 'failed';
-  this.errorDescription = errorDescription;
-  return this.save();
-};
+  next();
+});
 
 module.exports = mongoose.model('Donation', donationSchema);

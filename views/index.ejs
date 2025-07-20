@@ -112,7 +112,7 @@
             </div>
           </div>
             
-   <!-- Razorpay Payment -->
+        <!-- Razorpay Payment -->
         <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1">           
           <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-6 mx-auto">             
             <i class="ri-bank-card-line ri-xl text-yellow-600"></i>           
@@ -145,309 +145,411 @@
               <span>Donate Securely</span>             
             </button>           
           </div>
+
+          <!-- Donor Information Modal -->
+          <div id="donorModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white p-8 rounded-xl shadow-2xl border border-gray-100 max-w-md w-full mx-4 transform transition-all duration-300">
+              <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <i class="ri-user-line ri-xl text-yellow-600"></i>
+              </div>
+              <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Donor Information <br>
+              <span class="text-sm text-gray-500">Donate to get your name in our Impact page</span></h3>
+
+              <div class="space-y-4">
+                <div>
+                  <label for="donorName" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                  <input type="text" id="donorName" placeholder="Enter your full name" 
+                         class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all duration-300">
+                </div>
+                
+                <div>
+                  <label for="donorEmail" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                  <input type="email" id="donorEmail" placeholder="Enter your email address" 
+                         class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all duration-300">
+                </div>
+
+                <div>
+                  <label for="donorPhone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number (Optional)</label>
+                  <input type="tel" id="donorPhone" placeholder="Enter your phone number" 
+                         class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all duration-300">
+                </div>
+              </div>
+
+              <div class="flex space-x-3 mt-8">
+                <button id="cancelDonation" 
+                        class="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all duration-300">
+                  Cancel
+                </button>
+                <button id="proceedToPay" 
+                        class="flex-1 px-4 py-3 bg-yellow-500 text-white rounded-lg font-medium hover:bg-yellow-600 transition-all duration-300 inline-flex items-center justify-center space-x-2">
+                  <i class="ri-secure-payment-line"></i>
+                  <span>Proceed to Pay</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-          <!-- Razorpay Script -->
+        <!-- Razorpay Script -->
           <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
           <script>
-            // Global variables
-            let selectedAmount = 100;
-            let razorpayOptions = null;
-            let currentDonorData = {};
+          let selectedAmount = 100;
+          let razorpayOptions = null;
+          let currentDonorData = {};
 
-            // Amount selection functions
-            function selectAmount(amount) {
+          // Amount selection functions
+          function selectAmount(amount) {
+            selectedAmount = amount;
+            document.getElementById('selectedAmount').textContent = '₹' + amount;
+            document.getElementById('customAmount').value = amount;
+
+            const buttons = document.querySelectorAll('.donation-amount-btn');
+            buttons.forEach(btn => {
+              btn.classList.remove('bg-yellow-200', 'border-yellow-500');
+              btn.classList.add('bg-gray-100');
+            });
+
+            const selectedBtn = document.querySelector(`[onclick="selectAmount(${amount})"]`);
+            if (selectedBtn) {
+              selectedBtn.classList.remove('bg-gray-100');
+              selectedBtn.classList.add('bg-yellow-200', 'border-yellow-500');
+            }
+          }
+
+          function updateSelectedAmount() {
+            const customInput = document.getElementById('customAmount');
+            const amount = parseInt(customInput.value) || 0;
+
+            if (customInput.value !== '' && amount >= 0) {
+              // Update selectedAmount even if it's less than minimum
               selectedAmount = amount;
               document.getElementById('selectedAmount').textContent = '₹' + amount;
-              document.getElementById('customAmount').value = amount;
 
+              // Clear preset button selection when typing custom amount
               const buttons = document.querySelectorAll('.donation-amount-btn');
               buttons.forEach(btn => {
                 btn.classList.remove('bg-yellow-200', 'border-yellow-500');
                 btn.classList.add('bg-gray-100');
               });
+            } else if (customInput.value === '') {
+              // Only reset to 100 when input is completely empty
+              selectedAmount = 100;
+              document.getElementById('selectedAmount').textContent = '₹100';
+            }
+          }
 
-              const selectedBtn = document.querySelector(`[onclick="selectAmount(${amount})"]`);
-              if (selectedBtn) {
-                selectedBtn.classList.remove('bg-gray-100');
-                selectedBtn.classList.add('bg-yellow-200', 'border-yellow-500');
-              }
+          // Modal functions
+          function showDonorModal() {
+            document.getElementById('donorModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+          }
+
+          function hideDonorModal() {
+            document.getElementById('donorModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+          }
+
+          function validateDonorInfo() {
+            const name = document.getElementById('donorName').value.trim();
+            const email = document.getElementById('donorEmail').value.trim();
+
+            if (!name) {
+              showNotification('Please enter your full name', 'error');
+              return false;
             }
 
-            function updateSelectedAmount() {
-              const customInput = document.getElementById('customAmount');
-              const amount = parseInt(customInput.value) || 0;
-
-              if (amount > 0) {
-                selectedAmount = amount;
-                document.getElementById('selectedAmount').textContent = '₹' + amount;
-
-                const buttons = document.querySelectorAll('.donation-amount-btn');
-                buttons.forEach(btn => {
-                  btn.classList.remove('bg-yellow-200', 'border-yellow-500');
-                  btn.classList.add('bg-gray-100');
-                });
-              } else if (customInput.value === '') {
-                selectedAmount = 100;
-                document.getElementById('selectedAmount').textContent = '₹100';
-              }
+            if (!email) {
+              showNotification('Please enter your email address', 'error');
+              return false;
             }
 
-            async function createOrder(donorInfo = {}) {
-              try {
-                const uniqueReceipt = `receipt_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
-                
-                const response = await fetch('/api/create-order', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    amount: selectedAmount,
-                    receipt: uniqueReceipt,
-                    donor_name: donorInfo.name || '',
-                    donor_email: donorInfo.email || '',
-                    donor_phone: donorInfo.phone || '',
-                    notes: {
-                      address: "Trinoyon Donation"
-                    }
-                  }),
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                  throw new Error(data.message || 'Failed to create order');
-                }
-
-                return data;
-              } catch (error) {
-                console.error('Error creating order:', error);
-                showNotification(error.message || 'Error creating order. Please try again.', 'error');
-                return null;
-              }
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+              showNotification('Please enter a valid email address', 'error');
+              return false;
             }
 
-            async function verifyPayment(paymentData, orderData, donorInfo = {}) {
-              try {
-                console.log('🔍 Verifying payment and saving to database...');
-                
-                const response = await fetch('/api/verify-payment', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    ...paymentData,
-                    // Include donation data to save to database
-                    donor_name: donorInfo.name || '',
-                    donor_email: donorInfo.email || '',
-                    donor_phone: donorInfo.phone || '',
-                    amount: selectedAmount,
-                    currency: orderData.currency,
-                    notes: {
-                      address: "Trinoyon Donation"
-                    }
-                  }),
-                });
-                
-                const data = await response.json();
-                
-                if (!response.ok) {
-                  throw new Error(data.message || 'Verification failed');
-                }
-                
-                return data;
-              } catch (error) {
-                console.error('Error verifying payment:', error);
-                return { success: false, error: error.message || 'Verification failed' };
-              }
-            }
+            return true;
+          }
 
-            function showNotification(message, type = 'success') {
-              const notification = document.createElement('div');
-              notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 ${
-                type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-              }`;
-              notification.textContent = message;
-
-              document.body.appendChild(notification);
-
-              setTimeout(() => {
-                notification.style.opacity = '0';
-                setTimeout(() => {
-                  if (document.body.contains(notification)) {
-                    document.body.removeChild(notification);
-                  }
-                }, 300);
-              }, 5000);
-            }
-
-            async function handlePayment() {
-              if (selectedAmount < 100) {
-                showNotification('Minimum donation amount is ₹100', 'error');
-                return;
-              }
-
-              const payButton = document.getElementById('rzp-button');
-              const originalText = payButton.innerHTML;
-              payButton.innerHTML = '<i class="ri-loader-4-line animate-spin"></i> Processing...';
-              payButton.disabled = true;
-
-              try {
-                console.log('🚀 Starting payment process...');
-
-                // Step 1: Create Razorpay order (no DB entry)
-                const orderData = await createOrder(currentDonorData);
-                if (!orderData || !orderData.success) {
-                  throw new Error(orderData?.message || 'Failed to create order');
-                }
-
-                console.log('✅ Razorpay order created (no DB entry yet):', orderData.orderId);
-
-                // Step 2: Setup Razorpay options
-                razorpayOptions = {
-                  key: orderData.key_id,
-                  amount: orderData.amount,
-                  currency: orderData.currency,
-                  name: "Trinoyon",
-                  description: `Donation of ₹${selectedAmount}`,
-                  image: "/logo.png",
-                  order_id: orderData.orderId,
-                  handler: async function (response) {
-                    try {
-                      console.log('💳 Payment completed, verifying and saving to database...');
-                      
-                      // Verify payment AND save to database in one step
-                      const verificationResult = await verifyPayment(
-                        {
-                          razorpay_payment_id: response.razorpay_payment_id,
-                          razorpay_order_id: response.razorpay_order_id,
-                          razorpay_signature: response.razorpay_signature
-                        },
-                        orderData,
-                        currentDonorData
-                      );
-
-                      if (verificationResult.success) {
-                        showNotification('Thank you for your donation! Payment successful.', 'success');
-                        selectedAmount = 100;
-                        selectAmount(100);
-                        console.log('✅ Payment verified and saved to database successfully');
-                      } else {
-                        showNotification(verificationResult.message || 'Payment verification failed. Please contact support.', 'error');
-                        console.log('❌ Payment verification failed - not saved to database');
-                      }
-                    } catch (error) {
-                      console.error('Error in payment verification:', error);
-                      showNotification('Payment verification failed. Please contact support.', 'error');
-                    }
-                  },
-                  prefill: {
-                    name: currentDonorData.name || "",
-                    email: currentDonorData.email || "",
-                    contact: currentDonorData.phone || ""
-                  },
+          async function createOrder(donorInfo = {}) {
+            try {
+              const uniqueReceipt = `receipt_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+              
+              const response = await fetch('/api/create-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  amount: selectedAmount,
+                  receipt: uniqueReceipt,
+                  donor_name: donorInfo.name || '',
+                  donor_email: donorInfo.email || '',
+                  donor_phone: donorInfo.phone || '',
                   notes: {
                     address: "Trinoyon Donation"
-                  },
-                  theme: {
-                    color: "#EAB308"
-                  },
-                  modal: {
-                    ondismiss: function () {
-                      console.log('❌ Payment modal dismissed by user - no database entry made');
-                      showNotification('Payment cancelled', 'error');
-                    }
                   }
-                };
+                }),
+              });
 
-                // Step 3: Create Razorpay instance and setup event handlers
-                const rzp = new Razorpay(razorpayOptions);
-                
-                rzp.on('payment.failed', async function (response) {
-                  console.log('❌ Payment failed - no database entry made:', response.error);
-                  showNotification(`Payment failed: ${response.error.description}`, 'error');
-                });
+              const data = await response.json();
 
-                // Step 4: Open Razorpay modal
-                console.log('📱 Opening Razorpay payment modal...');
-                rzp.open();
-
-              } catch (error) {
-                console.error('Error in payment process:', error);
-                showNotification(error.message || 'An error occurred. Please try again.', 'error');
-              } finally {
-                payButton.innerHTML = originalText;
-                payButton.disabled = false;
+              if (!response.ok) {
+                throw new Error(data.message || 'Failed to create order');
               }
+
+              return data;
+            } catch (error) {
+              console.error('Error creating order:', error);
+              showNotification(error.message || 'Error creating order. Please try again.', 'error');
+              return null;
+            }
+          }
+
+          async function verifyPayment(paymentData, orderData, donorInfo = {}) {
+            try {
+              console.log('🔍 Verifying payment and saving to database...');
+              
+              const response = await fetch('/api/verify-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  ...paymentData,
+                  // Include donation data to save to database
+                  donor_name: donorInfo.name || '',
+                  donor_email: donorInfo.email || '',
+                  donor_phone: donorInfo.phone || '',
+                  amount: selectedAmount,
+                  currency: orderData.currency,
+                  notes: {
+                    address: "Trinoyon Donation"
+                  }
+                }),
+              });
+              
+              const data = await response.json();
+              
+              if (!response.ok) {
+                throw new Error(data.message || 'Verification failed');
+              }
+              
+              return data;
+            } catch (error) {
+              console.error('Error verifying payment:', error);
+              return { success: false, error: error.message || 'Verification failed' };
+            }
+          }
+
+          function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 ${
+              type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            }`;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+              notification.style.opacity = '0';
+              setTimeout(() => {
+                if (document.body.contains(notification)) {
+                  document.body.removeChild(notification);
+                }
+              }, 300);
+            }, 5000);
+          }
+
+          async function handlePayment() {
+            // Allow any positive amount
+            if (selectedAmount <= 0) {
+              showNotification('Please enter a valid donation amount', 'error');
+              return;
             }
 
-            // Function to collect donor information (if you have a form)
-            function collectDonorInfo() {
-              // You can modify this to collect data from your form fields
-              return {
-                name: document.getElementById('donorName')?.value || '',
-                email: document.getElementById('donorEmail')?.value || '',
-                phone: document.getElementById('donorPhone')?.value || ''
+            const payButton = document.getElementById('proceedToPay');
+            const originalText = payButton.innerHTML;
+            payButton.innerHTML = '<i class="ri-loader-4-line animate-spin"></i> Processing...';
+            payButton.disabled = true;
+
+            try {
+              console.log('🚀 Starting payment process with amount: ₹' + selectedAmount);
+
+              // Step 1: Create Razorpay order (no DB entry)
+              const orderData = await createOrder(currentDonorData);
+              if (!orderData || !orderData.success) {
+                throw new Error(orderData?.message || 'Failed to create order');
+              }
+
+              console.log('✅ Razorpay order created (no DB entry yet):', orderData.orderId);
+
+              // Step 2: Setup Razorpay options
+              razorpayOptions = {
+                key: orderData.key_id,
+                amount: orderData.amount,
+                currency: orderData.currency,
+                name: "Trinoyon",
+                description: `Donation of ₹${selectedAmount}`,
+                image: "/images/Logo.png",
+                order_id: orderData.orderId,
+                handler: async function (response) {
+                  try {
+                    console.log('💳 Payment completed for ₹' + selectedAmount + ', verifying and saving to database...');
+                    
+                    // Verify payment AND save to database in one step
+                    const verificationResult = await verifyPayment(
+                      {
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature
+                      },
+                      orderData,
+                      currentDonorData
+                    );
+
+                    if (verificationResult.success) {
+                      showNotification(`Thank you ${currentDonorData.name} for your donation of ₹${selectedAmount}! Payment successful.`, 'success');
+                      // Reset to default after successful payment
+                      selectedAmount = 100;
+                      selectAmount(100);
+                      // Clear form
+                      document.getElementById('donorName').value = '';
+                      document.getElementById('donorEmail').value = '';
+                      document.getElementById('donorPhone').value = '';
+                      hideDonorModal();
+                      console.log('✅ Payment verified and saved to database successfully');
+                    } else {
+                      showNotification(verificationResult.message || 'Payment verification failed. Please contact support.', 'error');
+                      console.log('❌ Payment verification failed - not saved to database');
+                    }
+                  } catch (error) {
+                    console.error('Error in payment verification:', error);
+                    showNotification('Payment verification failed. Please contact support.', 'error');
+                  }
+                },
+                prefill: {
+                  name: currentDonorData.name || "",
+                  email: currentDonorData.email || "",
+                  contact: currentDonorData.phone || ""
+                },
+                notes: {
+                  address: "Trinoyon Donation"
+                },
+                theme: {
+                  color: "#EAB308"
+                },
+                modal: {
+                  ondismiss: function () {
+                    console.log('❌ Payment modal dismissed by user - no database entry made');
+                    showNotification('Payment cancelled', 'error');
+                    hideDonorModal();
+                  }
+                }
+              };
+
+              // Step 3: Create Razorpay instance and setup event handlers
+              const rzp = new Razorpay(razorpayOptions);
+              
+              rzp.on('payment.failed', async function (response) {
+                console.log('❌ Payment failed - no database entry made:', response.error);
+                showNotification(`Payment failed: ${response.error.description}`, 'error');
+                hideDonorModal();
+              });
+
+              // Step 4: Hide modal and open Razorpay modal
+              hideDonorModal();
+              console.log('📱 Opening Razorpay payment modal...');
+              rzp.open();
+
+            } catch (error) {
+              console.error('Error in payment process:', error);
+              showNotification(error.message || 'An error occurred. Please try again.', 'error');
+            } finally {
+              payButton.innerHTML = originalText;
+              payButton.disabled = false;
+            }
+          }
+
+          // Function to collect donor information (if you have a form)
+          function collectDonorInfo() {
+            // You can modify this to collect data from your form fields
+            return {
+              name: document.getElementById('donorName')?.value || '',
+              email: document.getElementById('donorEmail')?.value || '',
+              phone: document.getElementById('donorPhone')?.value || ''
+            };
+          }
+
+          document.addEventListener('DOMContentLoaded', function () {
+            selectAmount(100);
+
+            const payButton = document.getElementById('rzp-button');
+            if (payButton) {
+              payButton.onclick = function (e) {
+                e.preventDefault();
+                
+                // Show donor information modal first
+                showDonorModal();
               };
             }
 
-            document.addEventListener('DOMContentLoaded', function () {
-              selectAmount(100);
+            // Modal event listeners
+            document.getElementById('cancelDonation').onclick = function() {
+              hideDonorModal();
+            };
 
-              const payButton = document.getElementById('rzp-button');
-              if (payButton) {
-                payButton.onclick = function (e) {
-                  e.preventDefault();
-                  
-                  // Collect donor information before payment
-                  currentDonorData = collectDonorInfo();
-                  
-                  handlePayment();
-                };
+            document.getElementById('proceedToPay').onclick = function() {
+              if (validateDonorInfo()) {
+                // Collect donor information before payment
+                currentDonorData = collectDonorInfo();
+                handlePayment();
               }
+            };
 
-              const customAmountInput = document.getElementById('customAmount');
-              if (customAmountInput) {
-                customAmountInput.addEventListener('input', function () {
-                  this.value = this.value.replace(/[^0-9]/g, '');
-                  updateSelectedAmount();
-                });
+            // Close modal on outside click
+            document.getElementById('donorModal').onclick = function(e) {
+              if (e.target === this) {
+                hideDonorModal();
+              }
+            };
 
-                customAmountInput.addEventListener('keypress', function (e) {
+            // Handle Enter key in form fields
+            ['donorName', 'donorEmail', 'donorPhone'].forEach(fieldId => {
+              const field = document.getElementById(fieldId);
+              if (field) {
+                field.addEventListener('keypress', function(e) {
                   if (e.key === 'Enter') {
                     e.preventDefault();
-                    currentDonorData = collectDonorInfo();
-                    handlePayment();
+                    if (validateDonorInfo()) {
+                      currentDonorData = collectDonorInfo();
+                      handlePayment();
+                    }
                   }
                 });
               }
             });
+
+            const customAmountInput = document.getElementById('customAmount');
+            if (customAmountInput) {
+              customAmountInput.addEventListener('input', function () {
+                // Allow any numeric input without restriction
+                this.value = this.value.replace(/[^0-9]/g, '');
+                updateSelectedAmount();
+              });
+
+              customAmountInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  showDonorModal();
+                }
+              });
+            }
+          });
+
           </script>
-
-
 
         </div>
       </div>
       <script>
-      function selectAmount(amount) {
-        // Update the yellow display area
-        document.getElementById('selectedAmount').textContent = '₹' + amount;
-        
-        // Update the input field value
-        document.getElementById('customAmount').value = amount;
-      }
-
-      function updateSelectedAmount() {
-        const customInput = document.getElementById('customAmount');
-        const amount = parseInt(customInput.value) || 0;
-        
-        if (amount > 0) {
-          // Update the yellow display area when typing
-          document.getElementById('selectedAmount').textContent = '₹' + amount;
-        } else if (customInput.value === '') {
-          // Reset to default if input is empty
-          document.getElementById('selectedAmount').textContent = '₹100';
-        }
-      }
-
       // Function to copy text to clipboard
       async function copyToClipboard(text) {
         try {
@@ -457,7 +559,14 @@
           showToast('Failed to copy text');
         }
       }
+      </script>
 
+
+
+        </div>
+      </div>
+      <script>
+      
       // Function to copy all bank details
       function copyBankDetails() {
         const bankDetails = 
