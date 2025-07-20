@@ -51,11 +51,11 @@ const donationSchema = new mongoose.Schema({
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email'],
     maxlength: [100, 'Email cannot exceed 100 characters']
   },
-  donorPhone: {
-    type: String,
-    required: false,
-    trim: true,
-    maxlength: [20, 'Phone number cannot exceed 20 characters']
+  message:{
+     type: String,
+     required: [true, 'Please send us a message'],
+     trim:true,
+     maxlength:[100, 'Message cannot exceed 100 characters']
   },
   notes: {
     type: mongoose.Schema.Types.Mixed,

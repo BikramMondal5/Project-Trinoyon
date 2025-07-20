@@ -27,7 +27,7 @@ router.post('/api/create-order', async (req, res) => {
   try {
     console.log('📝 Create order request received:', req.body);
 
-    const { amount, currency = 'INR', receipt, notes, donor_name, donor_email, donor_phone } = req.body;
+    const { amount, currency = 'INR', receipt, notes, donor_name, donor_email, message } = req.body;
 
     // Validate amount
     if (!amount || amount < 1) {
@@ -59,7 +59,7 @@ router.post('/api/create-order', async (req, res) => {
         // Store user data in notes for later use
         donor_name: donor_name,
         donor_email: donor_email,
-        donor_phone: donor_phone
+        message:message,
       }
     };
 
@@ -79,7 +79,7 @@ router.post('/api/create-order', async (req, res) => {
       userData: {
         donor_name,
         donor_email,
-        donor_phone
+        message,
       }
     });
 
@@ -114,7 +114,7 @@ router.post('/api/verify-payment', async (req, res) => {
       razorpay_signature,
       donor_name,
       donor_email, 
-      donor_phone,
+      message,
       amount,
       currency,
       notes
@@ -197,7 +197,7 @@ router.post('/api/verify-payment', async (req, res) => {
       notes: notes || {},
       donorName: donor_name || 'Anonymous',
       donorEmail: donor_email || null,
-      donorPhone: donor_phone || null
+      message: message || 'Anonymous'
     };
 
     console.log('💾 Prepared donation data:', JSON.stringify(donationData, null, 2));
