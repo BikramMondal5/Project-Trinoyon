@@ -1,11 +1,10 @@
 /**
  * Application Configuration
  * 
- * IMPORTANT: Replace these placeholder values with your actual EmailJS credentials
- * before deploying, but DO NOT commit actual credentials to GitHub.
+ * IMPORTANT: This file contains placeholder values that will be replaced
+ * during the Vercel build process with actual environment variables.
  * 
- * For local development, you can replace these values directly.
- * For production, consider using environment variables.
+ * For local development, use config.js.local which is not committed to the repository.
  */
 window.appConfig = {
     // EmailJS configuration

@@ -767,10 +767,18 @@
   // Close modals
   document.getElementById('closeSuccessModal').addEventListener('click', function() {
     document.getElementById('successModal').classList.add('hidden');
+    // Ensure button is reset when modal is closed
+    const submitButton = document.getElementById('submit-button');
+    submitButton.disabled = false;
+    submitButton.innerHTML = 'Send Message';
   });
 
   document.getElementById('closeErrorModal').addEventListener('click', function() {
     document.getElementById('errorModal').classList.add('hidden');
+    // Ensure button is reset when modal is closed
+    const submitButton = document.getElementById('submit-button');
+    submitButton.disabled = false;
+    submitButton.innerHTML = 'Send Message';
   });
 </script>
 </body>
