@@ -3,11 +3,9 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 require("dotenv").config();
-
 const app = express();
 const paymentRoutes = require("./routes/payment");
-
-// Import the Donation model (THIS WAS MISSING!)
+// Import the Donation model
 const Donation = require('./models/Donation'); // Adjust path based on your folder structure
 
 // DB Connect
@@ -91,7 +89,7 @@ app.get('/vp', (req, res) => {
   res.render('vp');
 });
 
-// Fixed Impact route
+// SINGLE Impact route - Remove the other duplicate ones
 app.get('/impact', async (req, res) => {
   try {
     console.log('📊 Fetching donations for impact page...');
@@ -104,41 +102,94 @@ app.get('/impact', async (req, res) => {
     .limit(20) // Limit to 20 recent donations
     .select('donorName amount message createdAt')
     .lean();
-    
+   
     console.log(`✅ Found ${donations.length} donations`);
-    
+   
     // Get donation statistics
     const statsResult = await Donation.getDonationStats();
-    const stats = statsResult.length > 0 ? statsResult[0] : {
+    const baseStats = statsResult.length > 0 ? statsResult[0] : {
       totalAmount: 0,
       totalDonations: 0,
       averageDonation: 0
     };
-    
-    console.log('📈 Stats:', stats);
-    
+   
+    // Find the top donor
+    const topDonorResult = await Donation.aggregate([
+      { $match: { status: 'completed' } },
+      {
+        $group: {
+          _id: '$donorName',
+          totalDonated: { $sum: '$amount' },
+          donationCount: { $sum: 1 }
+        }
+      },
+      { $sort: { totalDonated: -1 } },
+      { $limit: 1 }
+    ]);
+
+    // Create top donor object with proper error handling
+    const topDonor = topDonorResult.length > 0 ? {
+      name: topDonorResult[0]._id || 'Unknown Donor',
+      amount: topDonorResult[0].totalDonated || 0,
+      initials: (topDonorResult[0]._id || 'Unknown Donor')
+        .split(' ')
+        .map(n => n[0] || '')
+        .join('')
+        .substring(0, 2)
+        .toUpperCase() || 'UD'
+    } : {
+      name: 'No donations yet',
+      amount: 0,
+      initials: 'NA'
+    };
+
+    // Count unique donors
+    const uniqueDonors = await Donation.distinct('donorName', { status: 'completed' });
+    const uniqueDonorCount = uniqueDonors.length;
+
+    // Define your fundraising goal
+    const fundraisingGoal = 200000; // ₹2,00,000
+   
+    // Calculate progress percentage
+    const progressPercentage = Math.min((baseStats.totalAmount / fundraisingGoal) * 100, 100);
+   
+    // Combine all stats
+    const stats = {
+      ...baseStats,
+      uniqueDonorCount,
+      topDonor,
+      fundraisingGoal,
+      progressPercentage: Math.round(progressPercentage * 10) / 10 ,// Round to 1 decimal place
+    };
+
+    console.log('📈 Final stats:', stats);
+   
     // Render the impact page with data
     res.render('impact', {
       donations: donations || [], // Ensure it's always an array
-      stats: stats || {
-        totalAmount: 0,
-        totalDonations: 0,
-        averageDonation: 0
-      },
+      stats: stats,
       title: 'Impact - Our Contributors',
-      currentRoute: 'impact' // Add this for navigation consistency
+      currentRoute: 'impact'
     });
-    
+   
   } catch (error) {
     console.error('❌ Error fetching donations for impact page:', error);
    
-    // Render with empty data if there's an error
+    // Render with safe default data if there's an error
     res.render('impact', {
-      donations: [], // Always provide empty array
+      donations: [],
       stats: {
         totalAmount: 0,
         totalDonations: 0,
-        averageDonation: 0
+        averageDonation: 0,
+        uniqueDonorCount: 0,
+        topDonor: { 
+          name: 'No donations yet', 
+          amount: 0, 
+          initials: 'NA' 
+        },
+        fundraisingGoal: 200000,
+        progressPercentage: 0
       },
       title: 'Impact - Our Contributors',
       currentRoute: 'impact',

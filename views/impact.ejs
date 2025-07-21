@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Trinoyon - Impact Dashboard</title>
-    <script src="https://cdn.tailwindcss.com/3.4.16">
-    </script>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
@@ -15,401 +14,576 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
- <%- include("partials/nav") %>
+    <%- include("partials/nav") %>
 
-  <!-- Main Content -->
-  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-    
-    <!-- Dashboard Header -->
-    <div class="text-center mb-10">
-      <h1 class="heading">
-        <span>📊</span><b> Impact Dashboard</b>
-      </h1>
-      <p class="ml-10 text-black mt-1">
-        Live overview of our collective impact this Durga Puja 🎉
-      </p>
-    </div>
-
-    <!-- Donation Summary -->
-    <section class="mb-12 bg-white rounded-3xl shadow-md p-8 border border-sky-100">
-      <h2 class="summary font-bold text-black text-center mb-8">Donation Summary</h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <!-- Card 1 -->
-        <div class="bg-sky-50 p-6 rounded-2xl border border-sky-200 shadow hover:shadow-md transition">
-          <h3 class="text-sm font-semibold text-sky-500 mb-2">Total Donations Collected</h3>
-          <div class="flex items-end justify-between">
-            <div class="text-2xl font-bold text-black">₹<span class="counter" data-target="1285750">1,45,230</span></div>
-          </div>
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <!-- Dashboard Header -->
+        <div class="text-center mb-10">
+            <h1 class="heading">
+                <span>📊</span><b> Impact Dashboard</b>
+            </h1>
+            <div class="w-24 h-1 bg-primary mx-auto mb-4 rounded-full"></div>
+            <p class="ml-10 text-black mt-1">
+                Live overview of our collective impact this Durga Puja 🎉
+            </p>
         </div>
 
-        <!-- Card 2 -->
-        <div class="bg-sky-50 p-6 rounded-2xl border border-sky-200 shadow hover:shadow-md transition">
-          <h3 class="text-sm font-semibold text-sky-500 mb-2">Number of Unique Donors</h3>
-          <div class="flex items-end justify-between">
-            <div class="text-2xl font-bold text-black"><span class="counter" data-target="1432">45</span></div>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="bg-sky-50 p-6 rounded-2xl border border-sky-200 shadow hover:shadow-md transition">
-          <h3 class="text-sm font-semibold text-sky-500 mb-2">Top Donor</h3>
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-sky-200 text-sky-800 rounded-full flex items-center justify-center font-medium">
-                RK
-              </div>
-              <div>
-                <div class="font-medium text-black">Rahul Kumar</div>
-                <div class="text-sm text-gray-600">₹25,000</div>
-              </div>
-            </div>
-            <svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      <!-- Progress Bar -->
-      <div class="bg-sky-50 p-6 rounded-2xl border border-sky-200 shadow">
-        <div class="flex flex-col md:flex-row md:items-center justify-between mb-3">
-          <div class="font-semibold text-black">Progress Toward Goal</div>
-          <div class="text-gray-700 font-medium">₹1,45,230 of ₹2,00,000</div>
-        </div>
-        <div class="w-full bg-sky-200 rounded-full h-3">
-          <div id="progress-bar" class="bg-sky-500 h-3 rounded-full transition-all duration-700" style="width: 64.3%"></div>
-        </div>
-        <div class="flex justify-end mt-2">
-          <div class="text-sm text-gray-600">64.3% Complete</div>
-        </div>
-      </div>
-    </section>
-
-<!-- People Helped -->
-<section class="mb-8">
-   <h2 class="summary font-bold text-black text-center mb-8">People Helped</h2>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    <!-- Card 1 -->
-    <div class="bg-white rounded-2xl shadow-sm border border-sky-200 p-6 card-hover">
-      <div class="w-12 h-12 bg-sky-400 text-white rounded-full flex items-center justify-center mb-4">
-        <!-- Icon -->
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-        </svg>
-      </div>
-      <h3 class="text-lg font-semibold text-black"><span class="counter" data-target="24750">120</span></h3>
-      <p class="text-gray-600 text-sm">Meals Distributed</p>
-    </div>
-
-    <!-- Repeat for other cards, just changing icon BG color and counter text -->
-    <div class="bg-white rounded-2xl shadow-sm border border-sky-200 p-6 card-hover">
-      <div class="w-12 h-12 bg-amber-400 text-white rounded-full flex items-center justify-center mb-4">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-        </svg>
-      </div>
-      <h3 class="text-lg font-semibold text-black"><span class="counter" data-target="8320">125</span></h3>
-      <p class="text-gray-600 text-sm">Clothes Donated</p>
-    </div>
-
-    <div class="bg-white rounded-2xl shadow-sm border border-sky-200 p-6 card-hover">
-      <div class="w-12 h-12 bg-emerald-400 text-white rounded-full flex items-center justify-center mb-4">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.5a2.5 2.5 0 110 5H9m4.5-5H15a2.5 2.5 0 110 5h-1.5m-5-5v5m5-5v5" />
-        </svg>
-      </div>
-      <h3 class="text-lg font-semibold text-black"><span class="counter" data-target="3450">200</span></h3>
-      <p class="text-gray-600 text-sm">Children Supported</p>
-    </div>
-
-    <div class="bg-white rounded-2xl shadow-sm border border-sky-200 p-6 card-hover">
-      <div class="w-12 h-12 bg-purple-400 text-white rounded-full flex items-center justify-center mb-4">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-      </div>
-      <h3 class="text-lg font-semibold text-black"><span class="counter" data-target="1280">54</span></h3>
-      <p class="text-gray-600 text-sm">Families Reached</p>
-    </div>
-  </div>
-</section>
-
-<!-- Present Contributors -->
-<section class="mb-8">
-  <h2 class="summary font-bold text-black text-center mb-8">Present Contributors</h2>
-  <div class="bg-white rounded-2xl shadow-sm border border-sky-200">
-    <div class="p-6 space-y-4">
-      
-      <!-- Debug info (remove this after fixing) -->
-      <% if (typeof donations === 'undefined') { %>
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          Error: 'donations' variable is not defined. Check your route handler.
-        </div>
-      <% } %>
-      
-      <!-- Dynamic Contributor Cards Container -->
-      <div id="donations-container">
-        <% if (donations && donations.length > 0) { %>
-          <% donations.forEach((donation, index) => { %>
-            <div class="donation-card flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100 mb-4 <%= index >= 3 ? 'hidden' : '' %>" 
-                 data-index="<%= index %>">
-              <div class="w-12 h-12 bg-<%= ['sky', 'indigo', 'rose', 'teal', 'lime', 'purple', 'orange', 'pink'][index % 8] %>-200 text-<%= ['sky', 'indigo', 'rose', 'teal', 'lime', 'purple', 'orange', 'pink'][index % 8] %>-800 rounded-full flex items-center justify-center font-bold">
-                <%= donation.donorName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() %>
-              </div>
-              <div class="flex-1">
-                <div class="flex justify-between items-start">
-                  <div>
-                    <div class="font-semibold text-black"><%= donation.donorName %></div>
-                    <div class="text-sm text-sky-600">
-                      <%= new Date(donation.createdAt).toLocaleDateString('en-IN', { 
-                        day: 'numeric', 
-                        month: 'short', 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                      }) %>
+        <!-- Donation Summary -->
+        <section class="mb-12 bg-white rounded-3xl shadow-md p-8 border border-sky-100">
+            <h2 class="summary font-bold text-black text-center mb-8">Donation Summary</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <!-- Card 1 -->
+                <div class="bg-sky-50 p-6 rounded-2xl border border-sky-200 shadow hover:shadow-md transition">
+                    <h3 class="text-sm font-semibold text-sky-500 mb-2">Total Donations Collected</h3>
+                    <div class="flex items-end justify-between">
+                        <div class="text-2xl font-bold text-black">₹<span class="counter" data-target="<%= (stats && stats.totalAmount) ? stats.totalAmount : 0 %>"><%= (stats && stats.totalAmount) ? Number(stats.totalAmount).toLocaleString('en-IN') : '0' %></span></div>
                     </div>
-                  </div>
-                  <div class="text-right">
-                    <div class="font-bold text-black">₹<%= donation.amount.toLocaleString('en-IN') %></div>
-                    <div class="text-xs text-emerald-600">Donation</div>
-                  </div>
                 </div>
-                <div class="mt-2">
-                  <div class="text-xs text-sky-600">"<%= donation.message %>"</div>
+                <!-- Card 2 -->
+                <div class="bg-sky-50 p-6 rounded-2xl border border-sky-200 shadow hover:shadow-md transition">
+                    <h3 class="text-sm font-semibold text-sky-500 mb-2">Number of Contributors</h3>
+                    <div class="flex items-end justify-between">
+                        <div class="text-2xl font-bold text-black"><span class="counter" data-target="<%= stats?.totalDonations || 0 %>"><%= stats?.totalDonations || '0' %></span></div>
+                    </div>
                 </div>
-              </div>
-              <div class="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                <!-- Card 3 - Dynamic Top Donor -->
+                <div class="bg-sky-50 p-6 rounded-2xl border border-sky-200 shadow hover:shadow-md transition">
+                    <h3 class="text-sm font-semibold text-sky-500 mb-2">Top Donor</h3>
+                    <% 
+                    // Find the top donor from donations array
+                    let topDonor = null;
+                    if (donations && donations.length > 0) {
+                        topDonor = donations.reduce((max, donation) => {
+                            return donation.amount > max.amount ? donation : max;
+                        });
+                    }
+                    %>
+                    
+                    <% if (topDonor) { %>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-sky-200 text-sky-800 rounded-full flex items-center justify-center font-medium">
+                                    <%= topDonor.donorName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() %>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-black"><%= topDonor.donorName %></div>
+                                    <div class="text-sm text-gray-600">₹<%= topDonor.amount.toLocaleString('en-IN') %></div>
+                                </div>
+                            </div>
+                            <svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                        </div>
+                    <% } else { %>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center font-medium">
+                                    --
+                                </div>
+                                <div>
+                                    <div class="font-medium text-gray-500">No donations yet</div>
+                                    <div class="text-sm text-gray-400">₹0</div>
+                                </div>
+                            </div>
+                            <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                        </div>
+                    <% } %>
+                </div>
             </div>
-          <% }) %>
-        <% } else { %>
-          <div class="text-center py-8 text-gray-500">
-            <p>No donations found yet. Be the first to contribute!</p>
-          </div>
-        <% } %>
-      </div>
+            <div class="bg-sky-50 p-6 rounded-2xl border border-sky-200 shadow">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-3">
+                    <div class="font-semibold text-black">Progress Toward Goal</div>
+                    <div class="text-gray-700 font-medium">
+                        ₹<span id="current-amount"><%= (stats && stats.totalAmount) ? Number(stats.totalAmount).toLocaleString('en-IN') : '0' %></span> of 
+                        ₹<span id="goal-amount"><%= (stats && stats.fundraisingGoal) ? Number(stats.fundraisingGoal).toLocaleString('en-IN') : '50,000' %></span>
+                    </div>
+                </div>
+                <!-- Progress Bar -->
+                <div class="w-full bg-sky-200 rounded-full h-3 mb-2 relative overflow-hidden">
+                    <div id="progress-bar"
+                         class="bg-sky-500 h-3 rounded-full transition-all duration-2000 ease-out relative"
+                         style="width: 0%"
+                         data-target="<%= (stats && stats.progressPercentage) ? stats.progressPercentage.toFixed(2) : 0 %>"
+                         data-current="<%= (stats && stats.totalAmount) ? stats.totalAmount : 0 %>"
+                         data-goal="<%= (stats && stats.fundraisingGoal) ? stats.fundraisingGoal : 50000 %>">
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-shimmer"></div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center">
+                    <div class="text-sm text-gray-600">
+                        <span id="donor-count"><%= (stats && stats.totalDonations) ? stats.totalDonations : 0 %></span> donors
+                    </div>
+                    <div class="text-sm text-gray-600">
+                        <span id="progress-text">0.0</span>% Complete
+                    </div>
+                </div>
+            </div>
+        </section>
 
-      <!-- Statistics Summary -->
-      <div class="mt-8 pt-6 border-t border-sky-100 grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
-        <div>
-          <div class="text-2xl font-bold text-black">₹<%= stats?.totalAmount?.toLocaleString('en-IN') || '0' %></div>
-          <div class="text-gray-600 text-sm">Total Donations</div>
-        </div>
-        <div>
-          <div class="text-2xl font-bold text-black"><%= stats?.totalDonations || '0' %></div>
-          <div class="text-gray-600 text-sm">Total Contributors</div>
-        </div>
-        <div>
-          <div class="text-2xl font-bold text-black">₹<%= Math.round(stats?.averageDonation || 0).toLocaleString('en-IN') %></div>
-          <div class="text-gray-600 text-sm">Average Donation</div>
-        </div>
-        <div>
-          <div class="text-2xl font-bold text-black"><%= stats?.totalDonations || '0' %></div>
-          <div class="text-gray-600 text-sm">Total Transactions</div>
-        </div>
-      </div>
+        <!-- People Helped -->
+        <section class="mb-8">
+            <h2 class="summary font-bold text-black text-center mb-8">People Helped</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Card 1 - Meals Distributed -->
+                <div class="bg-white rounded-2xl shadow-sm border border-sky-200 p-6 card-hover">
+                    <div class="w-12 h-12 bg-sky-400 text-white rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-black"><span class="impact-counter">20</span></h3>
+                    <p class="text-gray-600 text-sm">Meals Distributed</p>
+                </div>
+                
+                <!-- Card 2 - Clothes Donated -->
+                <div class="bg-white rounded-2xl shadow-sm border border-sky-200 p-6 card-hover">
+                    <div class="w-12 h-12 bg-amber-400 text-white rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-black"><span class="impact-counter">40</span></h3>
+                    <p class="text-gray-600 text-sm">Clothes Donated</p>
+                </div>
+                
+                <!-- Card 3 - Children Supported -->
+                <div class="bg-white rounded-2xl shadow-sm border border-sky-200 p-6 card-hover">
+                    <div class="w-12 h-12 bg-emerald-400 text-white rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.5a2.5 2.5 0 110 5H9m4.5-5H15a2.5 2.5 0 110 5h-1.5m-5-5v5m5-5v5" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-black"><span class="impact-counter">40</span></h3>
+                    <p class="text-gray-600 text-sm">Children Supported</p>
+                </div>
+                
+                <!-- Card 4 - Families Reached -->
+                <div class="bg-white rounded-2xl shadow-sm border border-sky-200 p-6 card-hover">
+                    <div class="w-12 h-12 bg-purple-400 text-white rounded-full flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-black"><span class="impact-counter">12</span></h3>
+                    <p class="text-gray-600 text-sm">Families Reached</p>
+                </div>
+            </div>
+        </section>
 
-      <!-- Toggle Button (only show if more than 3 donations) -->
-      <% if (donations && donations.length > 3) { %>
-        <div class="mt-6 text-center">
-          <button
-            id="toggle-donations-btn"
-            class="inline-flex items-center gap-2 px-6 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-all duration-300 transform hover:scale-105">
-            <svg id="toggle-icon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-            <span id="toggle-text">View All Donation History (<%= donations.length - 3 %> more)</span>
-          </button>
-        </div>
-      <% } %>
-    </div>
-  </div>
-</section>
+        <!-- Present Contributors -->
+        <section class="mb-8">
+            <h2 class="summary font-bold text-black text-center mb-8">Present Contributors</h2>
+            <div class="bg-white rounded-2xl shadow-sm border border-sky-200">
+                <div class="p-6 space-y-4">
+                    
+                    <!-- Debug info (remove this after fixing) -->
+                    <% if (typeof donations === 'undefined') { %>
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                            Error: 'donations' variable is not defined. Check your route handler.
+                        </div>
+                    <% } %>
+                    
+                    <!-- Dynamic Contributor Cards Container -->
+                    <div id="donations-container">
+                        <% if (donations && donations.length > 0) { %>
+                            <% donations.forEach((donation, index) => { %>
+                                <div class="donation-card flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100 mb-4 <%= index >= 3 ? 'hidden' : '' %>"
+                                      data-index="<%= index %>">
+                                    <div class="w-12 h-12 bg-<%= ['sky', 'indigo', 'rose', 'teal', 'lime', 'purple', 'orange', 'pink'][index % 8] %>-200 text-<%= ['sky', 'indigo', 'rose', 'teal', 'lime', 'purple', 'orange', 'pink'][index % 8] %>-800 rounded-full flex items-center justify-center font-bold">
+                                        <%= donation.donorName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() %>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <div class="font-semibold text-black"><%= donation.donorName %></div>
+                                                <div class="text-sm text-sky-600">
+                                                    <%= new Date(donation.createdAt).toLocaleDateString('en-IN', {
+                                                         day: 'numeric',
+                                                         month: 'short',
+                                                         hour: '2-digit',
+                                                         minute: '2-digit'
+                                                       }) %>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <div class="font-bold text-black">₹<%= donation.amount.toLocaleString('en-IN') %></div>
+                                                <div class="text-xs text-emerald-600">Donation</div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <div class="text-xs text-sky-600">"<%= donation.message %>"</div>
+                                        </div>
+                                    </div>
+                                    <div class="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                                </div>
+                            <% }) %>
+                        <% } else { %>
+                            <div class="text-center py-8 text-gray-500">
+                                <p>No donations found yet. Be the first to contribute!</p>
+                            </div>
+                        <% } %>
+                    </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const toggleBtn = document.getElementById('toggle-donations-btn');
-  const toggleIcon = document.getElementById('toggle-icon');
-  const toggleText = document.getElementById('toggle-text');
-  const donationCards = document.querySelectorAll('.donation-card');
-  
-  let isExpanded = false;
-  const totalDonations = donationCards.length;
-  const hiddenCount = totalDonations - 3;
+                    <!-- Statistics Summary -->
+                    <div class="mt-8 pt-6 border-t border-sky-100 grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+                        <div>
+                            <div class="text-2xl font-bold text-black">₹<%= ((stats && stats.totalAmount) ? stats.totalAmount.toLocaleString('en-IN') : '0') %></div>
+                            <div class="text-gray-600 text-sm">Total Donations</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-black"><%= (stats && stats.totalDonations) ? stats.totalDonations : '0' %></div>
+                            <div class="text-gray-600 text-sm">Total Contributors</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-black">₹<%= (stats && stats.averageDonation) ? Math.round(stats.averageDonation).toLocaleString('en-IN') : '0' %></div>
+                            <div class="text-gray-600 text-sm">Average Donation</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-black"><%= (stats && stats.totalDonations) ? stats.totalDonations : '0' %></div>
+                            <div class="text-gray-600 text-sm">Total Transactions</div>
+                        </div>
+                    </div>
 
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', function() {
-      isExpanded = !isExpanded;
-      
-      // Toggle visibility of cards beyond the first 3
-      donationCards.forEach((card, index) => {
-        if (index >= 3) {
-          if (isExpanded) {
-            card.classList.remove('hidden');
-            // Add smooth animation
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            setTimeout(() => {
-              card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-              card.style.opacity = '1';
-              card.style.transform = 'translateY(0)';
-            }, index * 50); // Stagger the animations
-          } else {
-            card.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(-20px)';
-            setTimeout(() => {
-              card.classList.add('hidden');
-              card.style.opacity = '';
-              card.style.transform = '';
-              card.style.transition = '';
-            }, 200);
-          }
+                    <!-- Toggle Button (only show if more than 3 donations) -->
+                    <% if (donations && donations.length > 3) { %>
+                        <div class="mt-6 text-center">
+                            <button
+                                id="toggle-donations-btn"
+                                class="inline-flex items-center gap-2 px-6 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-all duration-300 transform hover:scale-105">
+                                <svg id="toggle-icon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                                <span id="toggle-text">View All Donation History (<%= donations.length - 3 %> more)</span>
+                            </button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gray-50 py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-extrabold text-gray-800">What People Are Saying</h2>
+                    <p class="mt-4 text-lg text-gray-600">Heartfelt stories from those who felt the impact of your generosity.</p>
+                </div>
+                <div class="grid gap-8 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+                    
+                    <!-- Testimonial 1 -->
+                    <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition duration-300">
+                        <div class="flex items-center mb-4">
+                            <img class="w-12 h-12 rounded-full" src="https://media.craiyon.com/2025-04-24/g0zT31NrQ4yw88vdaeCHbw.webp" alt="User photo">
+                            <div class="ml-4">
+                                <p class="text-gray-900 font-semibold">Suchitra Chatterjee</p>
+                                <p class="text-sm text-gray-500">Kolkata, India</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 italic">"It felt beautiful to donate a small amount and see it contribute to a larger mission. The transparency and community vibe make this platform stand out during the festive season."</p>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition duration-300">
+                        <div class="flex items-center mb-4">
+                            <img class="w-12 h-12 rounded-full" src="https://plus.unsplash.com/premium_photo-1682089892133-556bde898f2c?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW5kaWFuJTIwZmFjZXN8ZW58MHx8MHx8fDA%3D" alt="User photo">
+                            <div class="ml-4">
+                                <p class="text-gray-900 font-semibold">Debesh Mukherjee</p>
+                                <p class="text-sm text-gray-500">Delhi, India</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 italic">"I played the games just to pass some time, but knowing that every minute spent actually helps someone in need — that hit different. Project Trinoyon makes kindness fun and meaningful!"</p>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition duration-300">
+                        <div class="flex items-center mb-4">
+                            <img class="w-12 h-12 rounded-full" src="images/1b4384eea372705219b56ab0c32dc6d6.jpg" alt="User photo">
+                            <div class="ml-4">
+                                <p class="text-gray-900 font-semibold">Tanushree Bandopadhyay</p>
+                                <p class="text-sm text-gray-500">Mumbai, India</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 italic">"I shared a few of our Puja celebration photos in the gallery, and ended up connecting with people across states. It's more than a platform — it's a celebration with purpose."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <style>
+        .heading {
+            font-size: 42px;
         }
-      });
-      
-      // Update button text and icon
-      if (isExpanded) {
-        toggleText.textContent = 'Show Less';
-        toggleIcon.style.transform = 'rotate(180deg)';
-        toggleBtn.classList.add('bg-sky-600');
-      } else {
-        toggleText.textContent = `View All Donation History (${hiddenCount} more)`;
-        toggleIcon.style.transform = 'rotate(0deg)';
-        toggleBtn.classList.remove('bg-sky-600');
-      }
-    });
-  }
+        .summary {
+            font-size: 2rem;
+        }
 
-  // Add hover effects to donation cards
-  donationCards.forEach(card => {
-    card.addEventListener('mouseenter', function() {
-      this.style.transform = 'translateY(-2px)';
-      this.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
-      this.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-      this.style.transform = 'translateY(0)';
-      this.style.boxShadow = '';
-    });
-  });
-});
-</script>
+        /* Progress Bar Animations */
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
 
-<style>
-.donation-card {
-  transition: all 0.2s ease;
-}
+        .animate-shimmer {
+            animation: shimmer 2s infinite;
+        }
 
-.donation-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+        @keyframes progressPulse {
+            0% { transform: scaleY(1); opacity: 0.8; }
+            50% { transform: scaleY(1.05); opacity: 1; }
+            100% { transform: scaleY(1); opacity: 0.9; }
+        }
 
-#toggle-donations-btn:hover {
-  transform: scale(1.05);
-}
+        .progress-bar-animate {
+            animation: progressPulse 2s ease-in-out;
+        }
 
-/* Smooth transitions for show/hide */
-.donation-card.hidden {
-  display: none;
-}
+        .progress-complete {
+            background: linear-gradient(90deg, #10b981, #059669) !important;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
 
-/* Loading animation for new cards */
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+        .amount-animate {
+            animation: countUp 2s ease-out;
+        }
 
-.donation-card.animate-in {
-  animation: slideInUp 0.3s ease forwards;
-}
-</style>
-<section class="bg-gray-50 py-16">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-12">
-      <h2 class="text-3xl font-extrabold text-gray-800">What People Are Saying</h2>
-      <p class="mt-4 text-lg text-gray-600">Heartfelt stories from those who felt the impact of your generosity.</p>
-    </div>
+        @keyframes countUp {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
 
-    <div class="grid gap-8 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
-      
-      <!-- Testimonial 1 -->
-      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition duration-300">
-        <div class="flex items-center mb-4">
-          <img class="w-12 h-12 rounded-full" src="https://media.craiyon.com/2025-04-24/g0zT31NrQ4yw88vdaeCHbw.webp" alt="User photo">
-          <div class="ml-4">
-            <p class="text-gray-900 font-semibold">Suchitra Chatterjee</p>
-            <p class="text-sm text-gray-500">Kolkata, India</p>
-          </div>
-        </div>
-        <p class="text-gray-700 italic">"It felt beautiful to donate a small amount and see it contribute to a larger mission. The transparency and community vibe make this platform stand out during the festive season."</p>
-      </div>
+        /* Donation Card Styles */
+        .donation-card {
+            transition: all 0.2s ease;
+        }
 
-      <!-- Testimonial 2 -->
-      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition duration-300">
-        <div class="flex items-center mb-4">
-          <img class="w-12 h-12 rounded-full" src="https://plus.unsplash.com/premium_photo-1682089892133-556bde898f2c?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW5kaWFuJTIwZmFjZXN8ZW58MHx8MHx8fDA%3D" alt="User photo">
-          <div class="ml-4">
-            <p class="text-gray-900 font-semibold">Debesh Mukherjee</p>
-            <p class="text-sm text-gray-500">Delhi, India</p>
-          </div>
-        </div>
-        <p class="text-gray-700 italic">"I played the games just to pass some time, but knowing that every minute spent actually helps someone in need — that hit different. Project Trinoyon makes kindness fun and meaningful!"</p>
-      </div>
+        .donation-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
-      <!-- Testimonial 3 -->
-      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition duration-300">
-        <div class="flex items-center mb-4">
-          <img class="w-12 h-12 rounded-full" src="images/1b4384eea372705219b56ab0c32dc6d6.jpg" alt="User photo">
-          <div class="ml-4">
-            <p class="text-gray-900 font-semibold">Tanushree Bandopadhyay</p>
-            <p class="text-sm text-gray-500">Mumbai, India</p>
-          </div>
-        </div>
-        <p class="text-gray-700 italic">"I shared a few of our Puja celebration photos in the gallery, and ended up connecting with people across states. It's more than a platform — it's a celebration with purpose."</p>
-      </div>
+        #toggle-donations-btn:hover {
+            transform: scale(1.05);
+        }
 
-    </div>
-  </div>
-</section>
-</main>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const links = document.querySelectorAll(".nav-link");
-    const currentPath = window.location.pathname.split("/").pop().split("#")[0];
+        .donation-card.hidden {
+            display: none;
+        }
 
-    links.forEach(link => {
-      link.classList.remove("text-primary", "border-primary", "text-gray-700", "hover:text-primary", "border-transparent", "hover:border-primary");
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-      const linkPath = link.getAttribute("href").split("/").pop().split("#")[0];
+        .donation-card.animate-in {
+            animation: slideInUp 0.3s ease forwards;
+        }
+    </style>
 
-      if (linkPath === currentPath) {
-        link.classList.add("text-primary", "border-b-2", "border-primary");
-      } else {
-        link.classList.add("text-gray-700", "hover:text-primary", "border-b-2", "border-transparent", "hover:border-primary");
-      }
-    });
-  });
-</script>
-<style>
-  .heading{
-      font-size: 42px;
-  }
-  .summary{
-      font-size: 2rem;
-  }
-</style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Progress Bar Animation
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const currentAmountEl = document.getElementById('current-amount');
+
+            if (progressBar && progressText) {
+                // Get the target percentage from the data attribute
+                const targetPercentage = parseFloat(progressBar.dataset.target) || 0;
+                const currentAmount = parseFloat(progressBar.dataset.current) || 0;
+                const goalAmount = parseFloat(progressBar.dataset.goal) || 50000;
+                
+                // Calculate the actual percentage
+                const actualPercentage = Math.min(((currentAmount / goalAmount) * 100), 100);
+                
+                console.log('Progress Animation:', { 
+                    targetPercentage, 
+                    currentAmount, 
+                    goalAmount, 
+                    actualPercentage 
+                });
+
+                // Animate the progress bar after a short delay
+                setTimeout(() => {
+                    // Set the width with smooth transition
+                    progressBar.style.width = actualPercentage + '%';
+                    
+                    // Add pulse animation
+                    progressBar.classList.add('progress-bar-animate');
+                    
+                    // Change color when goal is reached or nearly reached
+                    if (actualPercentage >= 100) {
+                        setTimeout(() => {
+                            progressBar.classList.add('progress-complete');
+                        }, 1000);
+                    }
+                    
+                    // Remove animation class after animation completes
+                    setTimeout(() => {
+                        progressBar.classList.remove('progress-bar-animate');
+                    }, 2000);
+                    
+                }, 500);
+
+                // Animate the percentage text
+                animateValue(progressText, 0, actualPercentage, 2000, 1);
+
+                // Animate the current amount if it exists
+                if (currentAmountEl && currentAmount > 0) {
+                    currentAmountEl.classList.add('amount-animate');
+                }
+            }
+
+            // Counter Animation for regular counters
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                if (target > 0) {
+                    animateValue(counter, 0, target, 2000, 0, true);
+                }
+            });
+
+            // Impact Counter Animation - Get values directly from the HTML content
+            const impactCounters = document.querySelectorAll('.impact-counter');
+            impactCounters.forEach(counter => {
+                // Get the target value directly from the HTML content
+                const targetValue = parseInt(counter.textContent.replace(/,/g, ''));
+                if (!isNaN(targetValue) && targetValue > 0) {
+                    // Store the original text for reference
+                    const originalText = counter.textContent;
+                    // Start the animation from 0
+                    counter.textContent = '0';
+                    // Animate to the target value
+                    animateValue(counter, 0, targetValue, 2000, 0, true);
+                }
+            });
+
+            // Donation Cards Toggle Functionality
+            const toggleBtn = document.getElementById('toggle-donations-btn');
+            const toggleIcon = document.getElementById('toggle-icon');
+            const toggleText = document.getElementById('toggle-text');
+            const donationCards = document.querySelectorAll('.donation-card');
+            
+            let isExpanded = false;
+            const totalDonations = donationCards.length;
+            const hiddenCount = totalDonations - 3;
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function() {
+                    isExpanded = !isExpanded;
+                    
+                    // Toggle visibility of cards beyond the first 3
+                    donationCards.forEach((card, index) => {
+                        if (index >= 3) {
+                            if (isExpanded) {
+                                card.classList.remove('hidden');
+                                // Add smooth animation
+                                card.style.opacity = '0';
+                                card.style.transform = 'translateY(20px)';
+                                setTimeout(() => {
+                                    card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                                    card.style.opacity = '1';
+                                    card.style.transform = 'translateY(0)';
+                                }, index * 50); // Stagger the animations
+                            } else {
+                                card.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+                                card.style.opacity = '0';
+                                card.style.transform = 'translateY(-20px)';
+                                setTimeout(() => {
+                                    card.classList.add('hidden');
+                                    card.style.opacity = '';
+                                    card.style.transform = '';
+                                    card.style.transition = '';
+                                }, 200);
+                            }
+                        }
+                    });
+                    
+                    // Update button text and icon
+                    if (isExpanded) {
+                        toggleText.textContent = 'Show Less';
+                        toggleIcon.style.transform = 'rotate(180deg)';
+                        toggleBtn.classList.add('bg-sky-600');
+                    } else {
+                        toggleText.textContent = `View All Donation History (${hiddenCount} more)`;
+                        toggleIcon.style.transform = 'rotate(0deg)';
+                        toggleBtn.classList.remove('bg-sky-600');
+                    }
+                });
+            }
+
+            // Add hover effects to donation cards
+            donationCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                    this.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
+                    this.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '';
+                });
+            });
+
+            // Navigation Active State
+            const links = document.querySelectorAll(".nav-link");
+            const currentPath = window.location.pathname.split("/").pop().split("#")[0];
+            links.forEach(link => {
+                link.classList.remove("text-primary", "border-primary", "text-gray-700", "hover:text-primary", "border-transparent", "hover:border-primary");
+                const linkPath = link.getAttribute("href").split("/").pop().split("#")[0];
+                if (linkPath === currentPath) {
+                    link.classList.add("text-primary", "border-b-2", "border-primary");
+                } else {
+                    link.classList.add("text-gray-700", "hover:text-primary", "border-b-2", "border-transparent", "hover:border-primary");
+                }
+            });
+        });
+
+        // Animation utility function
+        function animateValue(element, start, end, duration, decimalPlaces = 0, isAmount = false) {
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Use easing function for smooth animation
+                const easedProgress = easeOutCubic(progress);
+                const currentValue = start + (end - start) * easedProgress;
+                
+                if (isAmount) {
+                    // Format as currency amount
+                    element.textContent = Math.floor(currentValue).toLocaleString('en-IN');
+                } else {
+                    // Format as percentage or number
+                    element.textContent = currentValue.toFixed(decimalPlaces);
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+
+        function easeOutCubic(t) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+    </script>
 </body>
 </html>
