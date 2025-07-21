@@ -1,170 +1,11 @@
-// User authentication state
-let userProfile = null;
+// User authentication state - removed
 const API_URL = 'http://localhost:5000/api';
 
-// Handle user login
-async function handleLogin(event) {
-  event.preventDefault();
-  const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
-
-  try {
-    const response = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      // Store user profile and token
-      userProfile = {
-        id: data.user.id,
-        email: data.user.email,
-        name: data.user.name,
-        given_name: data.user.name.split(' ')[0],
-        token: data.token,
-        auth_time: new Date().getTime()
-      };
-      
-      // Save to localStorage
-      localStorage.setItem('userProfile', JSON.stringify(userProfile));
-      
-      // Update UI
-      updateAuthUI();
-      
-      // Close the modal
-      const authModal = document.getElementById('authModal');
-      if (authModal) {
-        authModal.classList.add('hidden');
-      }
-      
-      // Show welcome toast
-      showToast(`Welcome back, ${userProfile.given_name}!`, 'success');
-    } else {
-      showToast(data.message || 'Login failed', 'error');
-    }
-  } catch (err) {
-    console.error('Login error:', err);
-    showToast('Server error, please try again', 'error');
-  }
-}
-
-// Handle user signup
-async function handleSignup(event) {
-  event.preventDefault();
-  const name = document.getElementById('signupName').value;
-  const email = document.getElementById('signupEmail').value;
-  const password = document.getElementById('signupPassword').value;
-
-  try {
-    const response = await fetch(`${API_URL}/auth/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, email, password }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      // Store user profile and token
-      userProfile = {
-        id: data.user.id,
-        email: data.user.email,
-        name: data.user.name,
-        given_name: data.user.name.split(' ')[0],
-        token: data.token,
-        auth_time: new Date().getTime()
-      };
-      
-      // Save to localStorage
-      localStorage.setItem('userProfile', JSON.stringify(userProfile));
-      
-      // Update UI
-      updateAuthUI();
-      
-      // Close the modal
-      const authModal = document.getElementById('authModal');
-      if (authModal) {
-        authModal.classList.add('hidden');
-      }
-      
-      // Show welcome toast
-      showToast(`Welcome, ${userProfile.given_name}!`, 'success');
-    } else {
-      showToast(data.message || 'Registration failed', 'error');
-    }
-  } catch (err) {
-    console.error('Signup error:', err);
-    showToast('Server error, please try again', 'error');
-  }
-}
-
-// Check if authentication is valid
-async function isAuthValid() {
-  if (!userProfile || !userProfile.token) return false;
-  
-  try {
-    const response = await fetch(`${API_URL}/auth/profile`, {
-      headers: {
-        'Authorization': `Bearer ${userProfile.token}`
-      }
-    });
-
-    return response.ok;
-  } catch (err) {
-    console.error('Auth validation error:', err);
-    return false;
-  }
-}
-
-// Function to toggle between login and signup forms
-function toggleAuthForm(form) {
-  const loginForm = document.getElementById('loginForm');
-  const signupForm = document.getElementById('signupForm');
-  const authTitle = document.getElementById('authTitle');
-  const authSubtitle = document.getElementById('authSubtitle');
-
-  if (form === 'signup') {
-    loginForm.classList.add('hidden');
-    signupForm.classList.remove('hidden');
-    authTitle.textContent = 'Create Account';
-    authSubtitle.textContent = 'Sign up to join our community';
-  } else {
-    loginForm.classList.remove('hidden');
-    signupForm.classList.add('hidden');
-    authTitle.textContent = 'Welcome Back';
-    authSubtitle.textContent = 'Sign in to continue';
-  }
-}
-
-// Sign out function
-async function signOut() {
-  userProfile = null;
-  localStorage.removeItem('userProfile');
-  
-  // Reset button styles immediately
-  const signInBtn = document.getElementById('signInBtn');
-  const mobileSignInBtn = document.getElementById('mobileSignInBtn');
-  
-  if (signInBtn) {
-    signInBtn.classList.remove('bg-transparent', 'border', 'border-primary', 'hover:bg-transparent');
-    signInBtn.classList.add('bg-primary', 'hover:bg-primary/90');
-  }
-  
-  if (mobileSignInBtn) {
-    mobileSignInBtn.classList.remove('bg-transparent', 'border', 'border-primary', 'hover:bg-transparent');
-    mobileSignInBtn.classList.add('bg-primary', 'hover:bg-primary/90');
-  }
-  
-  updateAuthUI();
-  showToast('You have been signed out', 'info');
-}
+// Initialize EmailJS
+(function() {
+  // Load EmailJS with credentials from config.js
+  emailjs.init(window.appConfig?.emailjs?.publicKey || "your_emailjs_public_key");
+})();
 
 // Show toast notification
 function showToast(message, type = 'info') {
@@ -201,144 +42,6 @@ function showToast(message, type = 'info') {
   }, 3000);
 }
 
-// Update UI based on auth state
-function updateAuthUI() {
-  const signInBtn = document.getElementById('signInBtn');
-  const mobileSignInBtn = document.getElementById('mobileSignInBtn');
-  
-  if (!signInBtn) return;
-  
-  if (userProfile) {
-    // Change button style to transparent with border
-    signInBtn.classList.remove('bg-primary', 'hover:bg-primary/90');
-    signInBtn.classList.add('bg-transparent', 'border', 'border-primary', 'hover:bg-transparent');
-    
-    // Create user menu for desktop
-    signInBtn.innerHTML = `
-      <div class="flex items-center gap-2">
-        <div class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
-          <span class="text-primary text-sm">${userProfile.given_name[0]}</span>
-        </div>
-        <span class="text-primary">${userProfile.given_name}</span>
-      </div>
-    `;
-    
-    // Update mobile button
-    if (mobileSignInBtn) {
-      mobileSignInBtn.classList.remove('bg-primary', 'hover:bg-primary/90');
-      mobileSignInBtn.classList.add('bg-transparent', 'border', 'border-primary', 'hover:bg-transparent');
-      
-      mobileSignInBtn.innerHTML = `
-        <div class="flex items-center gap-2">
-          <div class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
-            <span class="text-primary text-sm">${userProfile.given_name[0]}</span>
-          </div>
-          <span class="text-primary">${userProfile.given_name}</span>
-        </div>
-      `;
-    }
-    
-    // Update sign in button to show dropdown on click
-    signInBtn.onclick = function(e) {
-      e.preventDefault();
-      
-      // Create dropdown if it doesn't exist
-      let dropdown = document.getElementById('user-dropdown');
-      if (!dropdown) {
-        dropdown = document.createElement('div');
-        dropdown.id = 'user-dropdown';
-        dropdown.className = 'absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50';
-        dropdown.innerHTML = `
-          <div class="px-4 py-2 border-b border-gray-100">
-            <p class="text-sm font-medium text-gray-900">${userProfile.name}</p>
-            <p class="text-xs text-gray-500">${userProfile.email}</p>
-          </div>
-          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
-          <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Donation History</a>
-          <button id="sign-out-btn" class="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">Sign out</button>
-        `;
-        
-        // Position the dropdown
-        const rect = signInBtn.getBoundingClientRect();
-        dropdown.style.top = `${rect.bottom}px`;
-        dropdown.style.right = `${window.innerWidth - rect.right}px`;
-        
-        document.body.appendChild(dropdown);
-        
-        // Add sign out event listener
-        document.getElementById('sign-out-btn').addEventListener('click', function() {
-          signOut();
-          dropdown.remove();
-        });
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function closeDropdown(e) {
-          if (!dropdown.contains(e.target) && e.target !== signInBtn) {
-            dropdown.remove();
-            document.removeEventListener('click', closeDropdown);
-          }
-        });
-      } else {
-        dropdown.remove();
-      }
-    };
-    
-    // Update mobile sign in button to show sign out option
-    if (mobileSignInBtn) {
-      mobileSignInBtn.onclick = function() {
-        if (confirm('Do you want to sign out?')) {
-          signOut();
-        }
-      };
-    }
-    
-    // Update email field if on contact page
-    const emailInput = document.getElementById('contact-email');
-    const nameInput = document.getElementById('contact-name');
-    if (emailInput) {
-      emailInput.value = userProfile.email;
-      emailInput.setAttribute('readonly', true);
-      
-      // Also prefill name if available
-      if (nameInput && !nameInput.value) {
-        nameInput.value = userProfile.name;
-      }
-    }
-  } else {
-    // Reset to default state
-    signInBtn.textContent = 'Sign In';
-    
-    // Reset button style to original
-    signInBtn.classList.remove('bg-transparent', 'border', 'border-primary');
-    signInBtn.classList.add('bg-primary');
-    
-    signInBtn.onclick = function() {
-      document.getElementById('authModal').classList.remove('hidden');
-    };
-    
-    if (mobileSignInBtn) {
-      mobileSignInBtn.textContent = 'Sign In';
-      
-      // Reset mobile button style to original
-      mobileSignInBtn.classList.remove('bg-transparent', 'border', 'border-primary');
-      mobileSignInBtn.classList.add('bg-primary');
-      
-      mobileSignInBtn.onclick = function() {
-        document.getElementById('authModal').classList.remove('hidden');
-      };
-    }
-    
-    // Clear readonly on email field if on contact page
-    const emailInput = document.getElementById('contact-email');
-    if (emailInput) {
-      emailInput.removeAttribute('readonly');
-      if (emailInput.value === userProfile?.email) {
-        emailInput.value = '';
-      }
-    }
-  }
-}
-
 // Function to initialize the application
 function initApp() {
   // Quiz button initialization if it exists
@@ -366,57 +69,6 @@ function initApp() {
     openGooglePay(amount);
   };
 
-  // Contact form submission handler
-  const contactForm = document.getElementById('contactForm');
-  if (contactForm) {
-    contactForm.addEventListener('submit', function(event) {
-      event.preventDefault();
-      
-      // Check if user is authenticated
-      if (!userProfile || !isAuthValid()) {
-        // Show authentication modal if not signed in or auth expired
-        showToast("Please sign in to submit the form", "info");
-        authModal.classList.remove('hidden');
-        return;
-      }
-      
-      // Get form data
-      const name = document.getElementById('contact-name').value;
-      const email = userProfile.email; // Use authenticated email
-      const subject = document.getElementById('contact-subject').value;
-      const message = document.getElementById('contact-message').value;
-      const isVolunteer = document.getElementById('volunteer').checked;
-      
-      // Show loading state
-      const submitButton = document.getElementById('contact-submit-btn');
-      const originalButtonText = submitButton.textContent;
-      submitButton.textContent = 'Sending...';
-      submitButton.disabled = true;
-      
-      // Construct mailto URL with form data
-      const volunteerText = isVolunteer ? "\n\nI am interested in volunteering." : "";
-      const mailtoSubject = `${subject} - Contact Form Submission from ${name}`;
-      const mailtoBody = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}${volunteerText}`;
-      const mailtoUrl = `mailto:codesnippets45@gmail.com?subject=${encodeURIComponent(mailtoSubject)}&body=${encodeURIComponent(mailtoBody)}`;
-      
-      // Open default email client with pre-filled email
-      window.location.href = mailtoUrl;
-      
-      // Show success message after a short delay
-      setTimeout(() => {
-        submitButton.textContent = originalButtonText;
-        submitButton.disabled = false;
-        showToast("Message sent successfully!", "success");
-        
-        // Reset the form
-        contactForm.reset();
-        
-        // Restore the authenticated user's email in the form
-        document.getElementById('contact-email').value = userProfile.email;
-      }, 1000);
-    });
-  }
-
   // Add event listener for donation form
   const donationForm = document.getElementById('donationForm');
   const proceedToPayBtn = document.getElementById('proceedToPayBtn');
@@ -431,7 +83,6 @@ function initApp() {
       }
       
       // Use the openGooglePay function to redirect to Google Pay app
-      // without passing the amount parameter
       openGooglePay();
     });
   }
@@ -696,23 +347,64 @@ function initApp() {
 }
 
 // Main document ready function
-document.addEventListener("DOMContentLoaded", async function () {
-  // Check if user is already signed in (from localStorage)
-  const savedProfile = localStorage.getItem('userProfile');
-  if (savedProfile) {
-    try {
-      userProfile = JSON.parse(savedProfile);
-      // Check if auth is still valid
-      if (await isAuthValid()) {
-        updateAuthUI();
-      } else {
-        // Auth expired, clear it
-        userProfile = null;
-        localStorage.removeItem('userProfile');
-      }
-    } catch (e) {
-      localStorage.removeItem('userProfile');
-    }
+document.addEventListener("DOMContentLoaded", function () {
+  // Handle contact form submission
+  const contactForm = document.getElementById('contactForm');
+  
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      // Get form status element
+      const statusElement = document.getElementById('form-status');
+      
+      // Disable submit button and show loading state
+      const submitButton = document.getElementById('submit-button');
+      const originalButtonText = submitButton.innerHTML;
+      submitButton.disabled = true;
+      submitButton.innerHTML = 'Sending...';
+      
+      // Prepare template parameters
+      const templateParams = {
+        from_name: document.getElementById('from_name').value,
+        reply_to: document.getElementById('reply_to').value,
+        subject: document.getElementById('subject').value,
+        message: document.getElementById('message').value,
+        is_volunteer: document.getElementById('volunteer').checked ? 'Yes' : 'No',
+        to_email: "codesnippets45@gmail.com" // Adding recipient email
+      };
+      
+      // Get EmailJS credentials from config file
+      const serviceID = window.appConfig?.emailjs?.serviceID || "service_xxx";
+      const templateID = window.appConfig?.emailjs?.templateID || "template_xxx";
+      
+      // Send the form using EmailJS
+      emailjs.send(serviceID, templateID, templateParams)
+        .then(function(response) {
+          console.log('SUCCESS!', response.status, response.text);
+          
+          // Show success message
+          statusElement.classList.remove('hidden', 'bg-red-500');
+          statusElement.classList.add('bg-green-500', 'text-white');
+          statusElement.innerHTML = 'Message sent successfully! We\'ll get back to you soon.';
+          
+          // Reset form
+          contactForm.reset();
+        })
+        .catch(function(error) {
+          console.log('FAILED...', error);
+          
+          // Show error message
+          statusElement.classList.remove('hidden', 'bg-green-500');
+          statusElement.classList.add('bg-red-500', 'text-white');
+          statusElement.innerHTML = 'Failed to send message. Please try again later.';
+        })
+        .finally(function() {
+          // Re-enable submit button
+          submitButton.disabled = false;
+          submitButton.innerHTML = originalButtonText;
+        });
+    });
   }
 
   // Initialize rest of the application
