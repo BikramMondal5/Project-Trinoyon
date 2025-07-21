@@ -18,8 +18,7 @@ yarn-debug.log
 /dist
 
 # Configuration with real credentials
-# Uncomment the line below when you create config.js.local
-# frontend/config.js.local
+frontend/config.js.local
 
 # IDE specific files
 .idea/
