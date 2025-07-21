@@ -1,24 +1,27 @@
-# Dependency directories
+# Dependencies
 node_modules/
 npm-debug.log
-yarn-debug.log
 yarn-error.log
-package-lock.json
-yarn.lock
+yarn-debug.log
+.pnp
+.pnp.js
 
 # Environment variables
-**/.env
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# Build directories
-/dist
+# Production build
 /build
-/out
+/dist
 
-# IDE and editor files
+# Configuration with real credentials
+# Uncomment the line below when you create config.js.local
+# frontend/config.js.local
+
+# IDE specific files
 .idea/
 .vscode/
 *.swp

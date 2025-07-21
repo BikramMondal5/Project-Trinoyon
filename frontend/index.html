@@ -15,12 +15,29 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <!-- EmailJS SDK -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <!-- Load config.js before initializing EmailJS -->
+  <!-- Load config.js first (contains placeholders) -->
   <script type="text/javascript" src="config.js"></script>
+  <!-- Try to load local config with real credentials if available -->
   <script type="text/javascript">
     (function() {
-      // Initialize EmailJS with your public key
-      emailjs.init(window.appConfig.emailjs.publicKey);
+      // Create a function to load the local config file if it exists
+      function loadLocalConfig() {
+        const localConfigScript = document.createElement('script');
+        localConfigScript.src = 'config.js.local';
+        localConfigScript.onerror = function() {
+          console.warn('No local config found. Using placeholder values from config.js');
+          console.warn('Please update with your actual EmailJS credentials for the form to work');
+        };
+        document.head.appendChild(localConfigScript);
+      }
+      
+      // Try to load local config
+      loadLocalConfig();
+      
+      // Initialize EmailJS with public key (will use the value from config.js.local if loaded)
+      setTimeout(() => {
+        emailjs.init(window.appConfig.emailjs.publicKey);
+      }, 500); // Small delay to ensure config is loaded
     })();
   </script>
   <style>
