@@ -13,6 +13,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <!-- Load config.js before initializing EmailJS -->
+  <script type="text/javascript" src="config.js"></script>
+  <script type="text/javascript">
+    (function() {
+      // Initialize EmailJS with your public key
+      emailjs.init(window.appConfig.emailjs.publicKey);
+    })();
+  </script>
   <style>
 
   </style>
@@ -54,8 +64,6 @@
           <a href="#donate"
             class="hidden sm:block bg-primary text-white px-3 xl:px-4 py-2 rounded-button text-sm xl:text-base font-medium shadow-md hover:bg-primary/90 whitespace-nowrap transition-colors duration-200">Donate
             Now</a>
-          <button id="signInBtn"
-            class="bg-primary text-white px-3 xl:px-4 py-2 rounded-button text-sm xl:text-base font-medium shadow-md hover:bg-primary/90 whitespace-nowrap transition-colors duration-200">Sign In</button>
           <button type="button" id="menuButton"
             class="lg:hidden text-gray-700 hover:text-primary w-10 h-10 flex items-center justify-center transition-colors duration-200">
             <i class="ri-menu-line ri-lg"></i>
@@ -83,8 +91,6 @@
           class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Impacts</a>
         <a href="#contact"
           class="text-gray-700 hover:bg-gray-50 block px-3 py-2 rounded-md text-sm sm:text-base font-medium transition-colors duration-200">Contact Us</a>
-        <button id="mobileSignInBtn"
-          class="bg-primary text-white px-3 py-2 rounded-md text-sm sm:text-base font-medium shadow-md hover:bg-primary/90 whitespace-nowrap transition-colors duration-200 w-full text-left">Sign In</button>
       </div>
       <div class="mt-4 px-3">
         <button
@@ -399,20 +405,21 @@
     <div>
       <div class="bg-white p-6 rounded-lg shadow-md mb-6">
         <h3 class="text-xl font-semibold text-gray-900 mb-6">Send Us a Message</h3>
-        <form action="https://formspree.io/f/xanjeazg" method="POST" class="space-y-4">
-          <input type="text" name="name" placeholder="Your Name" required class="border p-2 w-full rounded" />
-          <input type="email" name="email" placeholder="Email Address" required class="border p-2 w-full rounded" />
-          <input type="text" name="subject" placeholder="Subject" class="border p-2 w-full rounded" />
-          <textarea name="message" placeholder="Enter your message" required class="border p-2 w-full rounded"></textarea>
+        <form id="contactForm" class="space-y-4">
+          <input type="text" name="{{name}}" id="from_name" placeholder="Your Name" required class="border p-2 w-full rounded" />
+          <input type="email" name="{{email}}" id="reply_to" placeholder="Email Address" required class="border p-2 w-full rounded" />
+          <input type="text" name="{{title}}" id="subject" placeholder="Subject" class="border p-2 w-full rounded" />
+          <textarea name="{{message}}" id="message" placeholder="Enter your message" required class="border p-2 w-full rounded"></textarea>
   
           <label class="flex items-center">
-            <input type="checkbox" name="volunteer" class="mr-2" />
+            <input type="checkbox" name="volunteer" id="volunteer" class="mr-2" />
             I'm interested in volunteering
           </label>
 
-          <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          <button type="submit" id="submit-button" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
            Send Message
           </button>
+          <div id="form-status" class="hidden mt-4 p-3 rounded"></div>
         </form>
       </div>
     </div>    
@@ -638,132 +645,54 @@
   }
 </style>
 <script src="script.js"></script>
-
-<!-- Authentication Modal -->
-<div id="authModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-  <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4 relative">
-    <button id="closeAuthModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
-      <i class="ri-close-line ri-lg"></i>
-    </button>
-    
-    <div class="text-center mb-6">
-      <h2 class="text-2xl font-bold text-gray-900" id="authTitle">Sign In</h2>
-      <p class="text-gray-600 mt-1" id="authSubtitle">Welcome back! Please enter your details.</p>
-    </div>
-
-    <!-- Auth Forms -->
-    <div id="loginForm">
-      <form class="space-y-4" onsubmit="handleLogin(event)">
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Email</label>
-          <input type="email" id="loginEmail" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Password</label>
-          <input type="password" id="loginPassword" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-        </div>
-        <button type="submit" class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary/90 transition-colors duration-200">
-          Sign In
-        </button>
-      </form>
-      <p class="mt-4 text-center text-sm text-gray-600">
-        Don't have an account?
-        <button onclick="toggleAuthForm('signup')" class="text-primary hover:text-primary/90 font-medium">Sign up</button>
-      </p>
-    </div>
-
-    <div id="signupForm" class="hidden">
-      <form class="space-y-4" onsubmit="handleSignup(event)">
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Name</label>
-          <input type="text" id="signupName" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Email</label>
-          <input type="email" id="signupEmail" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Password</label>
-          <input type="password" id="signupPassword" required minlength="6" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-        </div>
-        <button type="submit" class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary/90 transition-colors duration-200">
-          Sign Up
-        </button>
-      </form>
-      <p class="mt-4 text-center text-sm text-gray-600">
-        Already have an account?
-        <button onclick="toggleAuthForm('login')" class="text-primary hover:text-primary/90 font-medium">Sign in</button>
-      </p>
-    </div>
-  </div>
-</div>
+<script src="config.js"></script>
 
 <script>
-  // Authentication modal script
-  const authModal = document.getElementById('authModal');
-  const signInBtn = document.getElementById('signInBtn');
-  const mobileSignInBtn = document.getElementById('mobileSignInBtn');
-  const closeAuthModal = document.getElementById('closeAuthModal');
-
-  signInBtn.addEventListener('click', () => {
-    authModal.classList.remove('hidden');
-    document.getElementById('authTitle').innerText = 'Sign In';
-    document.getElementById('authSubtitle').innerText = 'Welcome back! Please enter your details.';
-    document.getElementById('loginForm').classList.remove('hidden');
-    document.getElementById('signupForm').classList.add('hidden');
-  });
-
-  mobileSignInBtn.addEventListener('click', () => {
-    authModal.classList.remove('hidden');
-    document.getElementById('authTitle').innerText = 'Sign In';
-    document.getElementById('authSubtitle').innerText = 'Welcome back! Please enter your details.';
-    document.getElementById('loginForm').classList.remove('hidden');
-    document.getElementById('signupForm').classList.add('hidden');
-  });
-
-  closeAuthModal.addEventListener('click', () => {
-    authModal.classList.add('hidden');
-  });
-
-  function toggleAuthForm(form) {
-    if (form === 'signup') {
-      document.getElementById('authTitle').innerText = 'Sign Up';
-      document.getElementById('authSubtitle').innerText = 'Create an account to continue';
-      document.getElementById('loginForm').classList.add('hidden');
-      document.getElementById('signupForm').classList.remove('hidden');
-    } else {
-      document.getElementById('authTitle').innerText = 'Sign In';
-      document.getElementById('authSubtitle').innerText = 'Welcome back! Please enter your details.';
-      document.getElementById('loginForm').classList.remove('hidden');
-      document.getElementById('signupForm').classList.add('hidden');
-    }
-  }
-
-  async function handleLogin(event) {
+  // EmailJS contact form submission
+  document.getElementById('contactForm').addEventListener('submit', function(event) {
     event.preventDefault();
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
+    const form = event.target;
+    const status = document.getElementById('form-status');
+    
+    // Show loading state
+    const submitButton = document.getElementById('submit-button');
+    const originalButtonText = submitButton.innerHTML;
+    submitButton.disabled = true;
+    submitButton.innerHTML = 'Sending...';
+    
+    // Prepare template parameters to match the template variables
+    const templateParams = {
+      name: document.getElementById('from_name').value,
+      email: document.getElementById('reply_to').value,
+      title: document.getElementById('subject').value,
+      message: document.getElementById('message').value,
+      volunteer: document.getElementById('volunteer').checked ? 'Yes' : 'No'
+    };
+    
+    // Get EmailJS credentials from config file
+    const serviceID = window.appConfig?.emailjs?.serviceID || "service_xxx";
+    const templateID = window.appConfig?.emailjs?.templateID || "template_xxx";
 
-    // Add your login logic here
-    console.log('Logging in with', email, password);
-
-    // Close the modal on successful login
-    authModal.classList.add('hidden');
-  }
-
-  async function handleSignup(event) {
-    event.preventDefault();
-    const name = document.getElementById('signupName').value;
-    const email = document.getElementById('signupEmail').value;
-    const password = document.getElementById('signupPassword').value;
-
-    // Add your signup logic here
-    console.log('Signing up with', name, email, password);
-
-    // Close the modal on successful signup
-    authModal.classList.add('hidden');
-  }
+    emailjs.send(serviceID, templateID, templateParams)
+      .then(function(response) {
+        console.log('SUCCESS!', response.status, response.text);
+        status.classList.remove('hidden', 'bg-red-500');
+        status.classList.add('bg-green-500', 'text-white');
+        status.innerHTML = 'Message sent successfully!';
+        form.reset();
+        // Reset button
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalButtonText;
+      }, function(error) {
+        console.log('FAILED...', error);
+        status.classList.remove('hidden', 'bg-green-500');
+        status.classList.add('bg-red-500', 'text-white');
+        status.innerHTML = 'Message failed to send. Please try again later.';
+        // Reset button
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalButtonText;
+      });
+  });
 </script>
 </body>
-</head>
 </html>
