@@ -417,6 +417,57 @@
           support.
         </p>
       </div>
+
+      <!-- Success Modal -->
+      <div id="successModal" class="fixed inset-0 z-50 hidden flex items-center justify-center">
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"></div>
+        <div class="bg-white rounded-lg max-w-md w-full mx-auto z-50 overflow-hidden shadow-xl transform transition-all">
+          <div class="p-6">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+              <svg class="h-8 w-8 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div class="text-center">
+              <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">Message Sent Successfully!</h3>
+              <div class="mt-2">
+                <p class="text-sm text-gray-500">Thank you for reaching out. We'll get back to you as soon as possible.</p>
+              </div>
+              <div class="mt-5">
+                <button id="closeSuccessModal" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 focus:outline-none">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Error Modal -->
+      <div id="errorModal" class="fixed inset-0 z-50 hidden flex items-center justify-center">
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"></div>
+        <div class="bg-white rounded-lg max-w-md w-full mx-auto z-50 overflow-hidden shadow-xl transform transition-all">
+          <div class="p-6">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+              <svg class="h-8 w-8 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <div class="text-center">
+              <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">Message Failed to Send</h3>
+              <div class="mt-2">
+                <p class="text-sm text-gray-500">There was an issue sending your message. Please try again later.</p>
+              </div>
+              <div class="mt-5">
+                <button id="closeErrorModal" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 focus:outline-none">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <!-- Contact Form -->
     <div>
@@ -436,7 +487,6 @@
           <button type="submit" id="submit-button" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
            Send Message
           </button>
-          <div id="form-status" class="hidden mt-4 p-3 rounded"></div>
         </form>
       </div>
     </div>    
@@ -669,7 +719,6 @@
   document.getElementById('contactForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const form = event.target;
-    const status = document.getElementById('form-status');
     
     // Show loading state
     const submitButton = document.getElementById('submit-button');
@@ -693,22 +742,35 @@
     emailjs.send(serviceID, templateID, templateParams)
       .then(function(response) {
         console.log('SUCCESS!', response.status, response.text);
-        status.classList.remove('hidden', 'bg-red-500');
-        status.classList.add('bg-green-500', 'text-white');
-        status.innerHTML = 'Message sent successfully!';
+        // No longer showing status message below form
         form.reset();
         // Reset button
         submitButton.disabled = false;
         submitButton.innerHTML = originalButtonText;
+
+        // Show success modal
+        const successModal = document.getElementById('successModal');
+        successModal.classList.remove('hidden');
       }, function(error) {
         console.log('FAILED...', error);
-        status.classList.remove('hidden', 'bg-green-500');
-        status.classList.add('bg-red-500', 'text-white');
-        status.innerHTML = 'Message failed to send. Please try again later.';
+        // No longer showing status message below form
         // Reset button
         submitButton.disabled = false;
         submitButton.innerHTML = originalButtonText;
+
+        // Show error modal
+        const errorModal = document.getElementById('errorModal');
+        errorModal.classList.remove('hidden');
       });
+  });
+
+  // Close modals
+  document.getElementById('closeSuccessModal').addEventListener('click', function() {
+    document.getElementById('successModal').classList.add('hidden');
+  });
+
+  document.getElementById('closeErrorModal').addEventListener('click', function() {
+    document.getElementById('errorModal').classList.add('hidden');
   });
 </script>
 </body>
