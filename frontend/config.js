@@ -1,21 +1,20 @@
 /**
  * Application Configuration
  * 
- * IMPORTANT: This file contains placeholder values that will be replaced
- * during the Vercel build process with actual environment variables.
- * 
- * For local development, use config.js.local which is not committed to the repository.
+ * This file contains configuration values for both local development and production.
+ * For local development, this file will be overridden by config.js.local if available.
+ * For production, these values will be used directly.
  */
 window.appConfig = {
     // EmailJS configuration
     emailjs: {
-        // Your EmailJS public key
-        publicKey: "YOUR_EMAILJS_PUBLIC_KEY",
+        // EmailJS credentials (safe to include in client-side code)
+        publicKey: "XtSARxw8e4RHI2bxi",
         
-        // Your EmailJS service ID from the EmailJS dashboard
-        serviceID: "YOUR_EMAILJS_SERVICE_ID",
+        // EmailJS service ID
+        serviceID: "service_iknrffn",
         
-        // Your EmailJS template ID from the EmailJS dashboard
-        templateID: "YOUR_EMAILJS_TEMPLATE_ID"
+        // EmailJS template ID
+        templateID: "template_yflvnfe"
     }
 };
