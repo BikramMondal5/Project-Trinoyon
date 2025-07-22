@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,11 +11,53 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    /* Modal improvements */
+    .modal-backdrop {
+      backdrop-filter: blur(4px);
+      background: rgba(255, 255, 255, 0.85);
+      transition: all 0.3s ease;
+    }
+    
+    .modal-content {
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: scale(0.9) translateY(-20px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .modal-content.show {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+    
+    .modal-content::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .modal-content::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+    }
+    
+    .modal-content::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 3px;
+    }
+    
+    .modal-content::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+    
+    /* Prevent body scroll when modal is open */
+    body.modal-open {
+      overflow: hidden;
+    }
+  </style>
 </head>
-
 <body class="bg-white">
 <%- include("partials/nav") %>
-
 
   <!-- Spacer div for extra padding -->
   <div class="h-20 md:h-28"></div>
@@ -74,14 +115,13 @@
       </div>
       <div class="flex justify-center items-center donation-content">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
           <!-- Bank Transfer -->
           <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1">
             <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6 mx-auto">
               <i class="ri-bank-line ri-xl text-green-600"></i>
             </div>
             <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Bank Transfer</h3>
-            
+                        
             <div style="width: 25rem;" class="bg-white p-6 rounded-xl border-2 border-green-100 mx-auto shadow-md hover:border-green-300 transition-all duration-300 flex flex-col justify-center">
               <div class="space-y-6">
                 <div class="text-center">
@@ -90,7 +130,7 @@
                     <p class="font-medium text-gray-800 text-lg">50100356889425</p>
                   </div>
                 </div>
-                
+                                
                 <div class="text-center">
                   <p class="text-sm text-gray-500 mb-1">IFSC Code</p>
                   <div class="bg-gray-100 hover:bg-green-100 transition-colors duration-300 py-2 px-4 rounded-lg cursor-pointer" onclick="copyToClipboard('HDFC0004830')">
@@ -99,11 +139,11 @@
                 </div>
               </div>
             </div>
-            
+                        
             <p class="text-sm text-gray-600 text-center mt-6 font-medium">
               HDFC Bank, Anandapur Branch
             </p>
-            
+                        
             <div class="mt-6 text-center">
               <button onclick="copyBankDetails()" class="bg-green-600 text-white px-6 py-3 rounded-lg font-medium shadow-md hover:bg-green-700 transition-all duration-300 inline-flex items-center space-x-2 group">
                 <i class="ri-file-copy-line group-hover:animate-pulse"></i>
@@ -111,87 +151,127 @@
               </button>
             </div>
           </div>
-            
-        <!-- Razorpay Payment -->
-        <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1">           
-          <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-6 mx-auto">             
-            <i class="ri-bank-card-line ri-xl text-yellow-600"></i>           
-          </div>           
-          <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Secure Payment</h3>           
-          <div class="bg-white p-4 rounded-xl border-2 border-yellow-100 w-56 h-56 mx-auto shadow-md hover:border-yellow-300 transition-colors duration-300 flex flex-col justify-center">             
-            <!-- Quick Amount Selection -->             
-            <div class="grid grid-cols-2 gap-2 mb-4">               
-              <button class="donation-amount-btn bg-gray-100 hover:bg-yellow-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300" onclick="selectAmount(100)">₹100</button>               
-              <button class="donation-amount-btn bg-gray-100 hover:bg-yellow-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300" onclick="selectAmount(500)">₹500</button>               
-              <button class="donation-amount-btn bg-gray-100 hover:bg-yellow-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300" onclick="selectAmount(1000)">₹1000</button>               
-              <button class="donation-amount-btn bg-gray-100 hover:bg-yellow-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300" onclick="selectAmount(2000)">₹2000</button>             
-            </div>                          
-            <!-- Custom Amount Input -->             
-            <div class="mb-4">               
-              <input type="number" id="customAmount" placeholder="Enter amount" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-yellow-500" min="1" oninput="updateSelectedAmount()">             
-            </div>                          
-            <!-- Selected Amount Display -->             
-            <div class="text-center mb-4">               
-              <p class="text-sm text-gray-500">Selected Amount:</p>               
-              <p id="selectedAmount" class="text-lg font-bold text-yellow-600">₹100</p>             
-            </div>           
-          </div>                      
-          <p class="text-sm text-gray-600 text-center mt-6 font-medium">             
-            Secure payment via Razorpay           
-          </p>                      
-          <div class="mt-6 text-center">             
-            <button id="rzp-button" class="bg-yellow-500 text-white px-6 py-3 rounded-lg font-medium shadow-md hover:bg-yellow-600 transition-all duration-300 inline-flex items-center space-x-2 group">               
-              <i class="ri-secure-payment-line group-hover:animate-pulse"></i>               
-              <span>Donate Securely</span>             
-            </button>           
-          </div>
+                    
+          <!-- Razorpay Payment -->
+        <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1">
+                     <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+                         <i class="ri-bank-card-line ri-xl text-yellow-600"></i>
+                     </div>
+                     <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Secure Payment</h3>
+                     <div class="bg-white p-4 rounded-xl border-2 border-yellow-100 w-56 h-56 mx-auto shadow-md hover:border-yellow-300 transition-colors duration-300 flex flex-col justify-center">
+                         <!-- Quick Amount Selection -->
+                         <div class="grid grid-cols-2 gap-2 mb-4">
+                             <button class="donation-amount-btn bg-gray-100 hover:bg-yellow-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300" onclick="selectAmount(100)">₹100</button>
+                             <button class="donation-amount-btn bg-gray-100 hover:bg-yellow-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300" onclick="selectAmount(500)">₹500</button>
+                             <button class="donation-amount-btn bg-gray-100 hover:bg-yellow-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300" onclick="selectAmount(1000)">₹1000</button>
+                             <button class="donation-amount-btn bg-gray-100 hover:bg-yellow-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300" onclick="selectAmount(2000)">₹2000</button>
+                         </div>
+                                      
+                         <!-- Custom Amount Input -->
+                         <div class="mb-4">
+                             <input type="number" id="customAmount" placeholder="Enter amount" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-yellow-500" min="1" oninput="updateSelectedAmount()">
+                         </div>
+                                      
+                         <!-- Selected Amount Display -->
+                         <div class="text-center mb-4">
+                             <p class="text-sm text-gray-500">Selected Amount:</p>
+                             <p id="selectedAmount" class="text-lg font-bold text-yellow-600">₹100</p>
+                         </div>
+                     </div>
+                                
+                <p class="text-sm text-gray-600 text-center mt-6 font-medium">
+                         Secure payment via Razorpay
+                     </p>
+                                
+                <div class="mt-6 text-center">
+                         <button id="rzp-button" class="bg-yellow-500 text-white px-6 py-3 rounded-lg font-medium shadow-md hover:bg-yellow-600 transition-all duration-300 inline-flex items-center space-x-2 group">
+                             <i class="ri-secure-payment-line group-hover:animate-pulse"></i>
+                             <span>Donate Securely</span>
+                         </button>
+                     </div>
 
-          <!-- Donor Information Modal -->
-          <div id="donorModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-            <div class="bg-white p-8 rounded-xl shadow-2xl border border-gray-100 max-w-md w-full mx-4 transform transition-all duration-300">
-              <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                <i class="ri-user-line ri-xl text-yellow-600"></i>
-              </div>
-              <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Donor Information <br>
-              <span class="text-sm text-gray-500">Donate to get your name in our Impact page</span></h3>
-
-              <div class="space-y-4">
-                <div>
-                  <label for="donorName" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                  <input type="text" id="donorName" placeholder="Enter your full name" 
-                         class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all duration-300">
+         
+          <!-- Improved Donor Information Modal -->
+            <div id="donorModal" class="fixed inset-0 z-50 hidden">
+              <!-- Backdrop with blur effect -->
+              <div class="absolute inset-0 bg-white bg-opacity-85 backdrop-blur-sm transition-opacity duration-300" onclick="hideDonorModal()"></div>
+              
+              <!-- Modal Container -->
+              <div class="fixed inset-0 flex items-center justify-center">
+                <div style="width: 32rem;" class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                  <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+                    <i class="ri-user-line ri-xl text-yellow-600"></i>
+                  </div>
+                  <p class="text-sm text-gray-600 font-medium text-center mb-4">Get featured on our Impact page!</p>
+                  <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Donor Info</h3>
+                  
+                  <!-- Inner content container matching Razorpay div -->
+                  <div class="bg-white p-6 rounded-xl border-2 border-yellow-100 w-80 h-72 mx-auto shadow-md hover:border-yellow-300 transition-colors duration-300 flex flex-col justify-center space-y-4">
+                    <div>
+                      <input type="text" id="donorName" placeholder="Full Name"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-yellow-500">
+                    </div>
+                    
+                    <div>
+                      <input type="email" id="donorEmail" placeholder="Email"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-yellow-500">
+                    </div>
+                    
+                    <div>
+                      <input type="text" id="message" placeholder="Message"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-yellow-500">
+                    </div>
+                    
+                    <!-- Amount Summary -->
+                    <div class="bg-yellow-50 rounded-lg border border-yellow-200 p-3">
+                      <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium text-gray-700">Amount:</span>
+                        <span id="modalSelectedAmount" class="text-lg font-bold text-yellow-600">₹100</span>
+                      </div>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                      <button id="cancelDonation" onclick="hideDonorModal()"
+                              class="flex-1 px-3 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50">
+                        Cancel
+                      </button>
+                      <button id="proceedToPay"
+                              class="flex-1 px-3 py-2 bg-yellow-500 text-white rounded-lg text-sm font-medium hover:bg-yellow-600 inline-flex items-center justify-center space-x-1">
+                        <span>Pay</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                
-                <div>
-                  <label for="donorEmail" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                  <input type="email" id="donorEmail" placeholder="Enter your email address" 
-                         class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all duration-300">
-                </div>
-
-                <div>
-                  <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Give us a message</label>
-                  <input type="text" id="message" placeholder="Enter a message" 
-                         class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-all duration-300">
-                </div>
               </div>
+            </div>        <script>
+        // Modal functions - fixed to not prevent body scroll
+        function showDonorModal() {
+          const modal = document.getElementById('donorModal');
+          modal.classList.remove('hidden');
+          // Removed body scroll prevention - main page stays scrollable
+        }
 
-              <div class="flex space-x-3 mt-8">
-                <button id="cancelDonation" 
-                        class="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all duration-300">
-                  Cancel
-                </button>
-                <button id="proceedToPay" 
-                        class="flex-1 px-4 py-3 bg-yellow-500 text-white rounded-lg font-medium hover:bg-yellow-600 transition-all duration-300 inline-flex items-center justify-center space-x-2">
-                  <i class="ri-secure-payment-line"></i>
-                  <span>Proceed to Pay</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        function hideDonorModal() {
+          const modal = document.getElementById('donorModal');
+          modal.classList.add('hidden');
+          // Removed body scroll restoration - main page stays scrollable
+          
+          // Reset form
+          document.getElementById('donorName').value = '';
+          document.getElementById('donorEmail').value = '';
+          document.getElementById('message').value = '';
+        }
+
+        // Close modal when clicking outside or pressing Escape
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && !document.getElementById('donorModal').classList.contains('hidden')) {
+            hideDonorModal();
+          }
+        });
+        </script>
+
         <!-- Razorpay Script -->
           <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
           <script>
           let selectedAmount = 100;
           let razorpayOptions = null;
@@ -201,14 +281,13 @@
           function selectAmount(amount) {
             selectedAmount = amount;
             document.getElementById('selectedAmount').textContent = '₹' + amount;
+            document.getElementById('modalSelectedAmount').textContent = '₹' + amount;
             document.getElementById('customAmount').value = amount;
-
             const buttons = document.querySelectorAll('.donation-amount-btn');
             buttons.forEach(btn => {
               btn.classList.remove('bg-yellow-200', 'border-yellow-500');
               btn.classList.add('bg-gray-100');
             });
-
             const selectedBtn = document.querySelector(`[onclick="selectAmount(${amount})"]`);
             if (selectedBtn) {
               selectedBtn.classList.remove('bg-gray-100');
@@ -219,34 +298,41 @@
           function updateSelectedAmount() {
             const customInput = document.getElementById('customAmount');
             const amount = parseInt(customInput.value) || 0;
-
             if (customInput.value !== '' && amount >= 0) {
-              // Update selectedAmount even if it's less than minimum
               selectedAmount = amount;
               document.getElementById('selectedAmount').textContent = '₹' + amount;
-
-              // Clear preset button selection when typing custom amount
+              document.getElementById('modalSelectedAmount').textContent = '₹' + amount;
               const buttons = document.querySelectorAll('.donation-amount-btn');
               buttons.forEach(btn => {
                 btn.classList.remove('bg-yellow-200', 'border-yellow-500');
                 btn.classList.add('bg-gray-100');
               });
             } else if (customInput.value === '') {
-              // Only reset to 100 when input is completely empty
               selectedAmount = 100;
               document.getElementById('selectedAmount').textContent = '₹100';
+              document.getElementById('modalSelectedAmount').textContent = '₹100';
             }
           }
 
-          // Modal functions
+          // Improved modal functions
           function showDonorModal() {
-            document.getElementById('donorModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+            const modal = document.getElementById('donorModal');
+            modal.classList.remove('hidden');
+            
+            // No body class manipulation to maintain scrolling
+            
+            // Update selected amount in modal
+            document.getElementById('modalSelectedAmount').textContent = '₹' + selectedAmount;
           }
 
           function hideDonorModal() {
-            document.getElementById('donorModal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
+            const modal = document.getElementById('donorModal');
+            modal.classList.add('hidden');
+            
+            // Reset form fields individually since we're not using a form element
+            document.getElementById('donorName').value = '';
+            document.getElementById('donorEmail').value = '';
+            document.getElementById('message').value = '';
           }
 
           function validateDonorInfo() {
@@ -258,18 +344,15 @@
               showNotification('Please enter your full name', 'error');
               return false;
             }
-
             if (!email) {
               showNotification('Please enter your email address', 'error');
               return false;
             }
-
             if (!message) {
               showNotification('Please enter a message', 'error');
               return false;
             }
 
-            // Basic email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
               showNotification('Please enter a valid email address', 'error');
@@ -282,7 +365,7 @@
           async function createOrder(donorInfo = {}) {
             try {
               const uniqueReceipt = `receipt_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
-              
+                            
               const response = await fetch('/api/create-order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -299,11 +382,9 @@
               });
 
               const data = await response.json();
-
               if (!response.ok) {
                 throw new Error(data.message || 'Failed to create order');
               }
-
               return data;
             } catch (error) {
               console.error('Error creating order:', error);
@@ -315,13 +396,12 @@
           async function verifyPayment(paymentData, orderData, donorInfo = {}) {
             try {
               console.log('🔍 Verifying payment and saving to database...');
-              
+                            
               const response = await fetch('/api/verify-payment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                   ...paymentData,
-                  // Include donation data to save to database
                   donor_name: donorInfo.name || '',
                   donor_email: donorInfo.email || '',
                   message: donorInfo.message || '',
@@ -332,13 +412,13 @@
                   }
                 }),
               });
-              
+                            
               const data = await response.json();
-              
+                            
               if (!response.ok) {
                 throw new Error(data.message || 'Verification failed');
               }
-              
+                            
               return data;
             } catch (error) {
               console.error('Error verifying payment:', error);
@@ -352,7 +432,6 @@
               type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
             }`;
             notification.textContent = message;
-
             document.body.appendChild(notification);
 
             setTimeout(() => {
@@ -366,7 +445,6 @@
           }
 
           async function handlePayment() {
-            // Allow any positive amount
             if (selectedAmount <= 0) {
               showNotification('Please enter a valid donation amount', 'error');
               return;
@@ -379,8 +457,7 @@
 
             try {
               console.log('🚀 Starting payment process with amount: ₹' + selectedAmount);
-
-              // Step 1: Create Razorpay order (no DB entry)
+              
               const orderData = await createOrder(currentDonorData);
               if (!orderData || !orderData.success) {
                 throw new Error(orderData?.message || 'Failed to create order');
@@ -388,7 +465,6 @@
 
               console.log('✅ Razorpay order created (no DB entry yet):', orderData.orderId);
 
-              // Step 2: Setup Razorpay options
               razorpayOptions = {
                 key: orderData.key_id,
                 amount: orderData.amount,
@@ -400,8 +476,7 @@
                 handler: async function (response) {
                   try {
                     console.log('💳 Payment completed for ₹' + selectedAmount + ', verifying and saving to database...');
-                    
-                    // Verify payment AND save to database in one step
+                                        
                     const verificationResult = await verifyPayment(
                       {
                         razorpay_payment_id: response.razorpay_payment_id,
@@ -414,10 +489,8 @@
 
                     if (verificationResult.success) {
                       showNotification(`Thank you ${currentDonorData.name} for your donation of ₹${selectedAmount}! Payment successful.`, 'success');
-                      // Reset to default after successful payment
                       selectedAmount = 100;
                       selectAmount(100);
-                      // Clear form
                       document.getElementById('donorName').value = '';
                       document.getElementById('donorEmail').value = '';
                       document.getElementById('message').value = '';
@@ -452,20 +525,17 @@
                 }
               };
 
-              // Step 3: Create Razorpay instance and setup event handlers
               const rzp = new Razorpay(razorpayOptions);
-              
+                            
               rzp.on('payment.failed', async function (response) {
                 console.log('❌ Payment failed - no database entry made:', response.error);
                 showNotification(`Payment failed: ${response.error.description}`, 'error');
                 hideDonorModal();
               });
 
-              // Step 4: Hide modal and open Razorpay modal
               hideDonorModal();
               console.log('📱 Opening Razorpay payment modal...');
               rzp.open();
-
             } catch (error) {
               console.error('Error in payment process:', error);
               showNotification(error.message || 'An error occurred. Please try again.', 'error');
@@ -475,9 +545,7 @@
             }
           }
 
-          // Function to collect donor information (if you have a form)
           function collectDonorInfo() {
-            // You can modify this to collect data from your form fields
             return {
               name: document.getElementById('donorName')?.value || '',
               email: document.getElementById('donorEmail')?.value || '',
@@ -487,25 +555,17 @@
 
           document.addEventListener('DOMContentLoaded', function () {
             selectAmount(100);
-
+            
             const payButton = document.getElementById('rzp-button');
             if (payButton) {
               payButton.onclick = function (e) {
                 e.preventDefault();
-                
-                // Show donor information modal first
                 showDonorModal();
               };
             }
 
-            // Modal event listeners
-            document.getElementById('cancelDonation').onclick = function() {
-              hideDonorModal();
-            };
-
             document.getElementById('proceedToPay').onclick = function() {
               if (validateDonorInfo()) {
-                // Collect donor information before payment
                 currentDonorData = collectDonorInfo();
                 handlePayment();
               }
@@ -513,13 +573,19 @@
 
             // Close modal on outside click
             document.getElementById('donorModal').onclick = function(e) {
-              if (e.target === this) {
+              if (e.target === this || e.target.classList.contains('modal-backdrop')) {
                 hideDonorModal();
               }
             };
 
-            // Handle Enter key in form fields
-            ['donorName', 'donorEmail', 'hone'].forEach(fieldId => {
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+              if (e.key === 'Escape' && !document.getElementById('donorModal').classList.contains('hidden')) {
+                hideDonorModal();
+              }
+            });
+
+            ['donorName', 'donorEmail', 'message'].forEach(fieldId => {
               const field = document.getElementById(fieldId);
               if (field) {
                 field.addEventListener('keypress', function(e) {
@@ -537,11 +603,10 @@
             const customAmountInput = document.getElementById('customAmount');
             if (customAmountInput) {
               customAmountInput.addEventListener('input', function () {
-                // Allow any numeric input without restriction
                 this.value = this.value.replace(/[^0-9]/g, '');
                 updateSelectedAmount();
               });
-
+              
               customAmountInput.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                   e.preventDefault();
@@ -550,9 +615,7 @@
               });
             }
           });
-
           </script>
-
         </div>
       </div>
       <script>
@@ -566,20 +629,18 @@
         }
       }
       </script>
-
-
-
+        
         </div>
       </div>
       <script>
-      
+            
       // Function to copy all bank details
       function copyBankDetails() {
         const bankDetails = 
           'Account Number: 50100356889425\n' +
           'IFSC Code: HDFC0004830\n' +
           'Bank: HDFC Bank, Anandapur Branch';
-        
+                
         copyToClipboard(bankDetails);
       }
 
@@ -590,10 +651,10 @@
         toast.className = 'fixed bottom-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg transition-opacity duration-300';
         toast.style.zIndex = '9999';
         toast.textContent = message;
-        
+                
         // Add to document
         document.body.appendChild(toast);
-        
+                
         // Remove after 3 seconds
         setTimeout(() => {
           toast.style.opacity = '0';
@@ -603,7 +664,7 @@
         }, 3000);
       }
       </script>
-      
+            
       <!-- Donation counter -->
       <div class="donation-counter-wrapper">
         <div class="donation-counter-inner">
@@ -620,7 +681,7 @@
           </div>
         </div>
       </div>
-      
+            
       <style>
         .donation-counter-wrapper {
           text-align: center;
@@ -638,7 +699,7 @@
       </style>
     </div>
   </section>
-     
+       
   <!-- Stories & Notes Section -->
   <section id="stories" class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -648,6 +709,7 @@
           Explore heartwarming stories and educational notes. Each purchase contributes to our fundraising efforts.
         </p>
       </div>
+
       <!-- Tabs -->
       <div class="flex justify-center mb-8">
         <div class="inline-flex p-1 bg-gray-100 rounded-full">
@@ -659,6 +721,7 @@
           </button>
         </div>
       </div>
+
       <!-- Stories Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Story 1 -->
@@ -692,6 +755,7 @@
             </button>
           </div>
         </div>
+
         <!-- Story 2 -->
         <div class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 story-card">
           <div class="h-48 bg-gray-200">
@@ -723,6 +787,7 @@
             </button>
           </div>
         </div>
+
         <!-- Story 3 -->
         <div class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 story-card">
           <div class="h-48 bg-gray-200">
@@ -757,8 +822,8 @@
       </div>
     </div>
   </section>
-  
- <!-- Contact Section -->
+   
+  <!-- Contact Section -->
   <section id="contact" class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
@@ -768,6 +833,7 @@
           support.
         </p>
       </div>
+
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <!-- Contact Form -->
      <div>
@@ -778,19 +844,18 @@
           <input type="email" name="email" placeholder="Email Address" required class="border p-2 w-full rounded" />
           <input type="text" name="subject" placeholder="Subject" class="border p-2 w-full rounded" />
           <textarea name="message" placeholder="Enter your message" required class="border p-2 w-full rounded"></textarea>
-  
+            
           <label class="flex items-center">
             <input type="checkbox" name="volunteer" class="mr-2" />
             I'm interested in volunteering
           </label>
-
           <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
            Send Message
           </button>
         </form>
       </div>
-    </div>    
-
+    </div>
+            
         <!-- Contact Info -->
         <div>
           <div class="bg-white p-6 rounded-lg shadow-md mb-6">
@@ -808,6 +873,7 @@
                 </div>
               </div>
             </a>
+
               <div class="flex items-start">
                 <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3 mt-1">
                   <i class="ri-phone-line text-primary"></i>
@@ -820,6 +886,7 @@
                   </p>
                 </div>
               </div>
+
               <div class="flex items-start ">
                 <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3 mt-1">
                 <a href="mailto:arijit.sarkar7156@gmail.com"><i class="ri-mail-line text-primary"></i>
@@ -834,6 +901,7 @@
             </a>
             </div>
           </div>
+
           <!-- Social Media -->
           <div class="bg-white p-6 rounded-lg shadow-md">
             <h3 class="text-xl font-semibold text-gray-900 mb-6 text-center">Connect With Us</h3>
@@ -860,6 +928,7 @@
       </div>
     </div>
   </section>
+
   <!-- Footer -->
   <footer class="footer">
   <div class="footer-container">
@@ -869,13 +938,10 @@
         Empowering communities through compassionate giving and meaningful connections
       </p>
     </div>
-
     <div class="footer-quote">
       <em>"Every act of kindness creates a ripple effect that can change the world"</em>
     </div>
-
     <div class="footer-separator"></div>
-
     <div class="footer-bottom">
       <div class="footer-copyright">
         <span>©</span>
@@ -897,12 +963,12 @@
     padding: 3rem 0 !important;
     min-height: auto !important;
   }
-  
+    
   .donation-container {
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
   }
-  
+    
   .donation-content {
     min-height: auto !important;
     padding: 2rem 0 !important;
@@ -923,8 +989,8 @@
     padding: 0 20px;
     text-align: center;
   }
-
-    .footer-logo {
+    
+  .footer-logo {
             font-size: 2.8rem;
             font-weight: 700;
             font-style: italic;
@@ -936,7 +1002,7 @@
             position: relative;
             display: inline-block;
         }
-        
+                
         .footer-logo::after {
             content: '';
             position: absolute;
@@ -1028,14 +1094,13 @@
   }
 </style>
 
-
 <!-- Authentication Modal -->
 <div id="authModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
   <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4 relative">
     <button id="closeAuthModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
       <i class="ri-close-line ri-lg"></i>
     </button>
-    
+        
     <div class="text-center mb-6">
       <h2 class="text-2xl font-bold text-gray-900" id="authTitle">Sign In</h2>
       <p class="text-gray-600 mt-1" id="authSubtitle">Welcome back! Please enter your details.</p>
@@ -1133,10 +1198,8 @@
     event.preventDefault();
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
-
     // Add your login logic here
     console.log('Logging in with', email, password);
-
     // Close the modal on successful login
     authModal.classList.add('hidden');
   }
@@ -1146,14 +1209,13 @@
     const name = document.getElementById('signupName').value;
     const email = document.getElementById('signupEmail').value;
     const password = document.getElementById('signupPassword').value;
-
     // Add your signup logic here
     console.log('Signing up with', name, email, password);
-
     // Close the modal on successful signup
     authModal.classList.add('hidden');
   }
   </script>
+
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const contactSection = document.getElementById("contact");
@@ -1166,7 +1228,6 @@
     if (window.location.hash === "#contact") {
       contactLink.classList.add("text-primary", "border-primary");
       contactLink.classList.remove("text-gray-700", "border-transparent");
-
       if (homeLink) {
         homeLink.classList.remove("text-primary", "border-primary");
         homeLink.classList.add("text-gray-700", "border-transparent");
@@ -1180,7 +1241,6 @@
           if (entry.isIntersecting) {
             contactLink.classList.add("text-primary", "border-primary");
             contactLink.classList.remove("text-gray-700", "border-transparent");
-
             if (homeLink) {
               homeLink.classList.remove("text-primary", "border-primary");
               homeLink.classList.add("text-gray-700", "border-transparent");
@@ -1188,7 +1248,6 @@
           } else {
             contactLink.classList.remove("text-primary", "border-primary");
             contactLink.classList.add("text-gray-700", "border-transparent");
-
             if (homeLink && window.location.pathname === "/") {
               homeLink.classList.add("text-primary", "border-primary");
               homeLink.classList.remove("text-gray-700", "border-transparent");
@@ -1203,8 +1262,7 @@
     }
   });
 </script>
-<script src="/js/script.js"></script>
 
+<script src="/js/script.js"></script>
 </body>
-</head>
 </html>
