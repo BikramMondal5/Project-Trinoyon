@@ -42,7 +42,7 @@
                 </div>
                 <!-- Card 2 -->
                 <div class="bg-sky-50 p-6 rounded-2xl border border-sky-200 shadow hover:shadow-md transition">
-                    <h3 class="text-sm font-semibold text-sky-500 mb-2">Number of Contributors</h3>
+                    <h3 class="text-sm font-semibold text-sky-500 mb-2">Total Number of Contributions</h3>
                     <div class="flex items-end justify-between">
                         <div class="text-2xl font-bold text-black"><span class="counter" data-target="<%= stats?.totalDonations || 0 %>"><%= stats?.totalDonations || '0' %></span></div>
                     </div>
@@ -95,7 +95,7 @@
             </div>
             <div class="bg-sky-50 p-6 rounded-2xl border border-sky-200 shadow">
                 <div class="flex flex-col md:flex-row md:items-center justify-between mb-3">
-                    <div class="font-semibold text-black">Progress Toward Goal</div>
+                    <div class="font-semibold text-black">Progress Towards Goal</div>
                     <div class="text-gray-700 font-medium">
                         ₹<span id="current-amount"><%= (stats && stats.totalAmount) ? Number(stats.totalAmount).toLocaleString('en-IN') : '0' %></span> of 
                         ₹<span id="goal-amount"><%= (stats && stats.fundraisingGoal) ? Number(stats.fundraisingGoal).toLocaleString('en-IN') : '50,000' %></span>
@@ -240,7 +240,7 @@
                         </div>
                         <div>
                             <div class="text-2xl font-bold text-black"><%= (stats && stats.totalDonations) ? stats.totalDonations : '0' %></div>
-                            <div class="text-gray-600 text-sm">Total Contributors</div>
+                            <div class="text-gray-600 text-sm">Total Contributions</div>
                         </div>
                         <div>
                             <div class="text-2xl font-bold text-black">₹<%= (stats && stats.averageDonation) ? Math.round(stats.averageDonation).toLocaleString('en-IN') : '0' %></div>
