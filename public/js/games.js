@@ -1,7 +1,7 @@
 // API URL
 const API_URL = 'http://localhost:3002/api';
 
-// Game navigation handlers
+// Game navigation handlers - Direct navigation without authentication
 document.querySelector('#play-btn2').addEventListener('click', function() {
   window.location.href = "/Second-game"; 
 });
@@ -40,99 +40,6 @@ document.querySelector('#play-btn12').addEventListener('click', function() {
   window.location.href = "/Twelveth-game"; 
 });
 
-
-// Function to check auth before redirecting
-async function checkAuthAndRedirect(url) {
-  const userProfile = JSON.parse(localStorage.getItem('userProfile'));
-  if (!userProfile || !userProfile.token) {
-    // Show authentication modal if not signed in
-    document.getElementById('authModal').classList.remove('hidden');
-    return;
-  }
-  
-  try {
-    // Validate token with backend
-    const response = await fetch(`${API_URL}/auth/profile`, {
-      headers: {
-        'Authorization': `Bearer ${userProfile.token}`
-      }
-    });
-
-    if (!response.ok) {
-      // Token invalid, clear it and show auth modal
-      localStorage.removeItem('userProfile');
-      document.getElementById('authModal').classList.remove('hidden');
-      return;
-    }
-    
-    // If authenticated, track game access and redirect
-    try {
-      await fetch(`${API_URL}/games/access`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${userProfile.token}`
-        },
-        body: JSON.stringify({
-          game_id: url.split('/').pop().split('.')[0]
-        })
-      });
-    } catch (err) {
-      console.error('Failed to track game access:', err);
-      // Continue with redirect even if tracking fails
-    }
-    
-    // Redirect to game
-    window.location.href = url;
-  } catch (err) {
-    console.error('Auth validation error:', err);
-    showToast('Authentication error, please try again', 'error');
-    document.getElementById('authModal').classList.remove('hidden');
-  }
-}
-
-// Authentication modal script
-const authModal = document.getElementById('authModal');
-const signInBtn = document.getElementById('signInBtn');
-const mobileSignInBtn = document.getElementById('mobileSignInBtn');
-const closeAuthModal = document.getElementById('closeAuthModal');
-const userInfo = document.getElementById("user-info");
-const usernameDisplay = document.getElementById("usernameDisplay");
-
-// Initialize UI
-async function initializeAuthUI() {
-  const userProfile = JSON.parse(localStorage.getItem('userProfile'));
-  if (userProfile && userProfile.token) {
-    try {
-      // Validate token with backend
-      const response = await fetch(`${API_URL}/auth/profile`, {
-        headers: {
-          'Authorization': `Bearer ${userProfile.token}`
-        }
-      });
-
-      if (response.ok) {
-        signInBtn.style.display = "none";
-        userInfo.classList.remove("hidden");
-        usernameDisplay.textContent = userProfile.name;
-      } else {
-        // Token invalid, reset UI
-        localStorage.removeItem('userProfile');
-        signInBtn.style.display = "inline-block";
-        userInfo.classList.add("hidden");
-      }
-    } catch (err) {
-      console.error('Auth validation error:', err);
-      localStorage.removeItem('userProfile');
-      signInBtn.style.display = "inline-block";
-      userInfo.classList.add("hidden");
-    }
-  } else {
-    signInBtn.style.display = "inline-block";
-    userInfo.classList.add("hidden");
-  }
-}
-
 // Show toast notification
 function showToast(message, type = 'info') {
   let toastContainer = document.getElementById('toast-container');
@@ -162,27 +69,4 @@ function showToast(message, type = 'info') {
     }, 300);
   }, 3000);
 }
-
-// Event Listeners
-signInBtn.addEventListener('click', () => {
-  authModal.classList.remove('hidden');
-});
-
-mobileSignInBtn.addEventListener('click', () => {
-  authModal.classList.remove('hidden');
-});
-
-closeAuthModal.addEventListener('click', () => {
-  authModal.classList.add('hidden');
-});
-
-// Close modal when clicking outside
-authModal.addEventListener('click', (e) => {
-  if (e.target === authModal) {
-    authModal.classList.add('hidden');
-  }
-});
-
-// Initialize UI on page load
-document.addEventListener("DOMContentLoaded", initializeAuthUI);
 
