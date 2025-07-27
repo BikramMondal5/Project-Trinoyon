@@ -206,7 +206,7 @@
                    <p align="center" class="text-sm text-gray-600 font-medium mb-4">Get featured on our Impact page!</p>
                   
                   <!-- Inner content container matching Razorpay div -->
-                  <div class="bg-white p-6 rounded-xl border-2 border-yellow-100 w-80 h-72 mx-auto shadow-md hover:border-yellow-300 transition-colors duration-300 flex flex-col justify-center space-y-4">
+                  <div class="bg-white p-6 border-2 border-yellow-100 w-80 h-72 mx-auto shadow-md hover:border-yellow-300 transition-colors duration-300 flex flex-col justify-center space-y-4">
                     <div>
                       <input type="text" id="donorName" placeholder="Full Name"
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-yellow-500">
@@ -842,20 +842,58 @@
      <div>
       <div class="bg-white p-6 rounded-lg shadow-md mb-6">
         <h3 class="text-xl font-semibold text-gray-900 mb-6">Send Us a Message</h3>
-        <form action="https://formspree.io/f/xanjeazg" method="POST" class="space-y-4">
-          <input type="text" name="name" placeholder="Your Name" required class="border p-2 w-full rounded" />
-          <input type="email" name="email" placeholder="Email Address" required class="border p-2 w-full rounded" />
-          <input type="text" name="subject" placeholder="Subject" class="border p-2 w-full rounded" />
-          <textarea name="message" placeholder="Enter your message" required class="border p-2 w-full rounded"></textarea>
+        <form id="contactForm" class="space-y-4">
+          <input type="text" id="from_name" name="name" placeholder="Your Name" required class="border p-2 w-full rounded" />
+          <input type="email" id="reply_to" name="email" placeholder="Email Address" required class="border p-2 w-full rounded" />
+          <input type="text" id="subject" name="subject" placeholder="Subject" class="border p-2 w-full rounded" />
+          <textarea id="message" name="message" placeholder="Enter your message" required class="border p-2 w-full rounded"></textarea>
             
           <label class="flex items-center">
-            <input type="checkbox" name="volunteer" class="mr-2" />
+            <input type="checkbox" id="volunteer" name="volunteer" class="mr-2" />
             I'm interested in volunteering
           </label>
-          <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-           Send Message
+          <button type="submit" id="submit-button" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary/90">
+            Send Message
           </button>
         </form>
+      </div>
+      
+      <!-- Success Modal -->
+      <div id="successModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-white bg-opacity-85 backdrop-blur-sm transition-opacity duration-300"></div>
+        <div class="fixed inset-0 flex items-center justify-center">
+          <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 max-w-md w-full">
+            <div class="text-center">
+              <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="ri-check-line ri-xl text-green-600"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">Message Sent!</h3>
+              <p class="text-gray-600 mb-6">Thank you for reaching out. We'll get back to you soon.</p>
+              <button id="closeSuccessModal" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Error Modal -->
+      <div id="errorModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-white bg-opacity-85 backdrop-blur-sm transition-opacity duration-300"></div>
+        <div class="fixed inset-0 flex items-center justify-center">
+          <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 max-w-md w-full">
+            <div class="text-center">
+              <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="ri-close-line ri-xl text-red-600"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">Message Failed</h3>
+              <p class="text-gray-600 mb-6">Something went wrong. Please try again later or contact us directly.</p>
+              <button id="closeErrorModal" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
             
@@ -1097,171 +1135,93 @@
   }
 </style>
 
-<!-- Authentication Modal -->
-<div id="authModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-  <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4 relative">
-    <button id="closeAuthModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
-      <i class="ri-close-line ri-lg"></i>
-    </button>
+<!-- EmailJS SDK -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<!-- Load config.js first (contains placeholders) -->
+<script type="text/javascript" src="config.js"></script>
+
+<script type="text/javascript">
+  (function() {
+    // Create a function to load the local config file if it exists
+    function loadLocalConfig() {
+      const localConfigScript = document.createElement('script');
+      localConfigScript.src = 'config.js.local';
+      localConfigScript.onerror = function() {
+        console.warn('No local config found. Using placeholder values from config.js');
+        console.warn('Please update with your actual EmailJS credentials for the form to work');
+      };
+      document.head.appendChild(localConfigScript);
+    }
+    
+    // Try to load local config
+    loadLocalConfig();
+    
+    // Initialize EmailJS with public key (will use the value from config.js.local if loaded)
+    setTimeout(() => {
+      emailjs.init(window.appConfig.emailjs.publicKey);
+    }, 500); // Small delay to ensure config is loaded
+  })();
+</script>
+
+<script type="text/javascript">
+  // EmailJS contact form submission
+  document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+      contactForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const form = event.target;
         
-    <div class="text-center mb-6">
-      <h2 class="text-2xl font-bold text-gray-900" id="authTitle">Sign In</h2>
-      <p class="text-gray-600 mt-1" id="authSubtitle">Welcome back! Please enter your details.</p>
-    </div>
+        // Show loading state
+        const submitButton = document.getElementById('submit-button');
+        const originalButtonText = submitButton.innerHTML;
+        submitButton.disabled = true;
+        submitButton.innerHTML = 'Sending...';
+        
+        // Prepare template parameters to match the template variables
+        const templateParams = {
+          name: document.getElementById('from_name').value,
+          email: document.getElementById('reply_to').value,
+          title: document.getElementById('subject').value,
+          message: document.getElementById('message').value,
+          volunteer: document.getElementById('volunteer').checked ? 'Yes' : 'No'
+        };
+        
+        // Get EmailJS credentials from config file
+        const serviceID = window.appConfig?.emailjs?.serviceID || "service_xxx";
+        const templateID = window.appConfig?.emailjs?.templateID || "template_xxx";
 
-    <!-- Auth Forms -->
-    <div id="loginForm">
-      <form class="space-y-4" onsubmit="handleLogin(event)">
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Email</label>
-          <input type="email" id="loginEmail" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Password</label>
-          <input type="password" id="loginPassword" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-        </div>
-        <button type="submit" class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary/90 transition-colors duration-200">
-          Sign In
-        </button>
-      </form>
-      <p class="mt-4 text-center text-sm text-gray-600">
-        Don't have an account?
-        <button onclick="toggleAuthForm('signup')" class="text-primary hover:text-primary/90 font-medium">Sign up</button>
-      </p>
-    </div>
+        emailjs.send(serviceID, templateID, templateParams)
+          .then(function(response) {
+            console.log('SUCCESS!', response.status, response.text);
+            form.reset();
+            // Reset button
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
 
-    <div id="signupForm" class="hidden">
-      <form class="space-y-4" onsubmit="handleSignup(event)">
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Name</label>
-          <input type="text" id="signupName" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Email</label>
-          <input type="email" id="signupEmail" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700">Password</label>
-          <input type="password" id="signupPassword" required minlength="6" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
-        </div>
-        <button type="submit" class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary/90 transition-colors duration-200">
-          Sign Up
-        </button>
-      </form>
-      <p class="mt-4 text-center text-sm text-gray-600">
-        Already have an account?
-        <button onclick="toggleAuthForm('login')" class="text-primary hover:text-primary/90 font-medium">Sign in</button>
-      </p>
-    </div>
-  </div>
-</div>
+            // Show success modal
+            const successModal = document.getElementById('successModal');
+            successModal.classList.remove('hidden');
+          }, function(error) {
+            console.log('FAILED...', error);
+            // Reset button
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
 
-<script>
-  // Authentication modal script
-  const authModal = document.getElementById('authModal');
-  const signInBtn = document.getElementById('signInBtn');
-  const mobileSignInBtn = document.getElementById('mobileSignInBtn');
-  const closeAuthModal = document.getElementById('closeAuthModal');
-
-  signInBtn.addEventListener('click', () => {
-    authModal.classList.remove('hidden');
-    document.getElementById('authTitle').innerText = 'Sign In';
-    document.getElementById('authSubtitle').innerText = 'Welcome back! Please enter your details.';
-    document.getElementById('loginForm').classList.remove('hidden');
-    document.getElementById('signupForm').classList.add('hidden');
-  });
-
-  mobileSignInBtn.addEventListener('click', () => {
-    authModal.classList.remove('hidden');
-    document.getElementById('authTitle').innerText = 'Sign In';
-    document.getElementById('authSubtitle').innerText = 'Welcome back! Please enter your details.';
-    document.getElementById('loginForm').classList.remove('hidden');
-    document.getElementById('signupForm').classList.add('hidden');
-  });
-
-  closeAuthModal.addEventListener('click', () => {
-    authModal.classList.add('hidden');
-  });
-
-  function toggleAuthForm(form) {
-    if (form === 'signup') {
-      document.getElementById('authTitle').innerText = 'Sign Up';
-      document.getElementById('authSubtitle').innerText = 'Create an account to continue';
-      document.getElementById('loginForm').classList.add('hidden');
-      document.getElementById('signupForm').classList.remove('hidden');
-    } else {
-      document.getElementById('authTitle').innerText = 'Sign In';
-      document.getElementById('authSubtitle').innerText = 'Welcome back! Please enter your details.';
-      document.getElementById('loginForm').classList.remove('hidden');
-      document.getElementById('signupForm').classList.add('hidden');
-    }
-  }
-
-  async function handleLogin(event) {
-    event.preventDefault();
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    // Add your login logic here
-    console.log('Logging in with', email, password);
-    // Close the modal on successful login
-    authModal.classList.add('hidden');
-  }
-
-  async function handleSignup(event) {
-    event.preventDefault();
-    const name = document.getElementById('signupName').value;
-    const email = document.getElementById('signupEmail').value;
-    const password = document.getElementById('signupPassword').value;
-    // Add your signup logic here
-    console.log('Signing up with', name, email, password);
-    // Close the modal on successful signup
-    authModal.classList.add('hidden');
-  }
-  </script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const contactSection = document.getElementById("contact");
-    const contactLink = document.getElementById("contact-link");
-    const homeLink = document.getElementById("home-link");
-
-    if (!contactLink) return;
-
-    // If URL starts with #contact, immediately highlight Contact Us
-    if (window.location.hash === "#contact") {
-      contactLink.classList.add("text-primary", "border-primary");
-      contactLink.classList.remove("text-gray-700", "border-transparent");
-      if (homeLink) {
-        homeLink.classList.remove("text-primary", "border-primary");
-        homeLink.classList.add("text-gray-700", "border-transparent");
-      }
-    }
-
-    // Use IntersectionObserver for scroll-based highlight
-    if (contactSection) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            contactLink.classList.add("text-primary", "border-primary");
-            contactLink.classList.remove("text-gray-700", "border-transparent");
-            if (homeLink) {
-              homeLink.classList.remove("text-primary", "border-primary");
-              homeLink.classList.add("text-gray-700", "border-transparent");
-            }
-          } else {
-            contactLink.classList.remove("text-primary", "border-primary");
-            contactLink.classList.add("text-gray-700", "border-transparent");
-            if (homeLink && window.location.pathname === "/") {
-              homeLink.classList.add("text-primary", "border-primary");
-              homeLink.classList.remove("text-gray-700", "border-transparent");
-            }
-          }
-        });
-      }, {
-        threshold: 0.4
+            // Show error modal
+            const errorModal = document.getElementById('errorModal');
+            errorModal.classList.remove('hidden');
+          });
       });
 
-      observer.observe(contactSection);
+      // Close modals
+      document.getElementById('closeSuccessModal').addEventListener('click', function() {
+        document.getElementById('successModal').classList.add('hidden');
+      });
+
+      document.getElementById('closeErrorModal').addEventListener('click', function() {
+        document.getElementById('errorModal').classList.add('hidden');
+      });
     }
   });
 </script>
