@@ -3,23 +3,38 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 require("dotenv").config();
+
 const app = express();
 const paymentRoutes = require("./routes/payment");
 // Import the Donation model
-const Donation = require('./models/Donation'); // Adjust path based on your folder structure
+const Donation = require('./models/Donation');
 
-// DB Connect
+// DB Connect with better error handling
 mongoose.connect(process.env.MONGO_URI, {
-  // Add any connection options if needed
-}).then(() => console.log("🛢️ MongoDB connected"))
-  .catch((err) => console.error("DB Error:", err));
+  // Modern connection options
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => {
+  console.log("🛢️ MongoDB connected successfully");
+}).catch((err) => {
+  console.error("❌ DB Connection Error:", err);
+  process.exit(1); // Exit if DB connection fails
+});
 
 // Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '10mb' })); // Add size limit
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
+
+// Security headers for production
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  next();
+});
 
 // Routes
 app.get("/", (req, res) => {
@@ -36,60 +51,24 @@ app.get("/games", (req, res) => {
   });
 });
 
-// Game routes
-app.get('/First-game', (req, res) => {
-  res.render('First-game');
-});
+// Game routes - Consider using a loop or route parameter to reduce repetition
+const gameRoutes = [
+  'First-game', 'Second-game', 'Third-game', 'Fourth-game', 
+  'Fifth-game', 'Sixth-game', 'Seventh-game', 'Eighth-game',
+  'Ninth-game', 'Tenth-game', 'Eleventh-game', 'Twelveth-game'
+];
 
-app.get('/Second-game', (req, res) => {
-  res.render('Second-game');
-});
-
-app.get('/Third-game', (req, res) => {
-  res.render('Third-game');
-});
-
-app.get('/Fourth-game', (req, res) => {
-  res.render('Fourth-game');
-});
-
-app.get('/Fifth-game', (req, res) => {
-  res.render('Fifth-game');
-});
-
-app.get('/Sixth-game', (req, res) => {
-  res.render('Sixth-game');
-});
-
-app.get('/Seventh-game', (req, res) => {
-  res.render('Seventh-game');
-});
-
-app.get('/Eighth-game', (req, res) => {
-  res.render('Eighth-game');
-});
-
-app.get('/Ninth-game', (req, res) => {
-  res.render('Ninth-game');
-});
-
-app.get('/Tenth-game', (req, res) => {
-  res.render('Tenth-game');
-});
-
-app.get('/Eleventh-game', (req, res) => {
-  res.render('Eleventh-game');
-});
-
-app.get('/Twelveth-game', (req, res) => {
-  res.render('Twelveth-game');
+gameRoutes.forEach(game => {
+  app.get(`/${game}`, (req, res) => {
+    res.render(game);
+  });
 });
 
 app.get('/vp', (req, res) => {
   res.render('vp');
 });
 
-// SINGLE Impact route - Remove the other duplicate ones
+// Impact route with improved error handling
 app.get('/impact', async (req, res) => {
   try {
     console.log('📊 Fetching donations for impact page...');
@@ -98,8 +77,8 @@ app.get('/impact', async (req, res) => {
     const donations = await Donation.find({
       status: 'completed'
     })
-    .sort({ createdAt: -1 }) // Most recent first
-    .limit(20) // Limit to 20 recent donations
+    .sort({ createdAt: -1 })
+    .limit(20)
     .select('donorName amount message createdAt')
     .lean();
    
@@ -159,14 +138,14 @@ app.get('/impact', async (req, res) => {
       uniqueDonorCount,
       topDonor,
       fundraisingGoal,
-      progressPercentage: Math.round(progressPercentage * 10) / 10 ,// Round to 1 decimal place
+      progressPercentage: Math.round(progressPercentage * 10) / 10
     };
 
     console.log('📈 Final stats:', stats);
    
     // Render the impact page with data
     res.render('impact', {
-      donations: donations || [], // Ensure it's always an array
+      donations: donations || [],
       stats: stats,
       title: 'Impact - Our Contributors',
       currentRoute: 'impact'
@@ -198,6 +177,40 @@ app.get('/impact', async (req, res) => {
   }
 });
 
+// 404 handler
+app.use('*', (req, res) => {
+  res.status(404).render('404', {
+    title: 'Page Not Found',
+    currentRoute: '404'
+  });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('❌ Unhandled error:', err);
+  res.status(500).json({
+    error: 'Internal server error',
+    message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : err.message
+  });
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('🔄 SIGTERM received, shutting down gracefully');
+  mongoose.connection.close(() => {
+    console.log('🛢️ MongoDB connection closed');
+    process.exit(0);
+  });
+});
+
 // Start Server
 const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => console.log(`✅ Server running at http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  const environment = process.env.NODE_ENV || 'development';
+  if (environment === 'production') {
+    console.log(`✅ Server running on port ${PORT}`);
+  } else {
+    console.log(`✅ Server running at http://localhost:${PORT}`);
+  }
+  console.log(`🌍 Environment: ${environment}`);
+});
